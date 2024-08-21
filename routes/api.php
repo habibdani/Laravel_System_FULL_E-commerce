@@ -6,7 +6,7 @@ use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\BookingController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -32,6 +32,9 @@ Route::delete('/deleted-product/{id}', [ProductController::class, 'deleteProduct
 Route::post('/admin/register', [AuthController::class, 'register']);
 Route::post('/admin/login', [AuthController::class, 'login']);
 Route::post('/admin/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::get('/list-order', [BookingController::class, 'getListOrder']);
+Route::get('/detail-order',[BookingController::class, 'getDetilsOrder']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
