@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('booking_status', function (Blueprint $table) {
             $table->id(); // Use id() method for auto-incrementing primary key
             $table->string('name', 20);
+            $table->string('color_status',20);
         });
     }
 
