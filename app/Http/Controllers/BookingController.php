@@ -13,6 +13,29 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class BookingController extends Controller
 {
+    public function createOrder(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'type_name' => 'required|string|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return ApiResponseHelper::validationError($validator->errors());
+            }
+
+            // Insert produk_type
+            $productTypeId = DB::table('product_types')->insertGetId([
+                'name' => $request->input('type_name'),
+                'created_at' => now(),
+            ]);
+
+            return ApiResponseHelper::created(['product_type_id' => $productTypeId], 'Product type created successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error($e, 500);
+        }
+    }
+
     public function getListOrder(Request $request)
     {
         try {
@@ -20,7 +43,7 @@ class BookingController extends Controller
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
             $skip = ($currentPage * $perPage) - $perPage;
 
-            $listOrder = DB::select("
+            $querylistOrder = "
                 SELECT
                     b.id bookings_id,
                     b.client_name,
@@ -31,9 +54,10 @@ class BookingController extends Controller
                         WHEN sa.id = sa2.id THEN 'TRUE'
                         ELSE 'FALSE'
                     END AS area_match,
-                    bsh.created_at last_update,
+                    DATE_FORMAT(bsh.created_at, '%e %M %Y - %H:%i') AS last_update,
                     bt.`name` status_name,
-                    SUM(b.ongkir + bi.price) amount
+                    bt.color_status,
+                    SUM(bi.price) amount
                 FROM bookings b
                     JOIN shipping_areas sa ON b.shipping_area_id = sa.id
                 JOIN booking_items bi ON b.id = bi.booking_id
@@ -45,25 +69,31 @@ class BookingController extends Controller
                 JOIN booking_status bt ON bt.id = bsh.booking_status_id
                 WHERE
                     b.deleted_at IS NULL
+                    AND sa.deleted_at IS NULL
+                    AND bs.deleted_at IS NULL
+                    AND sd.deleted_at IS NULL
+                    AND sa2.deleted_at IS NULL
+                    AND bsh.updated_at IS NULL
                 GROUP BY
                     b.id
                 ORDER BY b.id DESC
                 LIMIT :skip, :perPage
-            ", ['skip' => $skip, 'perPage' => $perPage]);
+            ";
 
-                // Get total count of records
-                $total = DB::table('bookings')
-                    ->whereNull('deleted_at')
-                    ->count();
+            $listOrder = DB::select($querylistOrder, ['skip' => $skip, 'perPage' => $perPage]);
 
-                // Create a paginator instance
-                $listOrderPaginator = new LengthAwarePaginator(
-                    $listOrder,
-                    $total,
-                    $perPage,
-                    $currentPage,
-                    ['path' => LengthAwarePaginator::resolveCurrentPath()]
-                );
+            $total = DB::table('bookings')
+                ->whereNull('deleted_at')
+                ->count();
+
+            // Create a paginator instance
+            $listOrderPaginator = new LengthAwarePaginator(
+                $listOrder,
+                $total,
+                $perPage,
+                $currentPage,
+                ['path' => LengthAwarePaginator::resolveCurrentPath()]
+            );
             return ApiResponseHelper::success($listOrderPaginator, 'Data retrieved successfully');
         } catch (\Exception $e) {
             return ApiResponseHelper::error($e, 500);
@@ -84,6 +114,7 @@ class BookingController extends Controller
                 b.id bookings_id,
                 DATE_FORMAT(b.created_at, '%e %M %Y - %H:%i') AS created_at,
                 bt.`name` status_name,
+                bt.color_status,
 
                 b.client_name,
                 b.address,
@@ -148,6 +179,38 @@ class BookingController extends Controller
                     'products' => $productDetails
                 ];
             return ApiResponseHelper::success($data, 'Data retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error($e, 500);
+        }
+    }
+
+    public function updateStatusOrder(Request $request)
+    {
+        try {
+            // Validasi input
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer',
+                'status_id' => 'required|integer',
+            ]);
+
+            if ($validator->fails()) {
+                return ApiResponseHelper::validationError($validator->errors());
+            }
+
+            // Mendapatkan nilai dari request
+            $bookingId = $request->input('id');
+            $statusId = $request->input('status_id');
+
+            // Query untuk memasukkan data ke tabel booking_status_histories
+            $queryUpdateOrder = "
+                INSERT INTO booking_status_histories (booking_id, booking_status_id, created_at, updated_at)
+                VALUES (?, ?, NOW(), NOW())
+            ";
+
+            // Eksekusi query
+            DB::statement($queryUpdateOrder, [$bookingId, $statusId]);
+
+            return ApiResponseHelper::success(null, 'Status order berhasil diperbarui');
         } catch (\Exception $e) {
             return ApiResponseHelper::error($e, 500);
         }

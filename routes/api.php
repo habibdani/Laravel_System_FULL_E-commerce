@@ -35,6 +35,7 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->middleware('aut
 
 Route::get('/list-order', [BookingController::class, 'getListOrder']);
 Route::get('/detail-order',[BookingController::class, 'getDetilsOrder']);
+Route::post('/update-status-order',[BookingController::class, 'updateStatusOrder']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
