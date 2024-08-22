@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('client_phone_number');
             $table->string('client_email')->nullable();
             $table->bigInteger('npwp')->nullable();
-            $table->integer('ongkir')->nullable();
             $table->integer('shipping_area_id');
             $table->string('address');
             $table->integer('code_pos');

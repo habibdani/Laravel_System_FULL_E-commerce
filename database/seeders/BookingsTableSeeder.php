@@ -18,7 +18,6 @@ class BookingsTableSeeder extends Seeder
                 'client_phone_number' => 82123456574,
                 'client_email' => 'hans@mail.com',
                 'npwp' => null,
-                'ongkir' => 300000,
                 'shipping_area_id' => 1,
                 'address' => 'Jl. Kesehatan, No.25, Karang Ranji',
                 'code_pos' => 44327,

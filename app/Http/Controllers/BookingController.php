@@ -16,23 +16,138 @@ class BookingController extends Controller
     public function createOrder(Request $request)
     {
         try {
+            // Validasi input dasar
             $validator = Validator::make($request->all(), [
-                'type_name' => 'required|string|max:255',
+                'client_type_id' => 'required|integer',
+                'client_name' => 'required|string|max:255',
+                'client_phone_number' => 'required|string|max:20',
+                'client_email' => 'required|string|email|max:255',
+                'shipping_area_id' => 'required|integer',
+                'shipping_district_id' => 'required|integer',
+                'shipping_subdistrict_id' => 'required|integer',
+                'address' => 'required|string|max:255',
+                'code_pos' => 'required|string|max:10',
+                'additional_price_percentage' => 'nullable|numeric',
+                'commission_percentage' => 'nullable|numeric',
+                'booking_items' => 'required|array',
+                'booking_items.*.product_variant_id' => 'required|integer',
+                'booking_items.*.price' => 'required|numeric',
+                'booking_items.*.qty' => 'required|integer',
+                'booking_items.*.product_variant_item_id' => [
+                    'required',
+                    'integer',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $index = (int) filter_var($attribute, FILTER_SANITIZE_NUMBER_INT);
+                        $productVariantId = $request->input("booking_items.$index.product_variant_id");
+
+                        $match = DB::table('product_variant_items')
+                            ->where('id', $value)
+                            ->where('product_variant_id', $productVariantId)
+                            ->exists();
+
+                        if (!$match) {
+                            $fail("The selected product_variant_item_id at index $index does not match the product_variant_id.");
+                        }
+                    },
+                ],
+                'note' => 'nullable|string',
+                'ktp_image' => 'nullable|string',
+                'bank_name' => 'nullable|string|max:255',
+                'bank_account_number' => 'nullable|string|max:20',
+                'bank_account_holder_name' => 'nullable|string|max:255',
             ]);
+
+            // Validasi shipping_district_id dan shipping_area_id terhadap shipping_subdistrict_id
+            $validator->after(function ($validator) use ($request) {
+                $shippingData = DB::table('shipping_subdistricts as ss')
+                    ->join('shipping_districts as sd', 'sd.id', '=', 'ss.shipping_district_id')
+                    ->whereNull('ss.deleted_at')
+                    ->whereNull('sd.deleted_at')
+                    ->where('ss.id', $request->input('shipping_subdistrict_id'))
+                    ->select('sd.shipping_area_id', 'ss.shipping_district_id')
+                    ->first();
+
+                if (!$shippingData) {
+                    $validator->errors()->add('shipping_subdistrict_id', 'Invalid shipping_subdistrict_id.');
+                } else {
+                    if ($shippingData->shipping_district_id != $request->input('shipping_district_id')) {
+                        $validator->errors()->add('shipping_district_id', 'The selected shipping_district_id does not match the shipping_subdistrict_id.');
+                    }
+
+                    if ($shippingData->shipping_area_id != $request->input('shipping_area_id')) {
+                        $validator->errors()->add('shipping_area_id', 'The selected shipping_area_id does not match the shipping_subdistrict_id.');
+                    }
+                }
+            });
 
             if ($validator->fails()) {
                 return ApiResponseHelper::validationError($validator->errors());
             }
+            DB::beginTransaction();
 
-            // Insert produk_type
-            $productTypeId = DB::table('product_types')->insertGetId([
-                'name' => $request->input('type_name'),
+            // Insert ke tabel bookings
+            $bookingId = DB::table('bookings')->insertGetId([
+                'client_type_id' => $request->input('client_type_id'),
+                'client_name' => $request->input('client_name'),
+                'client_phone_number' => $request->input('client_phone_number'),
+                'client_email' => $request->input('client_email'),
+                'shipping_area_id' => $request->input('shipping_area_id'),
+                'address' => $request->input('address'),
+                'code_pos' => $request->input('code_pos'),
+                'additional_price_percentage' => $request->input('additional_price_percentage'),
+                'commission_percentage' => $request->input('commission_percentage'),
                 'created_at' => now(),
             ]);
 
-            return ApiResponseHelper::created(['product_type_id' => $productTypeId], 'Product type created successfully');
+            // Insert ke tabel booking_shippings
+            $bookingShippingId = DB::table('booking_shippings')->insertGetId([
+                'booking_id' => $bookingId,
+                'shipping_id' => $request->input('shipping_id'),
+                'price' => $request->input('price'),
+                'shipping_district_id' => $request->input('shipping_district_id'),
+                'shipping_subdistrict_id' => $request->input('shipping_subdistrict_id'),
+                'created_at' => now(),
+            ]);
+
+            // Insert ke tabel booking_dropship_identities (opsional)
+            if ($request->input('client_type_id') == 2) {
+                $bookingDropshipIdentityId = DB::table('booking_dropship_identities')->insertGetId([
+                    'booking_id' => $bookingId,
+                    'ktp_image' => $request->input('ktp_image'),
+                    'bank_name' => $request->input('bank_name'),
+                    'bank_account_number' => $request->input('bank_account_number'),
+                    'bank_account_holder_name' => $request->input('bank_account_holder_name'),
+                    'created_at' => now(),
+                ]);
+            }
+
+            // Insert ke tabel booking_items
+            foreach ($request->input('booking_items') as $item) {
+                DB::table('booking_items')->insert([
+                    'product_variant_id' => $item['product_variant_id'],
+                    'booking_id' => $bookingId,
+                    'price' => $item['price'],
+                    'qty' => $item['qty'],
+                    'product_variant_item_id' => $item['product_variant_item_id'],
+                    'note' => $item['note'] ?? null, // opsional
+                    'created_at' => now(),
+                ]);
+            }
+
+            // Insert ke tabel booking_status_histories
+            DB::table('booking_status_histories')->insertGetId([
+                'booking_id' => $bookingId,
+                'booking_status_id' => 2,
+                'created_at' => now(),
+            ]);
+
+            // Commit transaksi
+            DB::commit();
+
+            return ApiResponseHelper::created(['booking_id' => $bookingId], 'Order created successfully');
         } catch (\Exception $e) {
-            return ApiResponseHelper::error($e, 500);
+            DB::rollBack();
+            return ApiResponseHelper::error($e->getMessage(), 500);
         }
     }
 
@@ -41,60 +156,63 @@ class BookingController extends Controller
         try {
             $perPage = $request->input('per_page', 10); // Default items per page
             $currentPage = LengthAwarePaginator::resolveCurrentPage();
-            $skip = ($currentPage * $perPage) - $perPage;
+            $skip = ($currentPage - 1) * $perPage;
 
-            $querylistOrder = "
+            $queryListOrder = "
                 SELECT
-                    b.id bookings_id,
+                    b.id AS bookings_id,
                     b.client_name,
                     b.client_email,
                     DATE_FORMAT(b.created_at, '%e %M %Y - %H:%i') AS created_at,
-                    CONCAT(b.address,', ',sa.`name`,', ',b.code_pos) ship_to,
+                    CONCAT(b.address,', ',sa.`name`,', ',b.code_pos) AS ship_to,
                     CASE
                         WHEN sa.id = sa2.id THEN 'TRUE'
                         ELSE 'FALSE'
                     END AS area_match,
                     DATE_FORMAT(bsh.created_at, '%e %M %Y - %H:%i') AS last_update,
-                    bt.`name` status_name,
+                    bt.`name` AS status_name,
                     bt.color_status,
-                    SUM(bi.price) amount
+                    SUM(bi.price) AS amount
                 FROM bookings b
-                    JOIN shipping_areas sa ON b.shipping_area_id = sa.id
+                JOIN shipping_areas sa ON b.shipping_area_id = sa.id
                 JOIN booking_items bi ON b.id = bi.booking_id
                 JOIN booking_shippings bs ON bs.booking_id = b.id
-                    JOIN shipping_districts sd ON sd.id = bs.shipping_district_id
-                        JOIN shipping_areas sa2 ON sa2.id = sd.shipping_area_id
+                JOIN shipping_districts sd ON sd.id = bs.shipping_district_id
+                JOIN shipping_areas sa2 ON sa2.id = sd.shipping_area_id
                 JOIN booking_status_histories bsh ON bsh.booking_id = b.id
-                JOIN (SELECT MAX(id) id FROM booking_status_histories GROUP BY booking_id) m_bsh ON bsh.id = m_bsh.id
+                JOIN (
+                    SELECT MAX(id) AS id
+                    FROM booking_status_histories
+                    GROUP BY booking_id
+                ) m_bsh ON bsh.id = m_bsh.id
                 JOIN booking_status bt ON bt.id = bsh.booking_status_id
                 WHERE
                     b.deleted_at IS NULL
+                    AND b.deleted_at IS NULL
                     AND sa.deleted_at IS NULL
+                    AND bi.deleted_at IS NULL
                     AND bs.deleted_at IS NULL
                     AND sd.deleted_at IS NULL
                     AND sa2.deleted_at IS NULL
-                    AND bsh.updated_at IS NULL
                 GROUP BY
                     b.id
                 ORDER BY b.id DESC
                 LIMIT :skip, :perPage
             ";
 
-            $listOrder = DB::select($querylistOrder, ['skip' => $skip, 'perPage' => $perPage]);
+            $listOrder = DB::select($queryListOrder, ['skip' => $skip, 'perPage' => $perPage]);
 
             $total = DB::table('bookings')
                 ->whereNull('deleted_at')
                 ->count();
 
-            // Create a paginator instance
-            $listOrderPaginator = new LengthAwarePaginator(
-                $listOrder,
-                $total,
-                $perPage,
-                $currentPage,
-                ['path' => LengthAwarePaginator::resolveCurrentPath()]
-            );
-            return ApiResponseHelper::success($listOrderPaginator, 'Data retrieved successfully');
+            $response = [
+                'data' => $listOrder,
+                'currentPage' => $currentPage,
+                'total' => $total,
+            ];
+
+            return ApiResponseHelper::success($response, 'Data retrieved successfully');
         } catch (\Exception $e) {
             return ApiResponseHelper::error($e, 500);
         }
