@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Home')
+
+@section('header')
+    @include('layouts.header', ['type' => 'navbar'])
+@endsection
+
+@section('content')
     <h1>Welcome to the Home Page</h1>
-    <p>This is the landing page of your Laravel application.</p>
-</body>
-</html>
+    <p>This is the content of the home page.</p>
+@endsection

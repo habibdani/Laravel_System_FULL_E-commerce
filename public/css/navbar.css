@@ -1,0 +1,84 @@
+/* General Navbar Styling */
+.navbar {
+    background-color: #FDF4ED; /* Warna background dari navbar */
+    padding: 10px 0;
+    border-bottom: 2px solid #E8D8C3; /* Garis bawah navbar */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #D71F26; /* Warna teks logo */
+}
+
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Search Bar Styling */
+.form-inline {
+    flex-grow: 1;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.form-inline input {
+    width: 100%;
+    max-width: 500px; /* Lebar maksimum search bar */
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Shopping Cart and Phone Number */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav a {
+    color: #555;
+    font-size: 16px;
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav a i {
+    margin-right: 5px;
+}
+
+/* Sub-navbar Styling */
+.sub-navbar {
+    background-color: #FDF4ED; /* Sama dengan warna navbar utama */
+    padding: 5px 0;
+}
+
+.sub-navbar .nav {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sub-navbar .nav-link {
+    color: #333;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    border-right: 1px solid #E8D8C3; /* Garis pembatas antar item */
+}
+
+.sub-navbar .nav-link:last-child {
+    border-right: none; /* Menghilangkan border pada item terakhir */
+}
+
+.sub-navbar .nav-link.active {
+    color: #D71F26; /* Warna merah untuk link aktif */
+    font-weight: bold;
+}
+
+.sub-navbar .nav-link:hover {
+    color: #D71F26;
+}
