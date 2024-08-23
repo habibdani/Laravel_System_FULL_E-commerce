@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PasswordAuthMiddleware
 {
-
     public function handle(Request $request, Closure $next): Response
     {
         $apiPassword = $request->header('X-API-Password');
