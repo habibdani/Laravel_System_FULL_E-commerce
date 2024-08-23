@@ -19,3 +19,15 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+
+
+
+
+
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+//     // Tambahkan route lainnya yang ingin diproteksi di sini
+// });
