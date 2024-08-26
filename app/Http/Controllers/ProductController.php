@@ -403,7 +403,7 @@ class ProductController extends Controller
         try {
             // Validasi file gambar
             $validator = Validator::make($request->all(), [
-                'image' => 'required|file|mimes:jpg,png,jpeg|max:2048',
+                'image' => 'required|file|mimes:jpg,png,jpeg|max:10240',
             ]);
 
             if ($validator->fails()) {

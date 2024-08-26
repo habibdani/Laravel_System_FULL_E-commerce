@@ -1,11 +1,13 @@
-<section class="mt-8">
-    <h2 class="text-xl font-bold mb-4">Our Partner Products:</h2>
-    <div class="flex space-x-4">
-        <img src="path_to_partner_logo" alt="Dynamix">
-        <img src="path_to_partner_logo" alt="Penguin">
-        <img src="path_to_partner_logo" alt="Semen Andalas">
-        <img src="path_to_partner_logo" alt="Alderon">
-        <img src="path_to_partner_logo" alt="Power">
-        <img src="path_to_partner_logo" alt="Pralon">
+<section name="partners" class="py-0 mt-8">
+    <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
+        <h2 class="font-roboto text-xm font-normal font-roboto text-center font-bold mb-5 text-[#292929]">Our Partner Products:</h2>
+        <div class="flex items-center justify-center w-full space-x-[101px] w-[994px]">
+            <img src="{{ asset('storage/images/partners/dinamix.svg') }}" alt="Dynamix">
+            <img src="{{ asset('storage\images\partners\pinguin.svg') }}" alt="Penguin">
+            <img src="{{ asset('storage\images\partners\andalas.svg') }}" alt="Semen Andalas">
+            <img src="{{ asset('storage\images\partners\alderon.svg') }}" alt="Alderon">
+            <img src="{{ asset('storage\images\partners\power.svg') }}" alt="Power">
+            <img src="{{ asset('storage\images\partners\pralon.svg') }}" alt="Pralon">
+        </div>
     </div>
 </section>
