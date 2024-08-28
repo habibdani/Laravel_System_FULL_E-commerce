@@ -1,6 +1,6 @@
 <section name="consult" class="py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div class="flex items-center justify-center w-[994px] space-x-[40px]">
+        <div class="flex items-center justify-center w-[994px] space-x-[30px]">
             <!-- Left Section -->
             <div class="shadow-custom w-[720px] h-[223px] p-4 flex items-center rounded-md space-x-[70px]">
                 <div class="ml-[10px]">

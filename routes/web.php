@@ -10,9 +10,13 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome-page');
 });
 
-Route::get('/about', function () {
-    return view('about');
+Route::get('/maps', function () {
+    return view('maps-page');
+});
+
+Route::post('/shop', function () {
+    return view('shop-page');
 });

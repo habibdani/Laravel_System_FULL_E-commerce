@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -40,3 +41,5 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
 Route::get('/test-middleware', function() {
     return response()->json(['message' => 'Middleware is working']);
 })->middleware(\App\Http\Middleware\AdminAuthMiddleware::class);
+
+Route::post('/shop', [ShopController::class, 'index']);
