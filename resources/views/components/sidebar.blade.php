@@ -21,142 +21,188 @@
             transform: translateX(0);
         }
         .sidebar-transition {
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
-         /* Style untuk tombol toggle */
         .toggle-hidden {
-            left: 0; /* Posisi tombol ketika sidebar tersembunyi */
-            transform: translateX(0);
+            left: -30px; /* Posisi tombol ketika sidebar tersembunyi */
+            transform: translateX(100%);
+            transition: left 0.3s ease, transform 0.3s ease; /* Samakan durasi dan properti transisi dengan sidebar */
         }
         .toggle-visible {
-            left: 320px; /* Posisi tombol ketika sidebar terlihat */
+            right: -30px; /* Tepat di sebelah kanan sidebar */
             transform: translateX(0);
+            transition: left 0.3s ease, transform 0.3s ease; /* Samakan durasi dan properti transisi dengan sidebar */
         }
-        .button-default {
-            background-color: #F4F4F4; /* Default background color */
-            color: #9D9D9D; /* Default text color */
-        }
-
-        .button-active {
-            background-color: #E01535; /* Active background color */
-            color: white; /* Active text color */
+        #tipe-pembelian, #alamat {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: white;
+            color: #292929;
+            padding: 0px 12px;
+            border-radius: 4px;
+            border: 1px solid #DADCE0;
+            width: 100%;
+            font-family: Roboto, sans-serif;
+            font-size: 12px;
         }
     </style>
-    <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px]">
-        <div id="sidebar" class="p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px] z-20">
+        <div id="sidebar" class="w-full p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom flex flex-col justify-between">
             <!-- Grup Tombol di Bagian Atas -->
-            <div class="p-[6px] flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-[#F4F4F4] justify-around mb-4">
-                <button id="btn-slide-1" class="px-3 pr-5 rounded-l-md rounded-r-full flex items-center justify-center
-                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] custom-clipath">Pilih Tujuan</button>
-                <button id="btn-slide-2" class="px-3 pr-5 rounded-l-md flex items-center justify-center
-                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] custom-clipath">Shop</button>
-                <button id="btn-slide-3" class="px-3 pr-5 rounded-l-md flex items-center justify-center
-                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] custom-clipath">Payment</button>
+
+            <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-4">
+                <button id="btn-slide-1" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                w-1/3 h-[26.95px] flex-grow font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Pilih Tujuan</button>
+                <button id="btn-slide-2" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Shop</button>
+                <button id="btn-slide-3" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
             </div>
 
-            <!-- Slide 1: Pilih Tujuan -->
-            <div id="slide-1">
-                <h2 class="text-lg font-semibold">Pilih Tujuan</h2>
-                <label class="block mt-4">
-                    <span class="text-gray-700">Tipe Pembelian:</span>
-                    <select class="block w-full mt-1 border-gray-300 rounded-md shadow-sm">
-                        <option>Dikirim</option>
-                        <!-- Tambahkan opsi lainnya jika perlu -->
-                    </select>
-                </label>
-                <label class="block mt-4">
-                    <span class="text-gray-700">Alamat:</span>
-                    <select class="block w-full mt-1 border-gray-300 rounded-md shadow-sm">
-                        <option>Pondok Pinang - Jakarta Selatan</option>
-                        <!-- Tambahkan opsi lainnya jika perlu -->
-                    </select>
-                </label>
-                <div class="mt-4">
-                    <p class="text-sm">Ongkos kirim: <strong>Rp.70.000</strong></p>
-                    <p class="text-sm">Jarak: <strong>20 km</strong></p>
-                    <p class="text-sm">Durasi: <strong>47m</strong></p>
-                </div>
-                <button id="to-slide-2" class="mt-4 w-full py-2 bg-red-500 text-white rounded-md">Selanjutnya</button>
-            </div>
+            <div class="flex-grow">
+                 <!-- Slide 1: Pilih Tujuan -->
+                <div id="slide-1" class="">
+                    <h2 class="text-[22px] font-roboto font-medium text-[#292929] mb-4">Pilih Tujuan</h2>
 
-            <!-- Slide 2: Shop -->
-            <div id="slide-2" class="hidden">
-                <h2 class="text-lg font-semibold">Shop</h2>
-                <div class="mt-4">
-                    <!-- Ulangi blok ini untuk setiap item -->
-                    <div class="flex items-center justify-between p-2 border-b border-gray-200">
-                        <div>
-                            <p class="text-sm font-semibold">Spandek - Spandeck Zincalu...</p>
-                            <p class="text-xs text-gray-600">Tipe Gelombang: Tipe 1040</p>
-                            <p class="text-xs text-gray-600">Tebal: 0.25 mm</p>
-                            <p class="text-sm">Total Harga: <strong>Rp. 300.000</strong></p>
+                    <div class="relative mb-4">
+                        <label for="tipe-pembelian" class="font-roboto block text-[#747474] text-[12px] mb-2">Tipe Pembelian:</label>
+                        <div class="relative">
+                            <select id="tipe-pembelian" class="appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]">
+                                <!-- Option akan diisi dengan data dari API -->
+                            </select>
+                            <!-- ikon panah -->
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg width="9" height="5" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.892578 0.605103L4.54956 4.26207L8.20653 0.605103" stroke="#6D6D6D" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <button class="px-2 py-1 text-white bg-red-500 rounded-md">-</button>
-                            <span class="mx-2">50</span>
-                            <button class="px-2 py-1 text-white bg-red-500 rounded-md">+</button>
+                    </div>
+
+                    <div class="relative mb-4">
+                        <label for="alamat" class="font-roboto block text-[#747474] text-[12px] mb-2">Alamat:</label>
+                        <div class="relative">
+                            <select id="alamat" class="form-select select2 appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]" style="width: 100%;">
+                                <option value="0">Pilih Alamat</option>
+                                <!-- Opsi akan ditambahkan oleh JavaScript -->
+                            </select>
+                            <!-- Tambahkan ikon panah -->
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg width="9" height="5" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.892578 0.605103L4.54956 4.26207L8.20653 0.605103" stroke="#6D6D6D" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <p class="text-sm">Ongkos kirim: <strong>Rp.70.000</strong></p>
-                    <p class="text-sm">Jarak: <strong>20 km</strong></p>
-                    <p class="text-sm">Durasi: <strong>47m</strong></p>
+                 <!-- Slide 2: Shop -->
+                <div id="slide-2" class="hidden">
+                    <h2 class="text-lg font-semibold">Shop</h2>
+                    <div class="mt-4">
+                        <!-- Ulangi blok ini untuk setiap item -->
+                        <div class="flex items-center justify-between p-2 border-b border-gray-200">
+                            <div>
+                                <p class="text-sm font-semibold">Spandek - Spandeck Zincalu...</p>
+                                <p class="text-xs text-gray-600">Tipe Gelombang: Tipe 1040</p>
+                                <p class="text-xs text-gray-600">Tebal: 0.25 mm</p>
+                                <p class="text-sm">Total Harga: <strong>Rp. 300.000</strong></p>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="px-2 py-1 text-white bg-red-500 rounded-md">-</button>
+                                <span class="mx-2">50</span>
+                                <button class="px-2 py-1 text-white bg-red-500 rounded-md">+</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-4 flex justify-between items-center">
-                    <span class="text-lg font-bold">Total: Rp. 420.700</span>
-                    <button id="to-slide-3" class="py-2 px-4 bg-red-500 text-white rounded-md">Bayar</button>
+
+                <!-- Slide 3: Payment -->
+                <div id="slide-3" class="hidden">
+                    <h2 class="text-lg font-semibold">Payment</h2>
+                    {{-- <form class="mt-4">
+                        <label class="block">
+                            <span class="text-gray-700">Nama Depan:</span>
+                            <input type="text" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" placeholder="Budi">
+                        </label>
+                        <label class="block mt-4">
+                            <span class="text-gray-700">Nama Belakang:</span>
+                            <input type="text" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" placeholder="Setiawan">
+                        </label>
+                        <label class="block mt-4">
+                            <span class="text-gray-700">Alamat Lengkap:</span>
+                            <input type="text" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" placeholder="Jl. Kesehatan, No.25, Karang Ranji">
+                        </label>
+                        <!-- Tambahkan field lainnya jika perlu -->
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-lg font-bold">Total: Rp. 420.700</span>
+                            <button type="submit" class="py-2 px-4 bg-red-500 text-white rounded-md">Bayar</button>
+                        </div>
+                    </form> --}}
                 </div>
             </div>
 
-            <!-- Slide 3: Payment -->
-            <div id="slide-3" class="hidden">
-                <h2 class="text-lg font-semibold">Payment</h2>
-                <form class="mt-4">
-                    <label class="block">
-                        <span class="text-gray-700">Nama Depan:</span>
-                        <input type="text" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" placeholder="Budi">
-                    </label>
-                    <label class="block mt-4">
-                        <span class="text-gray-700">Nama Belakang:</span>
-                        <input type="text" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" placeholder="Setiawan">
-                    </label>
-                    <label class="block mt-4">
-                        <span class="text-gray-700">Alamat Lengkap:</span>
-                        <input type="text" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm" placeholder="Jl. Kesehatan, No.25, Karang Ranji">
-                    </label>
-                    <!-- Tambahkan field lainnya jika perlu -->
-                    <div class="mt-4 flex justify-between items-center">
-                        <span class="text-lg font-bold">Total: Rp. 420.700</span>
-                        <button type="submit" class="py-2 px-4 bg-red-500 text-white rounded-md">Bayar</button>
+            <div class="mt-auto mb-[15%]">
+                <hr>
+
+                <div class="bg-white h-[40.56px] p-2 mt-3 border border-[#DADCE0] rounded-md mb-4 shadow-md flex justify-between items-center">
+                    <div class="text-center w-1/3">
+                        <p class="text-gray-600 text-xs">Ongkos kirim:</p>
+                        <p id="ongkir-display" price-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</p>
                     </div>
+                    <div class="text-center border-x w-1/3">
+                        <p class="text-gray-600 text-xs">Jarak:</p>
+                        <p id="jarak" class="text-green-600 font-semibold text-[16px]">0 km</p> <!-- Tambahkan id="jarak" -->
+                    </div>
+                    <div class="text-center w-1/3">
+                        <p class="text-gray-600 text-xs">Durasi:</p>
+                        <p id="waktu" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
+                    </div>
+                </div>
+
+                <button id="to-slide-2-and-shop" class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
+                    Selanjutnya
+                </button>
+                <form id="redirect-form-maps" action="{{ url('/view-shop') }}" method="POST" style="display: none;">
+                    @csrf
+                    <!-- Tambahkan input tersembunyi jika perlu mengirimkan data -->
+                    <input type="hidden" name="someData" value="valueHere">
                 </form>
+                <button id="to-slide-3" hidden class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
+                    Selanjutnya
+                </button>
+                <button id="to-slide-2" hidden  class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
+                    Selanjutnya
+                </button>
             </div>
         </div>
-        <button id="toggle" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible">
+
+        <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible">
             <img src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
-        </button>    </div>
-        <script>
+        </button>
+        @vite('resources/js/app.js')
+    </div>
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
             // Fungsi untuk menampilkan slide berdasarkan nomor
             function showSlide(slideNumber) {
-                // Sembunyikan semua slide
                 document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
-
-                // Tampilkan slide yang dipilih
                 document.getElementById('slide-' + slideNumber).classList.remove('hidden');
 
-                // Reset semua tombol ke gaya default
                 document.querySelectorAll('[id^="btn-slide-"]').forEach(btn => {
-                    btn.classList.remove('button-active');
-                    btn.classList.add('button-default');
+                    btn.classList.remove('text-white', 'bg-[#E01535]');
+                    btn.classList.add('text-[#9D9D9D]', 'bg-transparent');
                 });
 
-                // Ubah gaya tombol yang dipilih
-                document.getElementById('btn-slide-' + slideNumber).classList.add('button-active');
-                document.getElementById('btn-slide-' + slideNumber).classList.remove('button-default');
+                document.getElementById('btn-slide-' + slideNumber).classList.add('text-white', 'bg-[#E01535]');
+                document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
             }
 
-            // Event listener untuk tombol-tombol slide
             document.getElementById('btn-slide-1').addEventListener('click', function() {
                 showSlide(1);
             });
@@ -169,36 +215,64 @@
                 showSlide(3);
             });
 
-            // Fungsi untuk toggle sidebar
-            function toggleSidebar() {
+            document.getElementById('toggle').addEventListener('click', function() {
                 const sidebar = document.getElementById('sidebar');
                 const toggleBtn = document.getElementById('toggle');
+                const toggleIcon = toggleBtn.querySelector('img');
+                const mapContainer = document.getElementById('map-container');
 
-                if (sidebar.classList.contains('sidebar-hidden')) {
-                    sidebar.classList.remove('sidebar-hidden');
-                    sidebar.classList.add('sidebar-visible');
-                    toggleBtn.classList.remove('toggle-hidden');
-                    toggleBtn.classList.add('toggle-visible');
-                } else {
+                if (sidebar.classList.contains('sidebar-visible')) {
+                    // Sembunyikan sidebar dan perbesar peta ke lebar penuh
                     sidebar.classList.remove('sidebar-visible');
                     sidebar.classList.add('sidebar-hidden');
                     toggleBtn.classList.remove('toggle-visible');
                     toggleBtn.classList.add('toggle-hidden');
+                    toggleIcon.src = "{{ asset('storage/icons/vector-hidden.svg') }}";
+
+                   } else {
+                    // Tampilkan sidebar dan kembalikan peta ke lebar 3/4
+                    sidebar.classList.remove('sidebar-hidden');
+                    sidebar.classList.add('sidebar-visible');
+                    toggleBtn.classList.remove('toggle-hidden');
+                    toggleBtn.classList.add('toggle-visible');
+                    toggleIcon.src = "{{ asset('storage/icons/vector.svg') }}";
+
                 }
-            }
-
-            // Event listener untuk tombol toggle sidebar
-            document.getElementById('toggle').addEventListener('click', toggleSidebar);
-
-            // Tampilkan slide pertama dan sidebar secara default saat halaman dimuat
-            window.addEventListener('load', function() {
-                showSlide(1);
-                const sidebar = document.getElementById('sidebar');
-                sidebar.classList.remove('sidebar-hidden');
-                sidebar.classList.add('sidebar-visible');
-                const toggleBtn = document.getElementById('toggle');
-                toggleBtn.classList.remove('toggle-hidden');
-                toggleBtn.classList.add('toggle-visible');
             });
-        </script>
+
+        window.addEventListener('load', function() {
+
+
+            });
+
+            document.getElementById('to-slide-2-and-shop').addEventListener('click', function() {
+                showSlide(2);
+                 // Mengarahkan ke halaman shop-page setelah beberapa saat
+                // Submit form untuk mengarahkan ke halaman shop-page
+                document.getElementById('redirect-form-maps').submit();
+            });
+         });
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const ongkirDisplay = document.getElementById('ongkir-display');
+        //     const nextButton = document.getElementById('to-slide-2-and-shop');
+
+        //     function checkOngkirValue() {
+        //         const ongkirValue = ongkirDisplay.getAttribute('data-value');
+
+        //         if (ongkirValue === '0' || ongkirValue === '') {
+        //             nextButton.disabled = true;
+        //             nextButton.classList.add('opacity-50', 'cursor-not-allowed');
+        //         } else {
+        //             nextButton.disabled = false;
+        //             nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        //         }
+        //     }
+
+        //     // Cek nilai ongkir saat halaman dimuat
+        //     checkOngkirValue();
+
+        // });
+
+    </script>
 </section>

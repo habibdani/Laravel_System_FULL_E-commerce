@@ -21,6 +21,7 @@ class ShippingController extends Controller
                     `shippings` s
                 WHERE
                     s.deleted_at IS NULL
+                ORDER BY id DESC
             ");
 
             $data = response()->json($results);
@@ -36,8 +37,10 @@ class ShippingController extends Controller
             $results = DB::select("
                 SELECT
                     sd.id as district_id,
+                    sd.price,
+                    CONCAT(sd.`name`, ', ', REPLACE(sa.`name`, 'Kab ', 'Kabupaten ')) as city,
                     sa.id as shipping_area_id,
-                    CONCAT(sd.`name`, ' - ', sd.`name`) as alamat
+                    CONCAT(sd.`name`, ' - ', sa.`name`) as alamat
                 FROM
                     shipping_districts sd
                     JOIN shipping_areas sa ON sd.shipping_area_id = sa.id

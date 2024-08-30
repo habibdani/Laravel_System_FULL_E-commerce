@@ -13,10 +13,16 @@ Route::get('/', function () {
     return view('welcome-page');
 });
 
-Route::get('/maps', function () {
-    return view('maps-page');
-});
+// Route::get('/maps', function () {
+//     return view('maps-page');
+// });
 
 Route::post('/shop', function () {
     return view('shop-page');
 });
+
+use App\Http\Controllers\ViewPageController;
+
+Route::post('/view-maps', [ViewPageController::class, 'maps']);
+Route::post('/view-shop', [ViewPageController::class, 'shop']);
+
