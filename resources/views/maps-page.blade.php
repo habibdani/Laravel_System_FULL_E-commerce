@@ -43,6 +43,19 @@
                 }
             });
 
+            function showSlide(slideNumber) {
+                document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
+                document.getElementById('slide-' + slideNumber).classList.remove('hidden');
+
+                document.querySelectorAll('[id^="btn-slide-"]').forEach(btn => {
+                    btn.classList.remove('text-white', 'bg-[#E01535]');
+                    btn.classList.add('text-[#9D9D9D]', 'bg-transparent');
+                });
+
+                document.getElementById('btn-slide-' + slideNumber).classList.add('text-white', 'bg-[#E01535]');
+                document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
+            }
+
             window.addEventListener('load', function() {
                 showSlide(1);
                 const sidebar = document.getElementById('sidebar');
@@ -137,8 +150,8 @@
                             console.log(`Distance: ${distance.toFixed(2)} km, Duration: ${duration.toFixed(2)} mnt`);
 
                             // Update UI elements with distance and duration
-                            $('#jarak').text(`${distance.toFixed(2)} km`);
-                            $('#waktu').text(`${duration.toFixed(0)} mnt`);
+                            $('#jarak').text(`${distance.toFixed(2)} km`).attr('jarak-value', distance.toFixed(2));
+                            $('#waktu').text(`${duration.toFixed(0)} mnt`).attr('waktu-value', duration.toFixed(0));
                         })
                         .catch(error => console.error('Error fetching route:', error));
                 }).catch(error => console.error('Error geocoding city:', error));
@@ -162,4 +175,9 @@
             }
         });
     </script>
+    <style>
+        #buttom-sidebar{
+            margin-bottom: 15%;
+        }
+    </style>
 @endsection

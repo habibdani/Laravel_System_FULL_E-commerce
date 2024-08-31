@@ -42,4 +42,3 @@ Route::get('/test-middleware', function() {
     return response()->json(['message' => 'Middleware is working']);
 })->middleware(\App\Http\Middleware\AdminAuthMiddleware::class);
 
-Route::post('/shop', [ShopController::class, 'index']);

@@ -58,7 +58,7 @@
             <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-4">
                 <button id="btn-slide-1" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] flex-grow font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Pilih Tujuan</button>
-                <button id="btn-slide-2" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                <button id="btn-slide-2" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Shop</button>
                 <button id="btn-slide-3" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
@@ -146,32 +146,46 @@
                 </div>
             </div>
 
-            <div class="mt-auto mb-[15%]">
+            <div id="buttom-sidebar" class="mt-auto mb-auto">
                 <hr>
 
                 <div class="bg-white h-[40.56px] p-2 mt-3 border border-[#DADCE0] rounded-md mb-4 shadow-md flex justify-between items-center">
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Ongkos kirim:</p>
-                        <p id="ongkir-display" price-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</p>
+                        @isset($ongkir)
+                            <p id="ongkir-display" location-value="" price-value="" class="text-green-600 font-semibold text-[16px]">{{ $ongkir }}</p>
+                        @else
+                            <p id="ongkir-display" location-value="" price-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</p>
+                        @endisset
                     </div>
                     <div class="text-center border-x w-1/3">
                         <p class="text-gray-600 text-xs">Jarak:</p>
-                        <p id="jarak" class="text-green-600 font-semibold text-[16px]">0 km</p> <!-- Tambahkan id="jarak" -->
+                        @isset($jarak)
+                            <p id="jarak" jarak-value="" class="text-green-600 font-semibold text-[16px]">{{ $jarak }}</p>
+                        @else
+                            <p id="jarak" jarak-value="" class="text-green-600 font-semibold text-[16px]">0 km</p>
+                        @endisset
                     </div>
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Durasi:</p>
-                        <p id="waktu" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
+                        @isset($waktu)
+                            <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">{{ $waktu }}</p>
+                        @else
+                            <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
+                        @endisset
                     </div>
+
+                    @isset($locate['city'])
+                        <p>test Lokasi: {{ $locate['city'] }}</p>
+                    @else
+                        <p>test Lokasi: null</p>
+                    @endisset
+
                 </div>
 
                 <button id="to-slide-2-and-shop" class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
                     Selanjutnya
                 </button>
-                <form id="redirect-form-maps" action="{{ url('/view-shop') }}" method="POST" style="display: none;">
-                    @csrf
-                    <!-- Tambahkan input tersembunyi jika perlu mengirimkan data -->
-                    <input type="hidden" name="someData" value="valueHere">
-                </form>
                 <button id="to-slide-3" hidden class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
                     Selanjutnya
                 </button>
@@ -189,6 +203,8 @@
 
     <script>
          document.addEventListener('DOMContentLoaded', function() {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            console.log('CSRF Token:', csrfToken); // Pastikan CSRF token sudah ada
             // Fungsi untuk menampilkan slide berdasarkan nomor
             function showSlide(slideNumber) {
                 document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
@@ -240,39 +256,72 @@
                 }
             });
 
-        window.addEventListener('load', function() {
-
-
-            });
-
             document.getElementById('to-slide-2-and-shop').addEventListener('click', function() {
                 showSlide(2);
-                 // Mengarahkan ke halaman shop-page setelah beberapa saat
-                // Submit form untuk mengarahkan ke halaman shop-page
-                document.getElementById('redirect-form-maps').submit();
+
+                // Mengambil elemen dan memeriksa apakah elemen tersebut ada
+                const ongkirElement = document.getElementById('ongkir-display');
+                const jarakElement = document.getElementById('jarak');
+                const waktuElement = document.getElementById('waktu');
+
+                if (!ongkirElement || !jarakElement || !waktuElement) {
+                    console.error('One or more elements are missing');
+                    return; // Menghentikan eksekusi jika elemen tidak ditemukan
+                }
+
+                // Mengambil nilai dari elemen yang ada
+                const ongkirValue = ongkirElement.getAttribute('price-value');
+                const jarakValue = jarakElement.getAttribute('jarak-value');
+                const waktuValue = waktuElement.getAttribute('waktu-value');
+                const locateValue = ongkirElement.getAttribute('location-value'); // JSON string
+
+                // Membuat form secara dinamis
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/view-shop';
+
+                // Menambahkan CSRF token
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                console.log('rrrrrrrrrrr    ',csrfToken);
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+
+                // Menambahkan input tersembunyi untuk setiap data
+                const ongkirInput = document.createElement('input');
+                ongkirInput.type = 'hidden';
+                ongkirInput.name = 'ongkir';
+                ongkirInput.value = ongkirValue;
+                form.appendChild(ongkirInput);
+
+                const jarakInput = document.createElement('input');
+                jarakInput.type = 'hidden';
+                jarakInput.name = 'jarak';
+                jarakInput.value = jarakValue;
+                form.appendChild(jarakInput);
+
+                const waktuInput = document.createElement('input');
+                waktuInput.type = 'hidden';
+                waktuInput.name = 'waktu';
+                waktuInput.value = waktuValue;
+                form.appendChild(waktuInput);
+
+                const locateInput = document.createElement('input');
+                locateInput.type = 'hidden';
+                locateInput.name = 'locate';
+                locateInput.value = locateValue; // JSON string
+                form.appendChild(locateInput);
+
+                // Logging untuk memastikan form dibuat dengan benar
+                console.log('Submitting form to /view-shop');
+
+                // Menambahkan form ke body dan mengirimkannya
+                document.body.appendChild(form);
+                form.submit();
             });
          });
-
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const ongkirDisplay = document.getElementById('ongkir-display');
-        //     const nextButton = document.getElementById('to-slide-2-and-shop');
-
-        //     function checkOngkirValue() {
-        //         const ongkirValue = ongkirDisplay.getAttribute('data-value');
-
-        //         if (ongkirValue === '0' || ongkirValue === '') {
-        //             nextButton.disabled = true;
-        //             nextButton.classList.add('opacity-50', 'cursor-not-allowed');
-        //         } else {
-        //             nextButton.disabled = false;
-        //             nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
-        //         }
-        //     }
-
-        //     // Cek nilai ongkir saat halaman dimuat
-        //     checkOngkirValue();
-
-        // });
 
     </script>
 </section>

@@ -21,13 +21,14 @@ class ViewPageController extends Controller
 
     public function shop(Request $request)
     {
-        // Ambil input client_type_id dari request
-        // $clientTypeId = $request->input('client_type_id');
+        $ongkir = $request->input('ongkir');
+        $jarak = $request->input('jarak');
+        $waktu = $request->input('waktu');
+        $locate = json_decode($request->input('locate'), true); // Decode JSON to associative array
 
-        // Ambil data berdasarkan client_type_id
-        // $clientTypeData = DB::table('client_types')->where('id', $clientTypeId)->first();
+        // Sekarang Anda bisa mengakses data JSON seperti ini:
+        // $locate['price'], $locate['city'], $locate['district_id'], $locate['shipping_area_id']
 
-        // Tampilkan view maps-page dengan data yang didapat
-        return view('shop-page'); //compact('clientTypeData'));
+        return view('shop-page', compact('ongkir', 'jarak', 'waktu', 'locate'));
     }
 }

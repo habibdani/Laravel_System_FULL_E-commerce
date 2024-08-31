@@ -4,6 +4,14 @@ import './bootstrap';
 import { fetchShippings } from './api/fetchShippings';
 import { fetchShippingDistricts } from './api/fetchShippingDistricts';
 
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    window.csrfToken = csrfToken; // Simpan CSRF token di global scope
+    console.log('CSRF Token:', csrfToken); // Pastikan CSRF token sudah ada
+
+    // Logika lain yang membutuhkan CSRF token bisa menggunakan window.csrfToken
+});
+
 document.addEventListener('DOMContentLoaded', async function() {
     try {
         // Fetch shippings
@@ -43,7 +51,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             // Perbarui tampilan ongkos kirim
             ongkirDisplay.textContent = formattedPrice;
-            ongkirDisplay.setAttribute('price-value', JSON.stringify(jsonData)); // Set data-value dengan nilai price
+            ongkirDisplay.setAttribute('price-value', formattedPrice); // Set data-value dengan nilai price
+            ongkirDisplay.setAttribute('location-value', JSON.stringify(jsonData)); // Set data-value dengan nilai price
 
             // Ubah src dari iframe untuk memperbarui peta
             const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;

@@ -18,4 +18,5 @@
 /* Tetapkan Roboto sebagai font default untuk seluruh aplikasi */
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #F6F6F6;
 }

@@ -25,7 +25,7 @@
 
 </style>
 
-<nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-1">
+<nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-2 z-50">
     <!-- First Row -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-10 mx-auto">
@@ -113,4 +113,3 @@
         </div>
     </div>
 </nav>
-
