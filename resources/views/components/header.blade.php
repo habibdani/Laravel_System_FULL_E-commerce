@@ -28,10 +28,11 @@
 <nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-2 z-50">
     <!-- First Row -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-10 mx-auto">
+            <div class="flex space-x-4 justify-between h-10 mx-auto">
                 <!-- Left Side (Logo and Company Name) -->
                 <div class="flex items-center">
-                    <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
+                    <img class="max-h-full w-auto h-8" src="{{ asset('storage//icons/tokopedia.svg') }}" alt="Logo">
+                    {{-- <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo"> --}}
                 </div>
 
                 <div class="flex items-center">

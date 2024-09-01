@@ -48,8 +48,8 @@
         }
     </style>
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
     <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px] z-20">
         <div id="sidebar" class="w-full p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom flex flex-col justify-between">
@@ -175,11 +175,11 @@
                         @endisset
                     </div>
 
-                    @isset($locate['city'])
+                    {{-- @isset($locate['city'])
                         <p>test Lokasi: {{ $locate['city'] }}</p>
                     @else
                         <p>test Lokasi: null</p>
-                    @endisset
+                    @endisset --}}
 
                 </div>
 
@@ -198,13 +198,12 @@
         <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible">
             <img src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
         </button>
-        @vite('resources/js/app.js')
+        {{-- @vite('resources/js/app.js') --}}
     </div>
 
     <script>
          document.addEventListener('DOMContentLoaded', function() {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            console.log('CSRF Token:', csrfToken); // Pastikan CSRF token sudah ada
+
             // Fungsi untuk menampilkan slide berdasarkan nomor
             function showSlide(slideNumber) {
                 document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));

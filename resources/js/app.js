@@ -3,6 +3,7 @@
 import './bootstrap';
 import { fetchShippings } from './api/fetchShippings';
 import { fetchShippingDistricts } from './api/fetchShippingDistricts';
+import { fetchProduct3 } from './api/fetchProduct3';
 
 document.addEventListener('DOMContentLoaded', function() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -76,9 +77,57 @@ document.addEventListener('DOMContentLoaded', async function() {
             selectAlamat.appendChild(option);
         });
 
-        $('#alamat').select2({
-            placeholder: "Pilih Alamat",
-            allowClear: true,
+        // Fetch products
+        const products = await fetchProduct3();
+        console.log('Products:', products);
+
+        // Menambahkan produk ke dalam elemen HTML dengan id 'product-list'
+        const productList = document.getElementById('product-list');
+        const productListSpecial = document.getElementById('product-list-special');
+        const productListExplore = document.getElementById('product-list-explore');
+
+
+        products.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.classList.add(
+                'shadow-custom',
+                'h-[186.83px]',
+                'bg-white',
+                'rounded-md',
+                'flex',
+                'flex-col',
+                'justify-between',
+                'overflow-hidden'  // Ensure content respects the rounded corners
+            );
+            productCard.style.width = '149.74px';  // Fixing the width
+            productCard.style.flexShrink = '0';    // Prevent shrinking
+
+            const productImage = document.createElement('img');
+            productImage.src = `${window.location.origin}/storage/${product.variant_image}`;
+            productImage.alt = product.variant_name;
+            productImage.classList.add('object-cover', 'w-full', 'h-[100px]', 'mb-2', 'rounded-t-md');  // Rounded corners on the top
+
+            const productName = document.createElement('p');
+            productName.textContent = product.variant_name;
+            productName.classList.add('text-[12px]', 'font-bold', 'text-center', 'truncate'); // 'truncate' for handling long text
+            productName.style.width = '100%';  // Ensure full width usage
+            productName.style.whiteSpace = 'nowrap';  // Prevent wrapping
+            productName.style.overflow = 'hidden';  // Ensure no overflow
+            productName.style.textOverflow = 'ellipsis';  // Add ellipsis for overflow text
+
+            const productPrice = document.createElement('p');
+            productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(product.variant_price)}`;
+            productPrice.classList.add('text-[12px]', 'text-center', 'font-semibold', 'text-gray-700');
+            productPrice.style.width = '100%';  // Ensure full width usage
+            productPrice.style.whiteSpace = 'nowrap';  // Prevent wrapping
+            productPrice.style.overflow = 'hidden';  // Ensure no overflow
+            productPrice.style.textOverflow = 'ellipsis';  // Add ellipsis for overflow text
+
+            productCard.appendChild(productImage);
+            productCard.appendChild(productName);
+            productCard.appendChild(productPrice);
+            productList.appendChild(productCard);
+
         });
 
     } catch (error) {

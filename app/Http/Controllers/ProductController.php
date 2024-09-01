@@ -25,7 +25,7 @@ class ProductController extends Controller
                     CONCAT(pt.name, ' ', pv.name) full_name_product,
                     pv.name variant_name,
                     pv.price variant_price,
-                    pv.image variant_image
+                    SUBSTRING_INDEX(pv.image, '/storage/', -1) variant_image
                 FROM
                     products p
                 JOIN product_types pt ON p.product_type_id = pt.id

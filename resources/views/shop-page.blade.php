@@ -16,6 +16,20 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            function showSlide(slideNumber) {
+                document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
+                document.getElementById('slide-' + slideNumber).classList.remove('hidden');
+
+                document.querySelectorAll('[id^="btn-slide-"]').forEach(btn => {
+                    btn.classList.remove('text-white', 'bg-[#E01535]');
+                    btn.classList.add('text-[#9D9D9D]', 'bg-transparent');
+                });
+
+                document.getElementById('btn-slide-' + slideNumber).classList.add('text-white', 'bg-[#E01535]');
+                document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
+            }
+
             window.addEventListener('load', function() {
                 showSlide(2);
                 const sidebar = document.getElementById('sidebar');

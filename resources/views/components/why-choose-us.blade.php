@@ -1,8 +1,8 @@
-<section name="why" class="py-0 mt-8">
+<section name="why" class="py-0 mt-12">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div class="flex items-center justify-center w-[994px] space-x-[30px]">
+        <div class="flex items-stretch justify-center w-[994px] space-x-[30px]">
             <!-- Left Section -->
-            <div class="shadow-custom w-full max-w-[900px] h-auto p-8 flex items-center justify-between rounded-md bg-white relative overflow-visible">
+            <div class="shadow-custom w-full max-w-[900px] h-full p-8 flex items-center justify-between rounded-md bg-white relative overflow-visible">
                 <div class="flex-1 pr-6">
                     <h2 class="text-[22px] font-semibold mb-6">Why should you choose Andal Prima?</h2>
                     <div class="space-y-2">
@@ -40,15 +40,15 @@
                 </div>
             </div>
             <!-- Right Section -->
-            <div class="relative w-[245px] h-[285.14px] shadow-custom rounded-md bg-white p-6">
-                <div class="flex flex-col justify-center items-center h-full space-y-4">
-                    <p class="text-[18px] font-semibold mb-2">We’re the solution for exclusive products</p>
+            <div class="shadow-custom w-full max-w-[245px] h-full p-8 flex flex-col justify-between rounded-md bg-white relative overflow-visible">
+                <div class="flex flex-col justify-center items-start h-full space-y-4">
+                    <p class="text-[18px] font-semibold mb-2 w-[106px] text-start">We’re <br> the solution for exclusive products</p>
 
                     <!-- Customer Reviews Section -->
                     <div class="flex items-start space-x-4">
-                        <img src="{{ asset('storage/icons/star.svg') }}" alt="star" class="h-[24px] w-auto">
+                        <img src="{{ asset('storage/icons/star.svg') }}" alt="star">
                         <div>
-                            <p class="font-semibold text-[16px] mb-1">4.8/5</p>
+                            <p class="font-semibold text-[16px]">4.8/5</p>
                             <p class="text-gray-600 text-[12px] leading-relaxed">
                                 Customer reviews
                             </p>
@@ -57,9 +57,9 @@
 
                     <!-- Total Products Sold Section -->
                     <div class="flex items-start space-x-4">
-                        <img src="{{ asset('storage/icons/box.svg') }}" alt="box" class="h-[24px] w-auto">
+                        <img src="{{ asset('storage/icons/box.svg') }}" alt="box">
                         <div>
-                            <p class="font-semibold text-[16px] mb-1">512,046 +</p>
+                            <p class="font-semibold text-[16px]">512,046 +</p>
                             <p class="text-gray-600 text-[12px] leading-relaxed">
                                 Total Products Sell
                             </p>
@@ -68,6 +68,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 

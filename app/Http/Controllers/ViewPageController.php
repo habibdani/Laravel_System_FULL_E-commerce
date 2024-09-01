@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http; // Tambahkan ini
 
 class ViewPageController extends Controller
 {
@@ -26,8 +27,7 @@ class ViewPageController extends Controller
         $waktu = $request->input('waktu');
         $locate = json_decode($request->input('locate'), true); // Decode JSON to associative array
 
-        // Sekarang Anda bisa mengakses data JSON seperti ini:
-        // $locate['price'], $locate['city'], $locate['district_id'], $locate['shipping_area_id']
+        // Mengambil data dari API
 
         return view('shop-page', compact('ongkir', 'jarak', 'waktu', 'locate'));
     }
