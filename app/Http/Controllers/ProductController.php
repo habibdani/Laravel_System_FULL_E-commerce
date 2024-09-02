@@ -22,6 +22,7 @@ class ProductController extends Controller
                     p.product_type_id,
                     pt.name type_name,
                     pv.id product_variant_id,
+                    CASE WHEN pv.po_status = 1 THEN 'Preorder' ELSE NULL END AS preorder,
                     CONCAT(pt.name, ' ', pv.name) full_name_product,
                     pv.name variant_name,
                     pv.price variant_price,

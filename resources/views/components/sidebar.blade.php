@@ -46,19 +46,19 @@
             font-family: Roboto, sans-serif;
             font-size: 12px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 
-    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-
-    <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px] z-20">
+    <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px]" id="container-sidebar">
         <div id="sidebar" class="w-full p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom flex flex-col justify-between">
             <!-- Grup Tombol di Bagian Atas -->
 
             <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-4">
                 <button id="btn-slide-1" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] flex-grow font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Pilih Tujuan</button>
-                <button id="btn-slide-2" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                <button id="btn-slide-2" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Shop</button>
                 <button id="btn-slide-3" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
@@ -148,8 +148,10 @@
 
             <div id="buttom-sidebar" class="mt-auto mb-auto">
                 <hr>
-
-                <div class="bg-white h-[40.56px] p-2 mt-3 border border-[#DADCE0] rounded-md mb-4 shadow-md flex justify-between items-center">
+                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal font-[14px] rounded-t-md transition duration-300 flex items-center justify-left hidden">
+                    0 Item Dibeli: Rp.
+                </div>
+                <div class="bg-white h-[40.56px] p-2 border border-[#DADCE0] rounded-b-md mb-4 shadow-md flex justify-between items-center">
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Ongkos kirim:</p>
                         @isset($ongkir)
@@ -174,22 +176,15 @@
                             <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
                         @endisset
                     </div>
-
-                    {{-- @isset($locate['city'])
-                        <p>test Lokasi: {{ $locate['city'] }}</p>
-                    @else
-                        <p>test Lokasi: null</p>
-                    @endisset --}}
-
                 </div>
 
-                <button id="to-slide-2-and-shop" class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
+                <button id="to-slide-2-and-shop" class="w-full h-[37.6px] flex items-center  justify-center bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
                     Selanjutnya
                 </button>
+                <div id="totalbayar" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
+                    Total Bayar : Rp.
+                </div>
                 <button id="to-slide-3" hidden class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
-                    Selanjutnya
-                </button>
-                <button id="to-slide-2" hidden  class="w-full py-3 bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
                     Selanjutnya
                 </button>
             </div>
@@ -235,23 +230,26 @@
                 const toggleBtn = document.getElementById('toggle');
                 const toggleIcon = toggleBtn.querySelector('img');
                 const mapContainer = document.getElementById('map-container');
+                const considebar = document.getElementById('container-sidebar')
 
                 if (sidebar.classList.contains('sidebar-visible')) {
                     // Sembunyikan sidebar dan perbesar peta ke lebar penuh
                     sidebar.classList.remove('sidebar-visible');
                     sidebar.classList.add('sidebar-hidden');
+                    considebar.classList.add('z-0');
+                    considebar.classList.remove('z-20');
                     toggleBtn.classList.remove('toggle-visible');
                     toggleBtn.classList.add('toggle-hidden');
                     toggleIcon.src = "{{ asset('storage/icons/vector-hidden.svg') }}";
-
                    } else {
                     // Tampilkan sidebar dan kembalikan peta ke lebar 3/4
                     sidebar.classList.remove('sidebar-hidden');
                     sidebar.classList.add('sidebar-visible');
+                    considebar.classList.add('z-20');
+                    considebar.classList.remove('z-0');
                     toggleBtn.classList.remove('toggle-hidden');
                     toggleBtn.classList.add('toggle-visible');
                     toggleIcon.src = "{{ asset('storage/icons/vector.svg') }}";
-
                 }
             });
 
@@ -281,7 +279,7 @@
 
                 // Menambahkan CSRF token
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                console.log('rrrrrrrrrrr    ',csrfToken);
+                // console.log('rrrrrrrrrrr    ',csrfToken);
                 const csrfInput = document.createElement('input');
                 csrfInput.type = 'hidden';
                 csrfInput.name = '_token';

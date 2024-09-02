@@ -74,6 +74,10 @@
                 mapContainer4.classList.remove('w-full');
                 mapContainer4.classList.add('w-3/4');
                 map.invalidateSize();
+
+                const considebar = document.getElementById('container-sidebar')
+                considebar.classList.add('z-20');
+                considebar.classList.remove('z-0');
             });
 
             const defaultOrigin = [-6.2657501, 106.7012177];

@@ -9,6 +9,8 @@
     @component('components.productExplore')@endcomponent
     @component('components.productSpecial')@endcomponent
     @component('components.product3')@endcomponent
+    @component('components.productDetails')@endcomponent
+    @component('components.productRelate')@endcomponent
     @component('components.why-choose-us') @endcomponent
     @component('components.consultation') @endcomponent
     @component('components.partners') @endcomponent
@@ -44,8 +46,30 @@
                 btnSlide2.classList.add('text-white', 'bg-[#E01535]');
                 btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
 
+                const considebar = document.getElementById('container-sidebar')
+                considebar.classList.add('z-0');
+                considebar.classList.remove('z-20');
+
+                const button2 = document.getElementById('btn-slide-2');
+                button2.removeAttribute('disabled');
+
+                const jumlahitem = document.getElementById('jumlahitem');
+                jumlahitem.classList.remove('hidden');
+
+                const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+                toslide2andshop.classList.add('hidden');
+
+                const totalbayar = document.getElementById('totalbayar');
+                totalbayar.classList.remove('hidden');
+            });
+
+            productCard.addEventListener('click', () => {
+                const productId = productCard.getAttribute('data-product-id');
+                console.log('Product ID:', productId);
+                // You can now perform actions based on the product ID
             });
         });
+
     </script>
     <style>
         #buttom-sidebar{

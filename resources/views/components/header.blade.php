@@ -27,8 +27,8 @@
 
 <nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-2 z-50">
     <!-- First Row -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex space-x-4 justify-between h-10 mx-auto">
+        <div class="max-w-[90%] mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="flex space-x-2 justify-center h-10 mx-auto">
                 <!-- Left Side (Logo and Company Name) -->
                 <div class="flex items-center">
                     <img class="max-h-full w-auto h-8" src="{{ asset('storage//icons/tokopedia.svg') }}" alt="Logo">
@@ -64,11 +64,11 @@
         </div>
 
     <!-- Second Row -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex mx-auto justify-between h-10">
-            <div class="flex justify-between h-10 mx-auto">
+            <div class="flex justify-center h-10 mx-auto">
               <!-- Navbar links -->
-                <div class="hidden space-x-1 sm:-my-px sm:ml-3 sm:flex mx-auto">
+                <div class="space-x-1 sm:-my-px sm:ml-3 sm:flex mx-auto">
                     <a href="#" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/untuk-anda-gray.svg') }}" alt="Untuk Anda" class="h-5 w-5 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/untuk-anda-red.svg') }}" alt="Untuk Anda" class="h-5 w-5 mr-1 hidden group-hover:block">
