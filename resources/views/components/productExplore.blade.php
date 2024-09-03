@@ -19,8 +19,8 @@
                 <!-- Link 'View All' -->
                 <a id="explore-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
                     View all (0+)
-                    <svg width="4" height="7" viewBox="0 0 4 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.15796 0.979492L3.23774 3.05917C3.43301 3.25443 3.43301 3.57102 3.23775 3.76628L1.15796 5.84607" stroke="#747474" stroke-linecap="round"/>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </a>
 

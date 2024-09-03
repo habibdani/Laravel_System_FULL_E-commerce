@@ -1,3 +1,4 @@
+{{-- resources\views\shop-page.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Andal Prima')
@@ -63,10 +64,31 @@
                 totalbayar.classList.remove('hidden');
             });
 
-            productCard.addEventListener('click', () => {
-                const productId = productCard.getAttribute('data-product-id');
-                console.log('Product ID:', productId);
-                // You can now perform actions based on the product ID
+            // Menambahkan event listener ke setiap product-card
+            document.querySelectorAll('.product-card').forEach(productCard => {
+                productCard.addEventListener('click', async () => {
+                    const productVariantId = productCard.getAttribute('product-variant-id');
+                    const productTypeId = productCard.getAttribute('product-type-id');
+                    try {
+                        const productDetails = await fetchDetailProduct(productVariantId);
+                        const relateProducts = await fetchRelateProduct(productTypeId);
+
+                        console.log('Product details:', productDetails);
+                        console.log('Product relate:', relateProducts);
+
+                        const detailSection = document.querySelector('section[name="detail-product"]');
+                        detailSection.classList.remove('hidden');
+
+                        const relateSection = document.querySelector('section[name="relate-product"]');
+                        relateSection.classList.remove('hidden');
+
+                        // Update content pada detail product section sesuai dengan data yang diambil
+                        // Misalnya: detailSection.innerHTML = renderProductDetail(productDetails);
+
+                    } catch (error) {
+                        console.error('Error fetching product details:', error);
+                    }
+                });
             });
         });
 

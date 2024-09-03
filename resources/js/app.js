@@ -87,32 +87,21 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const products = await fetchProduct3();
                 const specialProducts = await fetchSpecialProduct();
                 const exploreProducts = await fetchExploreProduct();
-                const relateProducts = await fetchRelateProduct();
 
-                // Menambahkan produk ke dalam elemen HTML dengan id 'product-list'
+                // Menambahkan produk ke dalam elemen HTML dengan id yang sesuai
                 const productList = document.getElementById('product-list');
-                const viewAllLink = document.getElementById('view-all-link');
-
-                // Menambahkan produk ke dalam elemen HTML dengan id 'special-product-list'
                 const specialProductList = document.getElementById('special-product-list');
-                const specialViewAllLink = document.getElementById('special-view-all-link');
-
-                // Menambahkan produk ke dalam elemen HTML dengan id 'explore-product-list'
                 const exploreProductList = document.getElementById('explore-product-list');
-                const exploreViewAllLink = document.getElementById('explore-view-all-link');
 
-                // Menambahkan produk ke dalam elemen HTML dengan id 'Relate-product-list'
-                const relateProductList = document.getElementById('relate-product-list');
-                const relateViewAllLink = document.getElementById('relate-view-all-link');
-
+                // Reusable function to create product cards
                 const createProductCard = (product) => {
                     const productCard = document.createElement('div');
-                    // Set the product ID as a data attribute
                     productCard.setAttribute('data-product-id', product.product_id);
                     productCard.setAttribute('product-type-id', product.product_type_id);
                     productCard.setAttribute('product-variant-id', product.product_variant_id);
 
                     productCard.classList.add(
+                        'product-card',
                         'shadow-custom',
                         'h-[186.83px]',
                         'bg-white',
@@ -120,11 +109,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                         'flex',
                         'flex-col',
                         'justify-between',
-                        'overflow-hidden'  // Ensure content respects the rounded corners
+                        'overflow-hidden'
                     );
-                    productCard.style.width = '149.74px';  // Fixing the width
-                    productCard.style.flexShrink = '0';    // Prevent shrinking
-                    productCard.style.position = 'relative'; // Make productCard relative for absolute positioning
+                    productCard.style.width = '149.74px';
+                    productCard.style.flexShrink = '0';
+                    productCard.style.position = 'relative';
 
                     const productImageContainer = document.createElement('div');
                     productImageContainer.classList.add(
@@ -139,11 +128,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                     const productImage = document.createElement('img');
                     productImage.src = `${window.location.origin}/storage/${product.variant_image}`;
                     productImage.alt = product.variant_name;
-                    productImage.classList.add('object-cover', 'w-full', 'h-full');  // Image takes full size of container
-
+                    productImage.classList.add('object-cover', 'w-full', 'h-full');
                     productImageContainer.appendChild(productImage);
-
-
 
                     if (product.preorder) {
                         const preorderLabel = document.createElement('span');
@@ -161,13 +147,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                             'bottom-2',
                             'left-2'
                         );
-                        preorderLabel.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';  // Transparent black background
+                        preorderLabel.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
                         productImageContainer.appendChild(preorderLabel);
                     }
 
                     const productName = document.createElement('p');
                     productName.textContent = product.variant_name;
-                    productName.classList.add('font-normal', 'text-[#747474]', 'text-left', 'truncate', 'text-[10px]', 'mx-2'); // 'truncate' for handling long text
+                    productName.classList.add('font-normal', 'text-[#747474]', 'text-left', 'truncate', 'text-[10px]', 'mx-2');
                     productName.style.width = '100%';
                     productName.style.whiteSpace = 'nowrap';
                     productName.style.overflow = 'hidden';
@@ -181,35 +167,60 @@ document.addEventListener('DOMContentLoaded', async function() {
                     productPrice.style.overflow = 'hidden';
                     productPrice.style.textOverflow = 'ellipsis';
 
-                    productCard.appendChild(productImageContainer); // Append image container first
+                    productCard.appendChild(productImageContainer);
                     productCard.appendChild(productName);
                     productCard.appendChild(productPrice);
+
+                    // Event listener for product card click
+                    productCard.addEventListener('click', async () => {
+                        const productVariantId = product.product_variant_id;
+                        const productTypeId = product.product_type_id;
+                        try {
+                            const productDetails = await fetchDetailProduct(productVariantId);
+                            const relateProducts = await fetchRelateProduct(productTypeId);
+
+                            console.log('Product relate:', relateProducts);
+
+                            // Render related products
+                            const relateProductList = document.getElementById('relate-product-list');
+                            relateProductList.innerHTML = ''; // Clear previous related products
+                            appendProductsToList(relateProducts, relateProductList, false);
+                            updateViewAllLink(relateProducts.length, relateProductList.clientWidth, document.getElementById('relate-view-all-link'));
+
+                            // Show related and detail sections
+                            const detailSection = document.querySelector('section[name="detail-product"]');
+                            detailSection.classList.remove('hidden');
+
+                            const relateSection = document.querySelector('section[name="relate-product"]');
+                            relateSection.classList.remove('hidden');
+
+                        } catch (error) {
+                            console.error('Error fetching product details:', error);
+                        }
+                    });
 
                     return productCard;
                 };
 
                 const appendProductsToList = (products, productList, addFirstCard = false) => {
-                    // Add an empty first card if needed
                     if (addFirstCard) {
                         const firstCard = document.createElement('div');
                         firstCard.classList.add(
-                            'shadow-none', // No shadow for the transparent card
+                            'shadow-none',
                             'h-[186.83px]',
-                            'bg-transparent', // Transparent background
+                            'bg-transparent',
                             'rounded-md',
                             'flex',
                             'flex-col',
                             'justify-between',
-                            'overflow-hidden'  // Ensure content respects the rounded corners
+                            'overflow-hidden'
                         );
-                        firstCard.style.width = '149.74px';  // Fixing the width
-                        firstCard.style.flexShrink = '0';    // Prevent shrinking
-                        firstCard.style.position = 'relative'; // Make firstCard relative for absolute positioning
-
+                        firstCard.style.width = '149.74px';
+                        firstCard.style.flexShrink = '0';
+                        firstCard.style.position = 'relative';
                         productList.appendChild(firstCard);
                     }
 
-                    // Append each product card to the list
                     products.forEach(product => {
                         const productCard = createProductCard(product);
                         productList.appendChild(productCard);
@@ -220,21 +231,17 @@ document.addEventListener('DOMContentLoaded', async function() {
                 appendProductsToList(products, productList, true);
                 appendProductsToList(specialProducts, specialProductList, false);
                 appendProductsToList(exploreProducts, exploreProductList, false);
-                appendProductsToList(relateProducts, relateProductList, false);
 
                 console.log('Adding products:', products);
 
-                function updateViewAllLink(totalProducts, listWidth, viewAllLink) {
-                    const productCardWidth = 149.74; // Width of each product card (adjust as needed)
-                    // Apply different formula based on the isProducts flag
+                function updateViewAllLink(totalProducts, listWidth, viewAllLink, isProducts = false) {
+                    const productCardWidth = 149.74;
                     const visibleProductCount = isProducts
-                    ? Math.floor(listWidth / productCardWidth) - 1
-                    : Math.floor(listWidth / productCardWidth);
+                        ? Math.floor(listWidth / productCardWidth) - 1
+                        : Math.floor(listWidth / productCardWidth);
 
-                    // Calculate hidden product count
                     const hiddenProductCount = totalProducts - visibleProductCount;
 
-                    // Update the View All link
                     if (hiddenProductCount > 0) {
                         viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -244,11 +251,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                     }
                 }
 
-                // Update the view-all link after rendering products for each section
-                updateViewAllLink(products.length, productList.clientWidth, viewAllLink);
-                updateViewAllLink(specialProducts.length, specialProductList.clientWidth, specialViewAllLink);
-                updateViewAllLink(exploreProducts.length, exploreProductList.clientWidth, exploreViewAllLink);
-                updateViewAllLink(relateProducts.length, relateProductList.clientWidth, relateViewAllLink);
+                updateViewAllLink(products.length, productList.clientWidth, document.getElementById('view-all-link'));
+                updateViewAllLink(specialProducts.length, specialProductList.clientWidth, document.getElementById('special-view-all-link'));
+                updateViewAllLink(exploreProducts.length, exploreProductList.clientWidth, document.getElementById('explore-view-all-link'));
 
             } catch (error) {
                 console.error('Error rendering products:', error);
@@ -256,10 +261,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         renderProducts();
-
-        // Fetch detail product
-        const detailProduct = await fetchDetailProduct();
-        console.log('Detail Product:', detailProduct);
 
     } catch (error) {
         console.error('Error loading data:', error);

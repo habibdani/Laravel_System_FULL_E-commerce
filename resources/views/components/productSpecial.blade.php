@@ -68,7 +68,6 @@
             if (firstCard) {
                 const cardStyle = getComputedStyle(firstCard);
                 const cardWidth = firstCard.offsetWidth + parseFloat(cardStyle.marginRight);
-                console.log('Card width:', cardWidth); // Log lebar kartu untuk debugging
                 return cardWidth;
             }
             console.log('No card found');

@@ -1,5 +1,55 @@
 
 <style>
+    #snackbar {
+        display: none; /* Hide by default */
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        background-color: #fff; /* Background putih */
+        color: #333;
+        z-index: 1000;
+        padding: 16px 0;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        transform: translateY(-100%);
+        opacity: 0;
+        border-top: 1px solid #e5e7eb; /* Border atas */
+    }
+
+    #snackbar.show {
+        display: block;
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    #snackbar .dropdown-content {
+        max-width: 90%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr); /* Sesuaikan jumlah kolom */
+        gap: 20px; /* Jarak antar kolom */
+        padding: 20px 0;
+    }
+
+    #snackbar .dropdown-content h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #E01535;
+        margin-bottom: 10px;
+    }
+
+    #snackbar .dropdown-content ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    #snackbar .dropdown-content ul li {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
     .underline-hover {
         position: relative;
         display: inline-flex;
@@ -43,7 +93,7 @@
                 </div>
 
                 <div class="relative flex items-center">
-                    <a type="text" class="bg-[#FFFFFF] w-[90.89px] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center">
+                    <a type="text" id="category" class="bg-[#FFFFFF] w-[90.89px] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center">
                         <img src="{{ asset('storage/icons/category.svg') }}" alt="category" class="h-4 w-4 mr-1.5">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left">Category</span>
                     </a>
@@ -114,3 +164,53 @@
         </div>
     </div>
 </nav>
+
+<div id="snackbar">
+    <div class="max-w-[906.44px] mx-auto py-4 bg-white">
+        <div class="flex space-x-8 justify-center">
+            <div>
+                <h3 class="text-white text-lg font-semibold">Besi</h3>
+                <ul class="text-sm text-gray-200">
+                    <li>Pipa Galvanis</li>
+                    <li>Pipa Hitam</li>
+                    <li>Besi Kawat</li>
+                    <li>Plat Besi</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white text-lg font-semibold">Stainless Steel</h3>
+                <ul class="text-sm text-gray-200">
+                    <li>Stainless Pipa</li>
+                    <li>Stainless Plat</li>
+                    <li>Stainless Coil</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white text-lg font-semibold">Plastik</h3>
+                <ul class="text-sm text-gray-200">
+                    <li>Pipa PVC</li>
+                    <li>Plastik Lembaran</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+        const categoryButton = document.getElementById('category');
+        const snackbar = document.getElementById('snackbar');
+
+        categoryButton.addEventListener('click', () => {
+            snackbar.classList.toggle('show');
+        });
+
+        // Optional: Hide snackbar when clicking outside of it
+        document.addEventListener('click', (event) => {
+            if (!categoryButton.contains(event.target) && !snackbar.contains(event.target)) {
+                snackbar.classList.remove('show');
+            }
+        });
+    });
+</script>
+

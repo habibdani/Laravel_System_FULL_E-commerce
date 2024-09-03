@@ -1,4 +1,4 @@
-<section name="relate-product" hidden class="py-0 mt-8">
+<section name="relate-product" class="hidden py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
         <div class="relative w-[994px] flex items-center justify-between">
             <!-- Bagian Kiri (Produk Spesial) -->
