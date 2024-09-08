@@ -165,31 +165,56 @@
     </div>
 </nav>
 
-<div id="snackbar">
-    <div class="max-w-[906.44px] mx-auto py-4 bg-white">
-        <div class="flex space-x-8 justify-center">
-            <div>
-                <h3 class="text-white text-lg font-semibold">Besi</h3>
-                <ul class="text-sm text-gray-200">
+<!-- Overlay and Dropdown -->
+<div id="snackbar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-start justify-center z-40">
+    <!-- Dropdown Content -->
+    <div class="bg-white shadow-lg rounded-lg mt-12 w-full z-50 max-w-[994px]">
+        <div class="flex bg-white p-6">
+            <!-- Categories -->
+            <div class="w-1/5">
+                <p class="font-bold text-gray-800 mb-2">Besi Hollow dan Pipa Bulat</p>
+                <ul class="space-y-1 text-sm text-gray-700">
                     <li>Pipa Galvanis</li>
                     <li>Pipa Hitam</li>
-                    <li>Besi Kawat</li>
-                    <li>Plat Besi</li>
+                    <li>Pipa Hollow Hitam</li>
+                    <li>Pipa Hollow Galvanis</li>
                 </ul>
             </div>
-            <div>
-                <h3 class="text-white text-lg font-semibold">Stainless Steel</h3>
-                <ul class="text-sm text-gray-200">
-                    <li>Stainless Pipa</li>
-                    <li>Stainless Plat</li>
-                    <li>Stainless Coil</li>
+            <div class="w-1/5">
+                <p class="font-bold text-gray-800 mb-2">Play Besi</p>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li>Plat Besi Hitam</li>
+                    <li>Plat Besi Kapal</li>
+                    <li>Plat Besi Bordes</li>
+                    <li>Plat Besi Galvanis</li>
+                    <li>Plat Lubang</li>
                 </ul>
             </div>
-            <div>
-                <h3 class="text-white text-lg font-semibold">Plastik</h3>
-                <ul class="text-sm text-gray-200">
-                    <li>Pipa PVC</li>
-                    <li>Plastik Lembaran</li>
+            <div class="w-1/5">
+                <p class="font-bold text-gray-800 mb-2">Besi Batangan</p>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li>Besi Beton</li>
+                    <li>Plat Strip</li>
+                    <li>Besi AS ST42</li>
+                    <li>Besi Nako Ulir</li>
+                </ul>
+            </div>
+            <div class="w-1/5">
+                <p class="font-bold text-gray-800 mb-2">Plat Gelombang</p>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li>Bondek</li>
+                    <li>Atap Galvalum</li>
+                    <li>Besi CNP</li>
+                    <li>Besi UNP</li>
+                    <li>Besi WF</li>
+                </ul>
+            </div>
+            <div class="w-1/5">
+                <p class="font-bold text-gray-800 mb-2">Baja Ringan</p>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li>Besi Hollow Galvalum</li>
+                    <li>Kanal C Galvalum</li>
+                    <li>Reng Baja Ringan</li>
                 </ul>
             </div>
         </div>

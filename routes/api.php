@@ -9,8 +9,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 
-
-
 Route::get('/shippings', [ShippingController::class, 'getShippings']);
 Route::get('/shipping-districts', [ShippingController::class, 'getShippingDistricts']);
 
@@ -36,6 +34,7 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::get('/list-order', [BookingController::class, 'getListOrder']);
     Route::get('/detail-order',[BookingController::class, 'getDetilsOrder']);
     Route::post('/admin/logout', [AuthController::class, 'logout']);
+    // Route::post('/create-order')
 });
 
 Route::get('/test-middleware', function() {

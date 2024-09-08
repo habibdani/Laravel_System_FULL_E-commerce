@@ -27,8 +27,22 @@ class ViewPageController extends Controller
         $waktu = $request->input('waktu');
         $locate = json_decode($request->input('locate'), true); // Decode JSON to associative array
 
-        // Mengambil data dari API
-
         return view('shop-page', compact('ongkir', 'jarak', 'waktu', 'locate'));
+    }
+
+    public function product(Request $request)
+    {
+        $productVariantId = $request->query('product_variant_id');
+        $productTypeId = $request->query('product_type_id');
+
+        $productDetails = DB::table('product_variants')
+            ->where('id', $productVariantId)
+            ->first();
+
+        $productType = DB::table('product_types')
+            ->where('id', $productTypeId)
+            ->first();
+
+        return view('product-page', compact('productDetails', 'productVariantId','productTypeId'));
     }
 }

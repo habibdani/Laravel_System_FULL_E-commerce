@@ -6,7 +6,10 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/js/app.js'
+                'resources/js/app.js',
+                'resources/js/maps-script.js'
+                // 'resources/js/shop-script.js',
+                // 'resources/js/product-script.js',
             ],
             refresh: true,
         }),

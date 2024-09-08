@@ -71,28 +71,33 @@ class ProductController extends Controller
 
     public function productdetails(Request $request)
     {
-        // Ambil parameter 'id' dari query string
+        // Get the 'id' parameter from the query string
         $id = $request->query('id');
 
-        // Validasi input
+        // Validate input
         if (!$id || !is_numeric($id)) {
             return ApiResponseHelper::error('ID is required and must be a valid integer.', 400);
         }
 
         try {
+            // Query to get product details
             $product = DB::select("
                 SELECT
                     pv.id product_variant_id,
-                    CONCAT(pt.`name`,' ',pv.`name`) full_name_product,
-                    pv.price variant_price,
-                    MIN(pv.price) AS min_variant_price,
-                    MAX(pv.price) AS max_variant_price,
-                    CONCAT('" . url('storage/images') . "/', pv.image) AS variant_image,
+                    CONCAT(pt.name, ' - ', pv.name) full_name_product,
+                    SUBSTRING_INDEX(pv.image, '/storage/', -1) as variant_image,
+                    pvi.id variant_item_id,
+                    pvi.name variant_item_name,
+                    pvi.variant_item_type_id,
+                    pv.descriptions,
+                    pv.stock,
                     CASE
-                        WHEN MIN(pv.price) = MAX(pv.price)
-                            THEN CONCAT('Rp ', FORMAT(pv.price, 0))
-                        ELSE CONCAT('Rp ', FORMAT(MIN(pv.price), 0), ' - Rp ', FORMAT(MAX(pv.price), 0))
-                    END AS price_display
+                        WHEN pv.price = (pv.price + COALESCE(MAX(pvi.add_price), 0)) THEN
+                            CONCAT('Rp ', FORMAT(pv.price, 0))
+                        ELSE
+                            CONCAT('Rp ', FORMAT(pv.price, 0), ' - Rp ', FORMAT((pv.price + COALESCE(MAX(pvi.add_price), 0)), 0))
+                    END AS price_display,
+                    pv.price
                 FROM
                     products p
                 JOIN product_types pt ON p.product_type_id = pt.id
@@ -100,45 +105,65 @@ class ProductController extends Controller
                 LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
                 LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
                 WHERE
-                    pv.id = :id
-                GROUP BY pv.id, pt.`name`, pv.`name`, pv.price, pv.image
-            ", ['id' => $id]);
+                    pv.id = ?
+                GROUP BY
+                    pv.id
+            ", [$id]);
 
-            $varianttype = DB::select("
+            // Query to get variant types
+            $varianttypes = DB::select("
                 SELECT
-                    pv.id product_variant_id,
-                    pvi.id variant_item_id,
-                    pvi.`name` variant_item_name,
                     vit.id variant_item_type_id,
-                    vit.`name` variant_item_type_name
+                    vit.name variant_item_type_name
                 FROM
                     product_variants pv
+                LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                WHERE
+                    pv.id = ?
+                    AND pvi.deleted_at IS NULL
+                    AND vit.deleted_at IS NULL
+                GROUP BY vit.id
+            ", [$id]);
+
+            // Initialize an array to store variant item details
+            $variantItemDetails = [];
+
+            // Loop through each variant type to get its items
+            foreach ($varianttypes as $varianttype) {
+                $variantItems = DB::select("
+                    SELECT
+                        pv.id product_variant_id,
+                        pvi.id variant_item_id,
+                        pvi.name variant_item_name,
+                        pvi.add_price
+                    FROM
+                        product_variants pv
                     LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
                     LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
-                WHERE
-                    pv.id = :id
-                    AND pvi.deleted_at IS NULL
-            ", ['id' => $id]);
+                    WHERE
+                        pv.id = ?
+                        AND vit.id = ?
+                        AND pvi.deleted_at IS NULL
+                        AND vit.deleted_at IS NULL
+                ", [$id, $varianttype->variant_item_type_id]);
 
-            $thicknesstype = DB::select("
-                SELECT
-                    id,
-                    CONCAT(thick,'mm') thick
-                FROM
-                    thickness_types
-                WHERE
-                    product_variant_id = :id
-                    AND deleted_at IS NULL
-            ", ['id' => $id]);
+                // Store the items under their respective type
+                $variantItemDetails[] = [
+                    'variant_item_type_name' => $varianttype->variant_item_type_name,
+                    'items' => $variantItems
+                ];
+            }
 
+            // Check if the product exists
             if (empty($product)) {
                 return ApiResponseHelper::error('Product variant not found.', 404);
             }
 
+            // Prepare the response
             $response = [
-                'product' => $product[0], // Ambil data produk (hanya satu hasil)
-                'details' => $varianttype,
-                'ketebalan' => $thicknesstype
+                'product' => $product[0], // Single product result
+                'variant_types' => $variantItemDetails,
             ];
 
             $data = response()->json($response);
