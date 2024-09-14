@@ -235,6 +235,51 @@ class ProductController extends Controller
         }
     }
 
+    public function getListDropdown(Request $request)
+    {
+        try {
+            // Mengambil daftar product types
+            $listproducttypes = DB::select("
+                SELECT
+                    id,
+                    `name`
+                FROM
+                    product_types
+                WHERE deleted_at IS NULL
+            ");
+
+            // Inisialisasi array untuk menyimpan hasil akhir
+            $result = [];
+
+            // Loop melalui setiap product type
+            foreach ($listproducttypes as $producttype) {
+                // Mengambil daftar produk berdasarkan product type id
+                $listproducts = DB::select("
+                    SELECT
+                        id,
+                        title
+                    FROM
+                        products
+                    WHERE deleted_at IS NULL
+                    AND product_type_id = ?", [$producttype->id]);
+
+                // Menyimpan product type dan produk terkait ke dalam hasil akhir
+                $result[] = [
+                    'product_type' => $producttype,
+                    'products' => $listproducts
+                ];
+            }
+
+            // Mengirim data sebagai respons JSON
+            $data = response()->json($result);
+            return ApiResponseHelper::success($data, 'Data retrieved successfully');
+        } catch (\Exception $e) {
+            // Mengirim respons error jika terjadi kesalahan
+            return ApiResponseHelper::error('Something went wrong',  500, $e);
+        }
+    }
+
+
     public function createVariantType(Request $request)
     {
         try {

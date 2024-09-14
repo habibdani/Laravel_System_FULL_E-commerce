@@ -17,6 +17,7 @@ Route::get('/product/details', [ProductController::class, 'productdetails']);
 
 Route::get('/list-product-type',[ProductController::class, 'getListProductType']);
 Route::get('/list-variant-type', [ProductController::class, 'getListVariantType']);
+Route::get('/list-dropdown', [ProductController::class, 'getListDropdown']);
 
 Route::post('/admin/register', [AuthController::class, 'register'])->middleware(\App\Http\Middleware\PasswordAuthMiddleware::class);;
 Route::post('/admin/login', [AuthController::class, 'login']);

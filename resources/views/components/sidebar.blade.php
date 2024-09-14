@@ -96,7 +96,6 @@
                         <label for="alamat" class="font-roboto block text-[#747474] text-[12px] mb-2">Alamat:</label>
                         <div class="relative">
                             <select id="alamat" class="form-select select2 appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]" style="width: 100%;">
-                                <option value="0">Pilih Alamat</option>
                                 <!-- Opsi akan ditambahkan oleh JavaScript -->
                             </select>
                             <!-- Tambahkan ikon panah -->
@@ -186,7 +185,7 @@
 
                             <!-- Total Bayar -->
                             <div class="text-center mb-4">
-                                <img src="bca-logo.png" alt="BCA Logo" class="mx-auto mb-2 w-20">
+                                <img src="{{ asset('storage/design/bca.svg') }}" alt="BCA Logo" class="mx-auto mb-2 w-20">
                                 <p class="font-semibold text-lg text-red-600">Total Bayar: Rp. 420.700</p>
                             </div>
 
@@ -216,7 +215,7 @@
                             <!-- Item Pesanan -->
                             <div class="border rounded-lg p-4 mb-4">
                                 <div class="flex space-x-4 mb-2">
-                                    <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md">
+                                    {{-- <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md"> --}}
                                     <div>
                                         <p class="font-bold">Spandek - Spandek Zincalume</p>
                                         <p class="text-sm">Tipe Gelombang: Tipe 1040</p>
@@ -228,7 +227,7 @@
 
                             <div class="border rounded-lg p-4 mb-4">
                                 <div class="flex space-x-4 mb-2">
-                                    <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md">
+                                    {{-- <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md"> --}}
                                     <div>
                                         <p class="font-bold">Spandek - Spandek Zincalume</p>
                                         <p class="text-sm">Tipe Gelombang: Tipe 950</p>
@@ -272,23 +271,15 @@
                 <div class="bg-white h-[40.56px] p-2 border border-[#DADCE0] rounded-b-md mb-4 shadow-md flex justify-between items-center">
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Ongkos kirim:</p>
-                        <div id="ongkir-display" value="2000" class="text-green-600 font-semibold text-[16px]">Rp.0</div>
+                        <div id="ongkir-display" location-value="" ongkir-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</div>
                     </div>
                     <div class="text-center border-x w-1/3">
                         <p class="text-gray-600 text-xs">Jarak:</p>
-                        @isset($jarak)
-                            <p id="jarak" jarak-value="" class="text-green-600 font-semibold text-[16px]">{{ $jarak }}</p>
-                        @else
                             <p id="jarak" jarak-value="" class="text-green-600 font-semibold text-[16px]">0 km</p>
-                        @endisset
                     </div>
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Durasi:</p>
-                        @isset($waktu)
-                            <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">{{ $waktu }}</p>
-                        @else
                             <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
-                        @endisset
                     </div>
                 </div>
 
@@ -301,322 +292,28 @@
             </div>
         </div>
 
-        <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible">
-            <img src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
+        <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
+                data-visible-icon="{{ asset('storage/icons/vector.svg') }}"
+                data-hidden-icon="{{ asset('storage/icons/vector-hidden.svg') }}">
+            <img id="toggleimg" src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
         </button>
         {{-- @vite('resources/js/app.js') --}}
     </div>
-<div id="overlay-sidebar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-19"></div>
+    <div id="overlay-sidebar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-19"></div>
 
-<!-- Overlay dan Popup -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
-        <h2 class="text-lg font-semibold mb-4">Konfirmasi Pembayaran</h2>
-        <p class="text-sm text-gray-700 mb-2">Pastikan alamat dan data Anda sudah benar,<br>Anda akan membayar sebesar</p>
-        <p id="popup-price" class="text-2xl font-bold text-[#E01535] mb-6"></p>
-        <div class="flex justify-center space-x-4">
-            <button id="confirm-button" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Konfirmasi</button>
-            <button id="cancel-button" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-md">Batal</button>
+    <!-- Overlay dan Popup -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <h2 class="text-lg font-semibold mb-4">Konfirmasi Pembayaran</h2>
+            <p class="text-sm text-gray-700 mb-2">Pastikan alamat dan data Anda sudah benar,<br>Anda akan membayar sebesar</p>
+            <p id="popup-price" class="text-2xl font-bold text-[#E01535] mb-6"></p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirm-button" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Konfirmasi</button>
+                <button id="cancel-button" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-md">Batal</button>
+            </div>
         </div>
     </div>
-</div>
 
-    <script>
-         document.addEventListener('DOMContentLoaded', function() {
+    @vite('resources/js/sidebar-script.js')
 
-            // Fungsi untuk menampilkan slide berdasarkan nomor
-            function showSlide(slideNumber) {
-                document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
-                document.getElementById('slide-' + slideNumber).classList.remove('hidden');
-
-                document.querySelectorAll('[id^="btn-slide-"]').forEach(btn => {
-                    btn.classList.remove('text-white', 'bg-[#E01535]');
-                    btn.classList.add('text-[#9D9D9D]', 'bg-transparent');
-                });
-
-                document.getElementById('btn-slide-' + slideNumber).classList.add('text-white', 'bg-[#E01535]');
-                document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
-            }
-
-            document.getElementById('btn-slide-1').addEventListener('click', function() {
-                showSlide(1);
-            });
-
-            document.getElementById('btn-slide-2').addEventListener('click', function() {
-                showSlide(2);
-                const totalBayarElement = document.getElementById('totalbayar');
-                if (totalBayarElement) {
-                    totalBayarElement.setAttribute('disabled', 'disabled'); // Tambahkan atribut disabled
-                    totalBayarElement.classList.remove('bg-[#E01535]', 'text-white');
-                    totalBayarElement.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]');
-                }
-            });
-
-            document.getElementById('btn-slide-3').addEventListener('click', function() {
-                showSlide(3);
-
-                // Mengubah warna tombol total bayar menjadi merah saat slide 3 ditampilkan
-                const totalBayarElement = document.getElementById('totalbayar');
-
-                if (totalBayarElement) {
-                    totalBayarElement.removeAttribute('disabled'); // Hapus atribut disabled
-                    totalBayarElement.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]'); // Hapus class abu-abu
-                    totalBayarElement.classList.add('bg-[#E01535]', 'text-white'); // Tambahkan class merah
-                }
-            });
-
-            document.getElementById('confirm-button').addEventListener('click', function() {
-                showSlide4(4);
-                document.getElementById('overlay').classList.add('hidden');
-            })
-
-            function showSlide4(slideNumber) {
-                document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
-                document.getElementById('slide-' + slideNumber).classList.remove('hidden');
-
-                document.querySelectorAll('[id^="btn-slide-"]').forEach(btn => {
-                    btn.classList.remove('text-white', 'bg-[#E01535]');
-                    btn.classList.add('text-[#9D9D9D]', 'bg-transparent');
-                });
-                document.getElementById('overlay-sidebar').classList.remove('hidden');
-            }
-
-            document.getElementById('toggle').addEventListener('click', function() {
-                const sidebar = document.getElementById('sidebar');
-                const toggleBtn = document.getElementById('toggle');
-                const toggleIcon = toggleBtn.querySelector('img');
-                const mapContainer = document.getElementById('map-container');
-                const considebar = document.getElementById('container-sidebar')
-
-                if (sidebar.classList.contains('sidebar-visible')) {
-                    // Sembunyikan sidebar dan perbesar peta ke lebar penuh
-                    sidebar.classList.remove('sidebar-visible');
-                    sidebar.classList.add('sidebar-hidden');
-                    considebar.classList.add('z-0');
-                    considebar.classList.remove('z-20');
-                    toggleBtn.classList.remove('toggle-visible');
-                    toggleBtn.classList.add('toggle-hidden');
-                    toggleIcon.src = "{{ asset('storage/icons/vector-hidden.svg') }}";
-                   } else {
-                    // Tampilkan sidebar dan kembalikan peta ke lebar 3/4
-                    sidebar.classList.remove('sidebar-hidden');
-                    sidebar.classList.add('sidebar-visible');
-                    considebar.classList.add('z-20');
-                    considebar.classList.remove('z-0');
-                    toggleBtn.classList.remove('toggle-hidden');
-                    toggleBtn.classList.add('toggle-visible');
-                    toggleIcon.src = "{{ asset('storage/icons/vector.svg') }}";
-                }
-            });
-
-            document.getElementById('to-slide-2-and-shop').addEventListener('click', function() {
-                showSlide(2);
-
-                // Mengambil elemen dan memeriksa apakah elemen tersebut ada
-                const ongkirElement = document.getElementById('ongkir-display');
-                const jarakElement = document.getElementById('jarak');
-                const waktuElement = document.getElementById('waktu');
-
-                if (!ongkirElement || !jarakElement || !waktuElement) {
-                    console.error('One or more elements are missing');
-                    return; // Menghentikan eksekusi jika elemen tidak ditemukan
-                }
-
-                // Mengambil nilai dari elemen yang ada
-                const ongkirValue = ongkirElement.getAttribute('price-value');
-                const jarakValue = jarakElement.getAttribute('jarak-value');
-                const waktuValue = waktuElement.getAttribute('waktu-value');
-                const locateValue = ongkirElement.getAttribute('location-value'); // JSON string
-
-                // Membuat form secara dinamis
-                const form = document.createElement('form');
-                form.method = 'GET';
-                form.action = '/view-shop';
-
-                // Menambahkan CSRF token
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                // console.log('rrrrrrrrrrr    ',csrfToken);
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = '_token';
-                csrfInput.value = csrfToken;
-                form.appendChild(csrfInput);
-
-                // Menambahkan input tersembunyi untuk setiap data
-                const ongkirInput = document.createElement('input');
-                ongkirInput.type = 'hidden';
-                ongkirInput.name = 'ongkir';
-                ongkirInput.value = ongkirValue;
-                form.appendChild(ongkirInput);
-
-                const jarakInput = document.createElement('input');
-                jarakInput.type = 'hidden';
-                jarakInput.name = 'jarak';
-                jarakInput.value = jarakValue;
-                form.appendChild(jarakInput);
-
-                const waktuInput = document.createElement('input');
-                waktuInput.type = 'hidden';
-                waktuInput.name = 'waktu';
-                waktuInput.value = waktuValue;
-                form.appendChild(waktuInput);
-
-                const locateInput = document.createElement('input');
-                locateInput.type = 'hidden';
-                locateInput.name = 'locate';
-                locateInput.value = locateValue; // JSON string
-                form.appendChild(locateInput);
-
-                // Logging untuk memastikan form dibuat dengan benar
-                console.log('Submitting form to /view-shop');
-
-                // Menambahkan form ke body dan mengirimkannya
-                document.body.appendChild(form);
-                form.submit();
-            });
-
-            // Fungsi untuk menangani perubahan quantity
-            function handleQuantityChange(productVariantId) {
-                const qtyInput = document.getElementById(`sidebar-quantity-${productVariantId}`);
-                const decreaseButton = document.getElementById(`sidebar-decrease-${productVariantId}`);
-                const increaseButton = document.getElementById(`sidebar-increase-${productVariantId}`);
-
-                // Tambahkan event listener untuk tombol decrease
-                decreaseButton.addEventListener('click', () => {
-                    let currentQty = parseInt(qtyInput.value);
-                    if (currentQty > 1) { // Jangan kurang dari 1
-                        qtyInput.value = currentQty - 1;
-                    }
-                    updateTotalPrice(productVariantId); // Memanggil fungsi untuk mengupdate total harga
-                });
-
-                // Tambahkan event listener untuk tombol increase
-                increaseButton.addEventListener('click', () => {
-                    let currentQty = parseInt(qtyInput.value);
-                    qtyInput.value = currentQty + 1;
-                    updateTotalPrice(productVariantId); // Memanggil fungsi untuk mengupdate total harga
-                });
-
-                // Tambahkan event listener untuk perubahan langsung di input field
-                qtyInput.addEventListener('input', () => {
-                    let currentQty = parseInt(qtyInput.value);
-                    if (isNaN(currentQty) || currentQty < 1) {
-                        qtyInput.value = 1; // Set minimal 1 jika input tidak valid
-                    }
-                    updateTotalPrice(productVariantId); // Memanggil fungsi untuk mengupdate total harga
-                });
-            }
-
-            // Fungsi untuk mengupdate total harga (sesuaikan dengan perhitungan harga Anda)
-            function updateTotalPrice(productVariantId) {
-                const qtyInput = document.getElementById(`sidebar-quantity-${productVariantId}`);
-                const qty = parseInt(qtyInput.value);
-
-                const priceElement = document.getElementById(`price-product-sidebar-${productVariantId}`);
-                const price = parseInt(priceElement.getAttribute('value-price-product-sidebar'));
-
-                const totalPrice = qty * price; // Hitung total harga berdasarkan qty
-                priceElement.innerText = `Rp. ${totalPrice.toLocaleString()}`; // Update display harga
-            }
-
-            // Panggil fungsi untuk setiap produk yang dihasilkan
-            handleQuantityChange(productVariantId);
-
-         });
-
-         document.addEventListener('DOMContentLoaded', function() {
-
-            // Fungsi untuk menghitung total item dan total harga
-            function updateCartSummary() {
-                const itemList = document.querySelectorAll('.list-order-item .sidebar-product-card');
-                const totalItemElement = document.getElementById('totalitem');
-                const totalPriceElement = document.getElementById('totalprice');
-                const jumlahItemDiv = document.getElementById('jumlahitem');
-                const ongkirElement = document.getElementById('ongkir-display');
-                const totalBayarElement = document.getElementById('totalbayar');
-
-                let totalItem = 0;
-                let totalPrice = 0;
-
-                // Loop untuk menghitung total item dan harga
-                itemList.forEach(item => {
-                    const qtyInput = item.querySelector('input[type="number"]');
-                    const qty = qtyInput ? parseInt(qtyInput.value) : 1;
-
-                    // Cari span harga berdasarkan ID dan ambil attribute value-price-product-sidebar-XX
-                    const priceElement = item.querySelector('span[id^="price-product-sidebar-"]');
-                    const price = priceElement ? parseInt(priceElement.getAttribute('value-price-product-sidebar-' + priceElement.id.split('-').pop())) : 0;
-
-                    totalItem += qty;
-                    totalPrice += qty * price;
-                });
-
-                // Update jumlah item dan total harga
-                totalItemElement.innerText = totalItem;
-                totalPriceElement.innerText = ` ${totalPrice.toLocaleString()}`;
-
-                // Update juga attribute 'value' untuk totalitem dan totalprice
-                totalItemElement.setAttribute('value', totalItem);
-                totalPriceElement.setAttribute('value', totalPrice);
-
-                // Ambil ongkir dari elemen #ongkir-display
-                const ongkir = ongkirElement ? parseInt(ongkirElement.getAttribute('value')) || 0 : 0;
-
-                // Hitung total bayar (totalPrice + ongkir)
-                const totalBayar = totalPrice + ongkir;
-
-                // Update teks dan atribut value dari totalBayarElement
-                totalBayarElement.innerText = `Total Bayar : Rp. ${totalBayar.toLocaleString()}`;
-                totalBayarElement.innerHTML = `
-                    <span class="mx-auto">Total Bayar : Rp. ${totalBayar.toLocaleString()}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7" />
-                    </svg>
-                `;
-                totalBayarElement.setAttribute('value', totalBayar);
-
-                // Tampilkan atau sembunyikan div jumlah item
-                if (totalItem > 0) {
-                    jumlahItemDiv.classList.remove('hidden');
-                    totalBayarElement.classList.remove('hidden');
-                } else {
-                    jumlahItemDiv.classList.add('hidden');
-                    totalBayarElement.classList.add('hidden');
-                }
-            }
-
-            // Setiap kali ada perubahan di dalam list-order-item, jalankan updateCartSummary
-            const listOrderItem = document.querySelector('.list-order-item');
-            const observer = new MutationObserver(updateCartSummary);
-
-            // Mengamati perubahan pada child elements di dalam list-order-item
-            observer.observe(listOrderItem, { childList: true });
-
-            // Jalankan fungsi sekali saat pertama kali halaman dimuat
-            updateCartSummary();
-        });
-
-        document.getElementById('totalbayar').addEventListener('click', function() {
-            // Ambil nilai dari tombol #totalbayar
-            const totalBayarValue = document.getElementById('totalbayar').getAttribute('value');
-
-            // Format harga ke dalam format Rupiah
-            const formattedPrice = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-            }).format(totalBayarValue);
-
-            // Masukkan nilai harga ke dalam popup
-            document.getElementById('popup-price').innerText = formattedPrice;
-
-            // Tampilkan overlay dan popup
-            document.getElementById('overlay').classList.remove('hidden');
-        })
-
-        document.getElementById('cancel-button').addEventListener('click', function() {
-            // Sembunyikan overlay dan popup
-            document.getElementById('overlay').classList.add('hidden');
-        });
-
-    </script>
 </section>

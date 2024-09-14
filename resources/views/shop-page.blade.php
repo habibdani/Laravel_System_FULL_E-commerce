@@ -1,3 +1,5 @@
+<!-- resources\views\shop-page.blade.php -->
+
 @extends('layouts.app')
 
 @section('title', 'Andal Prima')

@@ -297,8 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add products to the lists
             appendProductsToList(products, productList);
 
-            console.log('Adding products relate:', products);
-
             function updateViewAllLink(totalProducts, listWidth, viewAllLink, isProducts = false) {
                 const productCardWidth = 149.74;
                 const visibleProductCount = isProducts
@@ -342,20 +340,15 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('load', function() {
         showSlide(2);
         const sidebar = document.getElementById('sidebar');
-        sidebar.classList.add('sidebar-hidden');
-        sidebar.classList.remove('sidebar-visible');
-
         const toggleBtn = document.getElementById('toggle');
-        toggleBtn.classList.add('toggle-hidden');
-        toggleBtn.classList.remove('toggle-visible');
+        const considebar = document.getElementById('container-sidebar');
 
-        const btnSlide2 = document.getElementById('btn-slide-2');
-        btnSlide2.classList.add('text-white', 'bg-[#E01535]');
-        btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
-
-        const considebar = document.getElementById('container-sidebar')
+        sidebar.classList.remove('sidebar-visible');
+        sidebar.classList.add('sidebar-hidden');
         considebar.classList.add('z-0');
         considebar.classList.remove('z-20');
+        toggleBtn.classList.remove('toggle-visible');
+        toggleBtn.classList.add('toggle-hidden');
 
         const button2 = document.getElementById('btn-slide-2');
         button2.removeAttribute('disabled');
@@ -368,6 +361,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const totalbayar = document.getElementById('totalbayar');
         totalbayar.classList.remove('hidden');
+
+        const toggleIcon = toggleBtn.querySelector('img');
+        const hiddenIcon = toggleBtn.getAttribute('data-hidden-icon');
+        toggleIcon.src = hiddenIcon; // Mengganti src dengan gambar tersembunyi
     });
 
 });

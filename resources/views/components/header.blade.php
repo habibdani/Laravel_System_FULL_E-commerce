@@ -1,54 +1,6 @@
-
+{{--
 <style>
-    #snackbar {
-        display: none; /* Hide by default */
-        position: fixed;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        background-color: #fff; /* Background putih */
-        color: #333;
-        z-index: 1000;
-        padding: 16px 0;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        transform: translateY(-100%);
-        opacity: 0;
-        border-top: 1px solid #e5e7eb; /* Border atas */
-    }
 
-    #snackbar.show {
-        display: block;
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    #snackbar .dropdown-content {
-        max-width: 90%;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(6, 1fr); /* Sesuaikan jumlah kolom */
-        gap: 20px; /* Jarak antar kolom */
-        padding: 20px 0;
-    }
-
-    #snackbar .dropdown-content h3 {
-        font-size: 16px;
-        font-weight: 600;
-        color: #E01535;
-        margin-bottom: 10px;
-    }
-
-    #snackbar .dropdown-content ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    #snackbar .dropdown-content ul li {
-        font-size: 14px;
-        color: #333;
-        margin-bottom: 5px;
-    }
 
     .underline-hover {
         position: relative;
@@ -73,7 +25,7 @@
         /* background-color: #00AA5B; */
     }
 
-</style>
+</style> --}}
 
 <nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-2 z-50">
     <!-- First Row -->
@@ -81,8 +33,8 @@
             <div class="flex space-x-2 justify-center h-10 mx-auto">
                 <!-- Left Side (Logo and Company Name) -->
                 <div class="flex items-center">
-                    <img class="max-h-full w-auto h-8" src="{{ asset('storage//icons/tokopedia.svg') }}" alt="Logo">
-                    {{-- <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo"> --}}
+                    {{-- <img class="max-h-full w-auto h-8" src="{{ asset('storage//icons/tokopedia.svg') }}" alt="Logo"> --}}
+                    <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
                 </div>
 
                 <div class="flex items-center">
@@ -93,10 +45,10 @@
                 </div>
 
                 <div class="relative flex items-center">
-                    <a type="text" id="category" class="bg-[#FFFFFF] w-[90.89px] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center">
+                    <button id="category" class="bg-[#FFFFFF] w-[90.89px] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center">
                         <img src="{{ asset('storage/icons/category.svg') }}" alt="category" class="h-4 w-4 mr-1.5">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left">Category</span>
-                    </a>
+                    </button>
                     <a class="relative w-[815px]">
                         <img src="{{ asset('storage/icons/pencarian.svg') }}" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" alt="Search Icon">
                         <input type="text" id="search-input" class="bg-[#FFFFFF] w-full h-8 pl-10 pr-5 rounded-r-md text-sm border border-[#DADCE0] focus:outline-none" placeholder="Search for products, types, and brands">
@@ -114,7 +66,9 @@
         </div>
 
     <!-- Second Row -->
-    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="secondrow" class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div id="dropdownOverlay2" class="hidden fixed inset-0 mt-12 h-10 bg-black bg-opacity-50" style="z-index: 41"></div>
+
         <div class="flex mx-auto justify-between h-10">
             <div class="flex justify-center h-10 mx-auto">
               <!-- Navbar links -->
@@ -165,56 +119,68 @@
     </div>
 </nav>
 
-<!-- Overlay and Dropdown -->
-<div id="snackbar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-start justify-center z-40">
-    <!-- Dropdown Content -->
-    <div class="bg-white shadow-lg rounded-lg mt-12 w-full z-50 max-w-[994px]">
-        <div class="flex bg-white p-6">
-            <!-- Categories -->
-            <div class="w-1/5">
-                <p class="font-bold text-gray-800 mb-2">Besi Hollow dan Pipa Bulat</p>
-                <ul class="space-y-1 text-sm text-gray-700">
-                    <li>Pipa Galvanis</li>
-                    <li>Pipa Hitam</li>
-                    <li>Pipa Hollow Hitam</li>
-                    <li>Pipa Hollow Galvanis</li>
+<div class="relative">
+    <!-- Full-screen overlay with semi-transparent background -->
+    <div id="dropdownOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50" style="z-index: 41"></div>
+
+    <!-- Dropdown Menu -->
+    <div id="dropdownMenu" class="hidden mt-5 fixed z-50 bg-white shadow-lg rounded-b-md max-w-[906.44px] left-0 right-0 mx-auto">
+        <!-- Dropdown Header -->
+        <div class="bg-[#F4F4F4] space-x-3 h-[32px] flex px-4 border-b border-[#DADCE0]">
+            <!-- Tab for Besi -->
+            <a href="#" class="group flex items-center py-0 rounded-md text-sm font-medium">
+                <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-left text-[#292929] group-hover:text-[#E01535]">Besi</span>
+            </a>
+            <!-- Tab for Stainless Steel -->
+            <a href="#" class="group flex items-center py-0 rounded-md text-sm font-medium">
+                <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-left text-[#292929] group-hover:text-[#E01535]">Stainless Steel</span>
+            </a>
+            <!-- Tab for Plastik -->
+            <a href="#" class="group flex items-center py-0 rounded-md text-sm font-medium">
+                <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-left text-[#292929] group-hover:text-[#E01535]">Plastik</span>
+            </a>
+        </div>
+
+        <!-- Dropdown Content -->
+        <div class="grid grid-cols-4 gap-4 p-4">
+            <!-- Column 1: Besi -->
+            <div>
+                <label class="text-[16px] font-semibold text-[#292929] mb-2">Besi</label>
+                <ul class="space-y-1">
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Besi Hollow dan Pipa Bulat</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Besi Galvanis</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Pipa Hitam</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Pipa Hollow Galvanis</a></li>
                 </ul>
             </div>
-            <div class="w-1/5">
-                <p class="font-bold text-gray-800 mb-2">Play Besi</p>
-                <ul class="space-y-1 text-sm text-gray-700">
-                    <li>Plat Besi Hitam</li>
-                    <li>Plat Besi Kapal</li>
-                    <li>Plat Besi Bordes</li>
-                    <li>Plat Besi Galvanis</li>
-                    <li>Plat Lubang</li>
+
+            <!-- Column 2: Stainless Steel -->
+            <div>
+                <label class="text-[16px] font-semibold text-[#292929] mb-2">Stainless Steel</label>
+                <ul class="space-y-1">
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Plat Besi</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Plat Bordes</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Plat Lubang</a></li>
                 </ul>
             </div>
-            <div class="w-1/5">
-                <p class="font-bold text-gray-800 mb-2">Besi Batangan</p>
-                <ul class="space-y-1 text-sm text-gray-700">
-                    <li>Besi Beton</li>
-                    <li>Plat Strip</li>
-                    <li>Besi AS ST42</li>
-                    <li>Besi Nako Ulir</li>
+
+            <!-- Column 3: Plastik -->
+            <div>
+                <label class="text-[16px] font-semibold text-[#292929] mb-2">Plastik</label>
+                <ul class="space-y-1">
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Plat Gelombang</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Besi CNP</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Besi UNP</a></li>
                 </ul>
             </div>
-            <div class="w-1/5">
-                <p class="font-bold text-gray-800 mb-2">Plat Gelombang</p>
-                <ul class="space-y-1 text-sm text-gray-700">
-                    <li>Bondek</li>
-                    <li>Atap Galvalum</li>
-                    <li>Besi CNP</li>
-                    <li>Besi UNP</li>
-                    <li>Besi WF</li>
-                </ul>
-            </div>
-            <div class="w-1/5">
-                <p class="font-bold text-gray-800 mb-2">Baja Ringan</p>
-                <ul class="space-y-1 text-sm text-gray-700">
-                    <li>Besi Hollow Galvalum</li>
-                    <li>Kanal C Galvalum</li>
-                    <li>Reng Baja Ringan</li>
+
+            <!-- Column 4: Baja Ringan -->
+            <div>
+                <label class="text-[16px] font-semibold text-[#292929] mb-2">Baja Ringan</label>
+                <ul class="space-y-1">
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Bondek</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Kanal U Galvanum</a></li>
+                    <li><a href="#" class="text-[#6B6B6B] text-[12px] hover:text-gray-900">Reng Baja Ringan</a></li>
                 </ul>
             </div>
         </div>
@@ -222,20 +188,39 @@
 </div>
 
 <script>
-   document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', function () {
         const categoryButton = document.getElementById('category');
-        const snackbar = document.getElementById('snackbar');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const dropdownOverlay = document.getElementById('dropdownOverlay');
+        const dropdownOverlay2 = document.getElementById('dropdownOverlay2');
 
-        categoryButton.addEventListener('click', () => {
-            snackbar.classList.toggle('show');
-        });
+        if (categoryButton && dropdownMenu && dropdownOverlay && dropdownOverlay2) {
+            // Toggle dropdown and overlay
+            categoryButton.addEventListener('click', function () {
+                const isMenuHidden = dropdownMenu.classList.contains('hidden');
 
-        // Optional: Hide snackbar when clicking outside of it
-        document.addEventListener('click', (event) => {
-            if (!categoryButton.contains(event.target) && !snackbar.contains(event.target)) {
-                snackbar.classList.remove('show');
-            }
-        });
+                // Show/hide dropdown and overlay
+                dropdownMenu.classList.toggle('hidden');
+                dropdownOverlay.classList.toggle('hidden');
+
+                // Ensure second overlay is hidden when first overlay is active
+                if (isMenuHidden) {
+                    dropdownOverlay2.classList.add('hidden');
+                }
+            });
+
+            // Close dropdown when clicking outside (on first overlay)
+            dropdownOverlay.addEventListener('click', function () {
+                dropdownMenu.classList.add('hidden');
+                dropdownOverlay.classList.add('hidden');
+            });
+
+            // Close other elements when clicking on second overlay
+            dropdownOverlay2.addEventListener('click', function () {
+                dropdownOverlay2.classList.add('hidden');
+            });
+        } else {
+            console.error('Required elements (category button, dropdown menu, or overlays) not found');
+        }
     });
 </script>
-

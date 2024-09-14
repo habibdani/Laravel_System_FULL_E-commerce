@@ -153,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
     async function renderListShipping() {
         try {
             const shippings = await fetchShippings();
-            console.log('Shippings:', shippings);
 
             const selectElement = document.getElementById('tipe-pembelian');
             shippings.forEach(shipping => {
@@ -165,6 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const selectAlamat = document.getElementById('alamat');
             const ongkirDisplay = document.getElementById('ongkir-display');
+            const jarakDisplay = document.getElementById('jarak');
             const iframe = document.getElementById("map");
 
             selectAlamat.addEventListener('change', function() {
@@ -184,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
 
                 ongkirDisplay.textContent = formattedPrice;
-                ongkirDisplay.setAttribute('price-value', formattedPrice);
+                // ongkirDisplay.setAttribute('price-value', formattedPrice);
+                ongkirDisplay.setAttribute('ongkir-value', price);
                 ongkirDisplay.setAttribute('location-value', JSON.stringify(jsonData));
 
                 const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const shippingDistricts = await fetchShippingDistricts();
-            console.log('Shipping Districts:', shippingDistricts);
+            // console.log('Shipping Districts:', shippingDistricts);
 
             shippingDistricts.forEach(district => {
                 const option = document.createElement('option');
@@ -211,3 +212,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderListShipping();
 });
+

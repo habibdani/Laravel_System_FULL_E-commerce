@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleBtn.classList.add('toggle-hidden');
         toggleBtn.classList.remove('toggle-visible');
 
+        const toggleIcon = toggleBtn.querySelector('img');
+        const hiddenIcon = toggleBtn.getAttribute('data-hidden-icon');
+        toggleIcon.src = hiddenIcon; // Mengganti src dengan gambar tersembunyi
+
         const btnSlide2 = document.getElementById('btn-slide-2');
         btnSlide2.classList.add('text-white', 'bg-[#E01535]');
         btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
