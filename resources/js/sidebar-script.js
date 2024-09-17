@@ -437,6 +437,7 @@ function saveDataToSessionStorage() {
             const optionElement = label.querySelector(`[id^="sidebar-option-type-"]`);
             if (optionElement) {
                 const optionValue = optionElement.getAttribute(`value-${optionElement.id}`);
+                sessionStorage.setItem(`variantOptionLabel-${index}-${variantIndex}`, optionValue);
                 sessionStorage.setItem(`variantOptionValue-${index}-${variantIndex}`, optionValue);
                 sessionStorage.setItem(`variantOptionText-${index}-${variantIndex}`, optionElement.innerText);
             }

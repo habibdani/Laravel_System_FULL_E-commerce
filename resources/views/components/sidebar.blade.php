@@ -17,23 +17,44 @@
             white-space: nowrap;
         }
         .sidebar-hidden {
-            transform: translateX(-100%);
+            transform: translateY(100%);
         }
         .sidebar-visible {
-            transform: translateX(0);
+            transform: translateY(0);
         }
         .sidebar-transition {
             transition: all 0.3s ease;
         }
         .toggle-hidden {
-            left: -30px; /* Posisi tombol ketika sidebar tersembunyi */
-            transform: translateX(100%);
-            transition: left 0.3s ease, transform 0.3s ease; /* Samakan durasi dan properti transisi dengan sidebar */
+            top: 1/3; /* Posisi tombol ketika sidebar tersembunyi di layar kecil */
+            transform: translateY(100%);
+            transition: top 0.3s ease, transform 0.3s ease;
         }
+
         .toggle-visible {
-            right: -30px; /* Tepat di sebelah kanan sidebar */
-            transform: translateX(0);
-            transition: left 0.3s ease, transform 0.3s ease; /* Samakan durasi dan properti transisi dengan sidebar */
+            top: 1/3; /* Tombol berada di bagian atas saat sidebar terlihat */
+            transform: translateY(0);
+            transition: top 0.3s ease, transform 0.3s ease;
+        }
+
+        @media (min-width: 1000px) {
+            .toggle-hidden {
+                top: 1/3;
+                left: -30px; /* Posisi tombol tersembunyi di desktop */
+                transform: translateX(100%);
+            }
+
+            .toggle-visible {
+                top: 1/3;
+                right: -30px; /* Posisi tombol di desktop */
+                transform: translateX(0);
+            }
+            .sidebar-hidden {
+                transform: translateX(-100%);
+            }
+            .sidebar-visible {
+                transform: translateX(0);
+            }
         }
         #tipe-pembelian, #alamat {
             -webkit-appearance: none;
@@ -61,7 +82,7 @@
         }
     </style>
 
-    <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px]" id="container-sidebar">
+    <div class="flex fixed min-[320px]:h-3/4 min-[320px]:w-full lg:h-full lg:w-1/4 lg:left-0 lg:top-0 min-[320px]:bottom-0 sidebar-transition mt-[54px]" id="container-sidebar">
         <div id="sidebar" class="w-full p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom flex flex-col justify-between">
             <!-- Grup Tombol di Bagian Atas -->
 
@@ -266,7 +287,7 @@
 
             </div>
 
-            <div id="buttom-sidebar" class="mt-auto mb-auto">
+            <div id="buttom-sidebar" class="mt-auto lg:mb-auto ">
                 <hr>
                 <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-left hidden">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalprice" value="">0</span>
@@ -286,7 +307,7 @@
                     </div>
                 </div>
 
-                <button id="to-slide-2-and-shop" class="w-full h-[37.6px] flex items-center  justify-center bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
+                <button id="to-slide-2-and-shop" class="w-full h-[37.6px] flex items-center justify-center bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
                     Selanjutnya
                 </button>
                 <button id="totalbayar" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
@@ -295,7 +316,7 @@
             </div>
         </div>
 
-        <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
+        <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute min-[320px]:top-0 lg:top-1/3 rounded-r-md bg-[#E01535] lg:toggle-visible"
                 data-visible-icon="{{ asset('storage/icons/vector.svg') }}"
                 data-hidden-icon="{{ asset('storage/icons/vector-hidden.svg') }}">
             <img id="toggleimg" src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
