@@ -6,7 +6,7 @@
 
 @section('content')
     @component('components.header-default') @endcomponent
-    @component('components.sidebar') @endcomponent
+    @component('components.sidebar',['clientTypeId' => $clientTypeId]) @endcomponent
     @component('components.maps') @endcomponent
 
     <!-- Load jQuery -->

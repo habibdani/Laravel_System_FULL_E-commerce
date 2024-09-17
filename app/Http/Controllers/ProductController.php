@@ -150,6 +150,7 @@ class ProductController extends Controller
 
                 // Store the items under their respective type
                 $variantItemDetails[] = [
+                    'variant_item_type_id' => $varianttype->variant_item_type_id,
                     'variant_item_type_name' => $varianttype->variant_item_type_name,
                     'items' => $variantItems
                 ];
@@ -238,15 +239,30 @@ class ProductController extends Controller
     public function getListDropdown(Request $request)
     {
         try {
-            // Mengambil daftar product types
-            $listproducttypes = DB::select("
+            // Ambil parameter 'id' dari request, jika ada
+            $id = $request->query('id');
+
+            // Inisialisasi array untuk menyimpan parameter
+            $params = [];
+
+            // Bangun query SQL secara dinamis berdasarkan kondisi
+            $sql = "
                 SELECT
                     id,
                     `name`
                 FROM
                     product_types
                 WHERE deleted_at IS NULL
-            ");
+            ";
+
+            // Jika parameter 'id' diberikan, tambahkan kondisi ke query dan parameter
+            if (!empty($id)) {
+                $sql .= " AND id = ?";
+                $params[] = $id;
+            }
+
+            // Eksekusi query dengan parameter (jika ada)
+            $listproducttypes = DB::select($sql, $params);
 
             // Inisialisasi array untuk menyimpan hasil akhir
             $result = [];
@@ -263,10 +279,35 @@ class ProductController extends Controller
                     WHERE deleted_at IS NULL
                     AND product_type_id = ?", [$producttype->id]);
 
-                // Menyimpan product type dan produk terkait ke dalam hasil akhir
+                // Array untuk menyimpan produk beserta variannya
+                $productData = [];
+
+                foreach ($listproducts as $product) {
+                    // Mengambil daftar variant produk berdasarkan product id
+                    $listproductvariants = DB::select("
+                        SELECT
+                            id,
+                            `name`
+                        FROM
+                            product_variants
+                        WHERE deleted_at IS NULL
+                        AND product_id = ?", [$product->id]);
+
+                    // Menyimpan produk dan variannya ke dalam struktur yang diinginkan
+                    $productData[] = [
+                        'id' => $product->id,
+                        'title' => $product->title,
+                        'variants' => $listproductvariants
+                    ];
+                }
+
+                // Menyimpan product type, produk, dan varian terkait ke dalam hasil akhir
                 $result[] = [
-                    'product_type' => $producttype,
-                    'products' => $listproducts
+                    'product_type' => [
+                        'id' => $producttype->id,
+                        'name' => $producttype->name,
+                        'products' => $productData // Produk disimpan di bawah product_type
+                    ]
                 ];
             }
 
@@ -275,10 +316,9 @@ class ProductController extends Controller
             return ApiResponseHelper::success($data, 'Data retrieved successfully');
         } catch (\Exception $e) {
             // Mengirim respons error jika terjadi kesalahan
-            return ApiResponseHelper::error('Something went wrong',  500, $e);
+            return ApiResponseHelper::error('Something went wrong', 500, $e->getMessage());
         }
     }
-
 
     public function createVariantType(Request $request)
     {

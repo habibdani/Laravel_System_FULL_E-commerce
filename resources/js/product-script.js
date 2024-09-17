@@ -81,8 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Buat elemen p untuk judul varian
                     const variantTitle = document.createElement('p');
                     variantTitle.id = `type-${index + 1}`;  // Set ID dinamis berdasarkan indeks
-                    variantTitle.classList.add('text-gray-600', 'text-[12px]', 'font-semibold');
+                    variantTitle.classList.add('text-gray-600', 'text-[12px]', 'font-semibold', 'label-variant-item-type');
                     variantTitle.innerText = variantType.variant_item_type_name; // Isi dengan nama variant type
+                    variantTitle.setAttribute('value', variantType.variant_item_type_id)
                     variantDiv.appendChild(variantTitle);
 
                     // Buat elemen div untuk opsi varian

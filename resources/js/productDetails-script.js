@@ -183,18 +183,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Generate HTML baru untuk product order list
             const newProductCard = document.createElement('div');
+            newProductCard.setAttribute('value', productVariantId); // Menambahkan data attribute
             newProductCard.classList.add('sidebar-product-card', 'flex', 'items-start', 'justify-between', 'p-3', 'h-1/3', 'w-full', 'bg-[#F4F4F4]', 'rounded-md');
 
             newProductCard.innerHTML = `
                 <img src="${productImage}" alt="Produk" class="w-[75px] h-[75px] object-cover rounded-md">
                 <div class="ml-3 space-y-1 flex-1">
-                    <p id="sidebar-product-id-${productVariantId}" value-sidebar-product-id-${productVariantId}="" class="text-sm font-semibold truncate border-b-2 border-[#D9D9D9] pb-[1px]">
+                    <p id="sidebar-product-id-${productVariantId}" value-sidebar-product-id-${productVariantId}="${productVariantId}" class="text-sm font-semibold truncate border-b-2 border-[#D9D9D9] pb-[1px]">
                         ${productVariantName}
                     </p>
                     <p class="text-[#707070] font-normal text-[12px]">detail:</p>
-                    <div id="detail-product-sidebar-${productVariantId}" class="space-y-1">
+                    <div id="detail-product-sidebar-${productVariantId}" class="sidebar-list-varaint-label space-y-1">
                         ${variants.map((variant, idx) => `
-                            <p id="sidebar-label-type-${idx + 1}" class="text-[12px] font-normal text-[#292929]">${variant.label}:
+                            <p id="sidebar-label-type-${idx + 1}" class="sidebar-variant-label text-[12px] font-normal text-[#292929]">${variant.label}:
                                 <span id="sidebar-option-type-${idx + 1}" value-sidebar-option-type-${idx + 1}="${variant.variantItemId}">${variant.value}</span>
                             </p>
                         `).join('')}

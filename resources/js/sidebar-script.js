@@ -371,8 +371,11 @@ function saveDataToSessionStorage() {
     const jarak = document.getElementById('jarak');
     const waktu = document.getElementById('waktu');
     const tipePembelian = document.getElementById('tipe-pembelian');
+    const tiepClient = document.getElementById('type-client');
+    const tipePengiriman = document.getElementById('pengiriman');
     const alamat = document.getElementById('alamat');
     const listOrderContainer = document.getElementById('list-order-container');
+    const listOrderItems = document.querySelectorAll('.list-order-item .sidebar-product-card');
 
     // Cek dan simpan jika elemen-elemen tersebut ada
     if (ongkirDisplay) {
@@ -383,44 +386,78 @@ function saveDataToSessionStorage() {
         sessionStorage.setItem('ongkirValue', ongkirValue);
         sessionStorage.setItem('ongkirValueAttribute', ongkirValueAttribute);
         sessionStorage.setItem('locationValueAttribute', locationValueAttribute);
-    } else {
-        console.warn("Elemen 'ongkir-display' tidak ditemukan.");
     }
-
     if (jarak) {
         sessionStorage.setItem('jarakValue', jarak.innerText);
-    } else {
-        console.warn("Elemen 'jarak' tidak ditemukan.");
     }
-
     if (waktu) {
         sessionStorage.setItem('waktuValue', waktu.innerText);
-    } else {
-        console.warn("Elemen 'waktu' tidak ditemukan.");
     }
-
     if (tipePembelian) {
         sessionStorage.setItem('tipePembelian', tipePembelian.value);
-    } else {
-        console.warn("Elemen 'tipe-pembelian' tidak ditemukan.");
     }
-
+    if (tiepClient) {
+        sessionStorage.setItem('tiepClient', tiepClient.value);
+    }
+    if (tipePengiriman) {
+        sessionStorage.setItem('tipePengiriman', tipePengiriman.value);
+    }
     if (alamat) {
         sessionStorage.setItem('alamatValue', alamat.value);
-    } else {
-        console.warn("Elemen 'alamat' tidak ditemukan.");
     }
-
     if (listOrderContainer) {
         sessionStorage.setItem('productSidebarHTML', listOrderContainer.innerHTML);
-    } else {
-        console.warn("Elemen 'list-order-container' tidak ditemukan.");
     }
+    // Cek dan simpan jumlah sidebar-product-card
+    const productCardCount = listOrderItems.length;
+    sessionStorage.setItem('productCardCount', productCardCount);
+
+    // Simpan data dari tiap-tiap sidebar-product-card
+    listOrderItems.forEach((productCard, index) => {
+        const imgElement = productCard.querySelector('img');
+        const productIdElement = productCard.querySelector(`[id^="sidebar-product-id-"]`);
+        const priceElement = productCard.querySelector(`[id^="price-product-sidebar-"]`);
+        const quantityElement = productCard.querySelector(`[id^="sidebar-quantity-"]`);
+
+        // Simpan data gambar
+        if (imgElement) {
+            sessionStorage.setItem(`productImageSrc-${index}`, imgElement.src);
+        }
+
+        // Simpan ID produk dan text-nya
+        if (productIdElement) {
+            const productIdValue = productIdElement.getAttribute(`value-${productIdElement.id}`);
+            sessionStorage.setItem(`productIdValue-${index}`, productIdValue);
+            sessionStorage.setItem(`productIdText-${index}`, productIdElement.innerText);
+        }
+
+        // Cek apakah ada variant label di sidebar-list-varaint-label
+        const variantLabels = productCard.querySelectorAll('.sidebar-variant-label');
+        variantLabels.forEach((label, variantIndex) => {
+            const optionElement = label.querySelector(`[id^="sidebar-option-type-"]`);
+            if (optionElement) {
+                const optionValue = optionElement.getAttribute(`value-${optionElement.id}`);
+                sessionStorage.setItem(`variantOptionValue-${index}-${variantIndex}`, optionValue);
+                sessionStorage.setItem(`variantOptionText-${index}-${variantIndex}`, optionElement.innerText);
+            }
+        });
+
+        // Simpan harga produk dan text-nya
+        if (priceElement) {
+            const priceValue = priceElement.getAttribute(`value-${priceElement.id}`);
+            sessionStorage.setItem(`productPriceValue-${index}`, priceValue);
+            sessionStorage.setItem(`productPriceText-${index}`, priceElement.innerText);
+        }
+
+        // Simpan kuantitas produk
+        if (quantityElement) {
+            sessionStorage.setItem(`productQuantity-${index}`, quantityElement.value);
+        }
+    });
 
     // Log hasil penyimpanan
-    console.log('Data telah disimpan ke sessionStorage.');
+    console.log('Data produk telah disimpan ke sessionStorage.');
 }
-
 
 // Muat data dari Session Storage
 function loadDataFromSessionStorage() {
@@ -432,6 +469,14 @@ function loadDataFromSessionStorage() {
 
     const ongkirValueAttribute = sessionStorage.getItem('ongkirValueAttribute');
     const locationValueAttribute = sessionStorage.getItem('locationValueAttribute');
+
+    console.log('Data ongkir:', ongkirValue);
+    console.log('Data jarak:', jarakValue);
+    console.log('Data waktu:', waktuValue);
+    console.log('Data tipe pembelian:', tipePembelian);
+    console.log('Data alamat:', alamatValue);
+    console.log('Ongkir value attribute:', ongkirValueAttribute);
+    console.log('Location value attribute:', locationValueAttribute);
 
     if (ongkirValue) {
         document.getElementById('ongkir-display').innerText = ongkirValue;
@@ -483,11 +528,84 @@ function loadDataFromSessionStorage() {
 
         console.log('Produk sidebar dimuat dari sessionStorage');
     }
+
+    // Tampilkan data produk yang disimpan
+    const productCardCount = sessionStorage.getItem('productCardCount');
+    console.log('Jumlah produk dalam sidebar:', productCardCount);
+
+    for (let i = 0; i < productCardCount; i++) {
+        const productImageSrc = sessionStorage.getItem(`productImageSrc-${i}`);
+        const productIdValue = sessionStorage.getItem(`productIdValue-${i}`);
+        const productIdText = sessionStorage.getItem(`productIdText-${i}`);
+        const productPriceValue = sessionStorage.getItem(`productPriceValue-${i}`);
+        const productPriceText = sessionStorage.getItem(`productPriceText-${i}`);
+        const productQuantity = sessionStorage.getItem(`productQuantity-${i}`);
+
+        console.log(`Produk ${i + 1}:`);
+        console.log(' - Gambar:', productImageSrc);
+        console.log(' - ID Produk:', productIdValue);
+        console.log(' - Nama Produk:', productIdText);
+        console.log(' - Harga:', productPriceValue, '-', productPriceText);
+        console.log(' - Kuantitas:', productQuantity);
+
+        // Tampilkan variant option jika ada
+        let variantIndex = 0;
+        while (sessionStorage.getItem(`variantOptionValue-${i}-${variantIndex}`)) {
+            const variantOptionValue = sessionStorage.getItem(`variantOptionValue-${i}-${variantIndex}`);
+            const variantOptionText = sessionStorage.getItem(`variantOptionText-${i}-${variantIndex}`);
+            console.log(` - Varian ${variantIndex + 1}:`);
+            console.log('   - Nilai Varian:', variantOptionValue);
+            console.log('   - Teks Varian:', variantOptionText);
+            variantIndex++;
+        }
+    }
+}
+
+function renderProductsFromSessionStorage() {
+    // Kosongkan container terlebih dahulu
+    const listOrderContainer = document.getElementById('list-order-container');
+    listOrderContainer.innerHTML = '';
+
+    // Ambil jumlah produk yang disimpan di sessionStorage
+    const productCardCount = sessionStorage.getItem('productCardCount');
+    if (productCardCount) {
+        for (let i = 0; i < productCardCount; i++) {
+            // Ambil data produk dari sessionStorage
+            const productImageSrc = sessionStorage.getItem(`productImageSrc-${i}`);
+            const productIdValue = sessionStorage.getItem(`productIdValue-${i}`);
+            const productIdText = sessionStorage.getItem(`productIdText-${i}`);
+            const productPriceValue = sessionStorage.getItem(`productPriceValue-${i}`);
+            const productPriceText = sessionStorage.getItem(`productPriceText-${i}`);
+            const productQuantity = sessionStorage.getItem(`productQuantity-${i}`);
+
+            // Ambil data varian produk dari sessionStorage
+            const variants = [];
+            let variantIndex = 0;
+            while (sessionStorage.getItem(`variantOptionValue-${i}-${variantIndex}`)) {
+                const variantOptionValue = sessionStorage.getItem(`variantOptionValue-${i}-${variantIndex}`);
+                const variantOptionText = sessionStorage.getItem(`variantOptionText-${i}-${variantIndex}`);
+                variants.push({
+                    label: `Varian ${variantIndex + 1}`,  // Anda bisa mengganti label sesuai kebutuhan
+                    variantItemId: variantOptionValue,
+                    value: variantOptionText
+                });
+                variantIndex++;
+            }
+
+            // Panggil fungsi addProductToSidebar untuk menambahkan elemen produk ke container
+            addProductToSidebar(productIdValue, productImageSrc, productIdText, productPriceText, productPriceValue, productQuantity, variants);
+        }
+
+        console.log('Produk berhasil dirender dari sessionStorage');
+    } else {
+        console.warn('Tidak ada produk yang disimpan di sessionStorage');
+    }
 }
 
 // Tambahkan produk baru ke dalam sidebar dan simpan ke sessionStorage
 function addProductToSidebar(productVariantId, productImage, productVariantName, priceDisplay, price, qty, variants) {
     const newProductCard = document.createElement('div');
+    newProductCard.setAttribute('value', productVariantId); // Menambahkan data attribute
     newProductCard.classList.add('sidebar-product-card', 'flex', 'items-start', 'justify-between', 'p-3', 'h-1/3', 'w-full', 'bg-[#F4F4F4]', 'rounded-md');
 
     newProductCard.innerHTML = `
@@ -497,9 +615,9 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
                 ${productVariantName}
             </p>
             <p class="text-[#707070] font-normal text-[12px]">detail:</p>
-            <div id="detail-product-sidebar-${productVariantId}" class="space-y-1">
+            <div id="detail-product-sidebar-${productVariantId}" class="sidebar-list-varaint-label space-y-1">
                 ${variants.map((variant, idx) => `
-                    <p id="sidebar-label-type-${idx + 1}" class="text-[12px] font-normal text-[#292929]">${variant.label}:
+                    <p id="sidebar-label-type-${idx + 1}" class="sidebar-variant-label text-[12px] font-normal text-[#292929]">${variant.label}:
                         <span id="sidebar-option-type-${idx + 1}" value-sidebar-option-type-${idx + 1}="${variant.variantItemId}">${variant.value}</span>
                     </p>
                 `).join('')}
@@ -551,3 +669,9 @@ window.onbeforeunload = saveDataToSessionStorage;
 document.getElementById('tipe-pembelian').addEventListener('change', saveDataToSessionStorage);
 document.getElementById('alamat').addEventListener('change', saveDataToSessionStorage);
 
+
+window.onload = function() {
+    setTimeout(() => {
+        renderProductsFromSessionStorage();
+    }, 100); // Beri jeda sedikit untuk memastikan DOM sudah siap sepenuhnya
+};

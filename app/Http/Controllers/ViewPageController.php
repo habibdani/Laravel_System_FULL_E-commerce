@@ -10,6 +10,8 @@ class ViewPageController extends Controller
 {
     public function maps(Request $request)
     {
+        // dd($request->input('client_type_id'));
+
         // Ambil input client_type_id dari request
         $clientTypeId = $request->input('client_type_id');
 
@@ -17,7 +19,7 @@ class ViewPageController extends Controller
         $clientTypeData = DB::table('client_types')->where('id', $clientTypeId)->first();
 
         // Tampilkan view maps-page dengan data yang didapat
-        return view('maps-page', compact('clientTypeData'));
+        return view('maps-page', compact('clientTypeData','clientTypeId'));
     }
 
     public function shop(Request $request)

@@ -1,4 +1,6 @@
+
 <section class="sidebar">
+
     <style>
         .shadow-custom {
             box-shadow: 4px 4px 10px 0px #0000001A;
@@ -106,6 +108,8 @@
                             </div>
                         </div>
                     </div>
+                    <div hidden class="hidden" id="type-client" value=""></div>
+                    <div hidden class="hidden" id="pengiriman" value=""></div>
                 </div>
 
                 <!-- Slide 2: Shop -->
@@ -114,7 +118,7 @@
                     <p class="text-sm">Item Anda:</p>
 
                     <!-- Wrapper untuk konten dengan scroll -->
-                    <div class="list-order-item mt-2 space-y-4 max-h-[340px] overflow-y-auto scrollbar-hide">
+                    <div id="list-order-container" class="list-order-item mt-2 space-y-4 max-h-[340px] overflow-y-auto scrollbar-hide">
                     </div>
                 </div>
 
@@ -259,7 +263,6 @@
                         </div>
                     </div>
                 </div>
-
 
             </div>
 
