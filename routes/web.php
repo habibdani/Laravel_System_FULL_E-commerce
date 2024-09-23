@@ -11,7 +11,7 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 
 Route::get('/', function () {
-    return view('welcome-page');
+    return view('shop-page');
 });
 
 Route::get('/view-maps', [ViewPageController::class, 'maps']);

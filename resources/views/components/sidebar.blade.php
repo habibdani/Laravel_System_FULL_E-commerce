@@ -292,7 +292,7 @@
                 <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-left hidden">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalprice" value="">0</span>
                 </div>
-                <div class="bg-white h-[40.56px] p-2 border border-[#DADCE0] rounded-b-md mb-4 shadow-md flex justify-between items-center">
+                <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] rounded-b-md mb-4 shadow-md flex justify-between items-center hidden">
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Ongkos kirim:</p>
                         <div id="ongkir-display" location-value="" ongkir-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</div>
@@ -305,6 +305,9 @@
                         <p class="text-gray-600 text-xs">Durasi:</p>
                             <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
                     </div>
+                </div>
+                <div id="gotomaps" class="w-full h-[37.6px] flex items-center justify-center bg-[#E01535] text-white font-semibold font-[16px] rounded-b-md hover:bg-red-700 transition duration-300">
+                    Pilih Alamat
                 </div>
 
                 <button id="to-slide-2-and-shop" class="w-full h-[37.6px] flex items-center justify-center bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
