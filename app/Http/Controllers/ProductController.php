@@ -176,6 +176,64 @@ class ProductController extends Controller
         }
     }
 
+    public function listproductData(Request $request)
+    {
+        try {
+            // Ambil parameter dari request
+            $product_type_id = $request->input('product_type_id');
+            $filter = $request->input('filter');
+
+            // Mulai membangun query dasar
+            $query = "
+                SELECT
+                    p.id as product_id,
+                    p.title as product_name,
+                    p.product_type_id,
+                    pt.name as type_name,
+                    pv.id as product_variant_id,
+                    -- CASE WHEN pv.po_status = 1 THEN 'Preorder' ELSE NULL END AS preorder,
+                    CONCAT(pt.name, ' ', pv.name) as full_name_product,
+                    pv.name as variant_name,
+                    pv.price as variant_price,
+                    pv.descriptions,
+                    SUBSTRING_INDEX(pv.image, '/storage/', -1) as variant_image
+                FROM
+                    products p
+                JOIN product_types pt ON p.product_type_id = pt.id
+                JOIN product_variants pv ON p.id = pv.product_id
+                WHERE p.deleted_at IS NULL
+                AND pt.deleted_at IS NULL
+                AND pv.deleted_at IS NULL
+            ";
+
+            // Prepare binding parameters
+            $bindings = [];
+
+            // Tambahkan kondisi untuk product_type_id jika ada
+            if (!is_null($product_type_id)) {
+                $query .= " AND pt.id = :product_type_id";
+                $bindings['product_type_id'] = $product_type_id;
+            }
+
+            // Tambahkan kondisi untuk filter explore atau special
+            if ($filter === 'explore') {
+                $query .= " AND pt.id IN (1, 2, 3)";
+            } elseif ($filter === 'special') {
+                $query .= " AND pv.price < 1000000";
+            }
+
+            // Jalankan query dengan parameter binding
+            $results = DB::select($query, $bindings);
+
+            // Return hasil query sebagai response JSON
+            $data = response()->json($results);
+            return ApiResponseHelper::success($data, 'Data retrieved successfully');
+        } catch (\Exception $e) {
+            // Return error jika ada masalah
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
     public function getListProductType(Request $request)
     {
         try {

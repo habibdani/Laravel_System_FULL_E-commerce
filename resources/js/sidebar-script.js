@@ -675,3 +675,30 @@ window.onload = function() {
         renderProductsFromSessionStorage();
     }, 100); // Beri jeda sedikit untuk memastikan DOM sudah siap sepenuhnya
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    const dataOngkir = document.getElementById("dataongkir");
+    const buttonToSlide = document.getElementById("to-slide-2-and-shop");
+    const jarakElement = document.getElementById("jarak");
+
+    // Fungsi untuk mengecek nilai jarak-value
+    function checkJarakValue() {
+        const jarakValue = jarakElement.getAttribute("jarak-value");
+
+        // Jika jarak-value kosong
+        if (!jarakValue || jarakValue === "") {
+            dataOngkir.classList.add("hidden"); // Tambahkan kelas hidden
+            buttonToSlide.classList.remove("hidden"); // Tampilkan tombol
+        } else {
+            dataOngkir.classList.remove("hidden"); // Hapus kelas hidden
+            buttonToSlide.classList.add("hidden"); // Sembunyikan tombol juga
+        }
+    }
+
+    // Jalankan pengecekan saat pertama kali halaman dimuat
+    checkJarakValue();
+
+    // Jika jarak-value berubah, kita bisa gunakan MutationObserver (opsional jika ada perubahan dinamis)
+    const observer = new MutationObserver(checkJarakValue);
+    observer.observe(jarakElement, { attributes: true, attributeFilter: ['jarak-value'] });
+});

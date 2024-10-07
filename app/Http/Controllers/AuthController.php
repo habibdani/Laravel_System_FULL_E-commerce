@@ -36,10 +36,19 @@ class AuthController extends Controller
             '*'
         ]);
 
-        return ApiResponseHelper::success([
-            'token' => $token,
-            'message' => 'Login successful'
-        ]);
+        if ($request->wantsJson()) {
+            // Jika request dari API (misalnya Postman), kembalikan token dalam format JSON
+            return response()->json([
+                'token' => $token,
+                'message' => 'Login successful'
+            ], 200);
+        } else {
+            // Jika request dari browser, redirect ke halaman dashboard
+            return redirect()->route('dashboard')->with([
+                'token' => $token,
+                'message' => 'Login successful'
+            ]);
+        }
     }
 
     public function showLoginForm()

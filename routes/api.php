@@ -35,6 +35,7 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::get('/list-order', [BookingController::class, 'getListOrder']);
     Route::get('/detail-order',[BookingController::class, 'getDetilsOrder']);
     Route::post('/admin/logout', [AuthController::class, 'logout']);
+    Route::get('/list-products-data', [ProductController::class, 'listproductData']);
     // Route::post('/create-order')
 });
 

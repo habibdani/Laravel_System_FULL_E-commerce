@@ -47,4 +47,22 @@ class ViewPageController extends Controller
 
         return view('product-page', compact('productDetails', 'productVariantId','productTypeId'));
     }
+
+    public function dashboard(Request $request)
+    {
+        return view('dashboard-page');
+    }
+
+    public function dashboardProduct(Request $request)
+    {
+        return view('Product-dashboard-page');
+    }
+    public function dashboardProductAdd(Request $request)
+    {
+        return view('add-Product-page');
+    }
+    public function dashboardOrders(Request $request)
+    {
+        return view('orders-page');
+    }
 }
