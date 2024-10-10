@@ -8,8 +8,8 @@ use App\Http\Controllers\ViewPageController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route untuk ke dhasboard admin
 Route::get('/dashboard', [ViewPageController::class, 'dashboard'])->name('dashboard');
 Route::get('/dashboard/product', [ViewPageController::class, 'dashboardProduct'])->name('dashboard.product');

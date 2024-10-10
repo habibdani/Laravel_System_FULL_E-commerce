@@ -42,71 +42,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Order Row 1 -->
-                        <tr class="border-b">
-                            <td class="p-4">
-                                <input type="checkbox" class="h-4 w-4">
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm font-medium text-gray-900">#2 by Budi</div>
-                                <div class="text-sm text-blue-500">budisetiawan@gmail.com</div>
-                            </td>
-                            <td class="px-6 py-4">5 Mei 2024 - 21:44</td>
-                            <td class="px-6 py-4">
-                                Jl. Kesehatan, No.25, Karang Ranji, Jakarta Selatan, 43327
-                            </td>
-                            <td class="px-6 py-4">5 Mei 2024 - 21:44</td>
-                            <td class="px-6 py-4">
-                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Paid</span>
-                            </td>
-                            <td class="px-6 py-4">Rp. 350.700</td>
-                            <td class="px-6 py-4 text-right">
-                                <button class="text-gray-600 hover:text-gray-900">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 12l4-4m0 8l4-4" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                        <!-- Example Order Row 2 -->
-                        <tr class="border-b">
-                            <td class="p-4">
-                                <input type="checkbox" class="h-4 w-4">
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm font-medium text-gray-900">#1 by Putri</div>
-                                <div class="text-sm text-blue-500">putrimawar@gmail.com</div>
-                            </td>
-                            <td class="px-6 py-4">3 Mei 2024 - 17:00</td>
-                            <td class="px-6 py-4">
-                                Jl. Kunciran, No.25, Gunung Mawar, Jakarta Utara, 23034
-                            </td>
-                            <td class="px-6 py-4">3 Mei 2024 - 17:00</td>
-                            <td class="px-6 py-4">
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">Pending</span>
-                            </td>
-                            <td class="px-6 py-4">Rp. 200.000</td>
-                            <td class="px-6 py-4 text-right">
-                                <button class="text-gray-600 hover:text-gray-900">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12M6 12l4-4m0 8l4-4" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
+                        <!-- List order akan dirender di sini melalui JavaScript -->
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
-                <div class="p-4">
-                    <nav class="flex justify-center">
-                        <a href="#" class="px-3 py-1 border rounded-md">1</a>
-                    </nav>
+                <div class="p-4 flex justify-between items-center">
+                    <button id="prev-page" class="bg-gray-300 text-gray-700 px-4 py-2 rounded" disabled>Previous</button>
+                    <div class="pagination-container">Menampilkan halaman 1 dari 10</div>
+                    <button id="next-page" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Next</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Include your JS -->
-    {{-- @vite('resources/js/ordersDashboard-script.js') --}}
+    @vite('resources/js/orderDashboard-script.js')
 @endsection

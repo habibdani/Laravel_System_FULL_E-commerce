@@ -34,8 +34,8 @@ class ProductController extends Controller
                     SUBSTRING_INDEX(pv.image, '/storage/', -1) as variant_image
                 FROM
                     products p
-                JOIN product_types pt ON p.product_type_id = pt.id
-                JOIN product_variants pv ON p.id = pv.product_id
+                    JOIN product_types pt ON p.product_type_id = pt.id
+                    JOIN product_variants pv ON p.id = pv.product_id
                 WHERE p.deleted_at IS NULL
                 AND pt.deleted_at IS NULL
                 AND pv.deleted_at IS NULL
@@ -106,6 +106,9 @@ class ProductController extends Controller
                 LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
                 WHERE
                     pv.id = ?
+                    p.deleted_at IS NULL
+                    AND pt.deleted_at IS NULL
+                    AND pv.deleted_at IS NULL
                 GROUP BY
                     pv.id
             ", [$id]);
@@ -117,8 +120,8 @@ class ProductController extends Controller
                     vit.name variant_item_type_name
                 FROM
                     product_variants pv
-                LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
-                LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                    LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                    LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
                 WHERE
                     pv.id = ?
                     AND pvi.deleted_at IS NULL
@@ -139,8 +142,8 @@ class ProductController extends Controller
                         pvi.add_price
                     FROM
                         product_variants pv
-                    LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
-                    LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                        LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                        LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
                     WHERE
                         pv.id = ?
                         AND vit.id = ?
@@ -148,7 +151,6 @@ class ProductController extends Controller
                         AND vit.deleted_at IS NULL
                 ", [$id, $varianttype->variant_item_type_id]);
 
-                // Store the items under their respective type
                 $variantItemDetails[] = [
                     'variant_item_type_id' => $varianttype->variant_item_type_id,
                     'variant_item_type_name' => $varianttype->variant_item_type_name,
@@ -179,58 +181,145 @@ class ProductController extends Controller
     public function listproductData(Request $request)
     {
         try {
-            // Ambil parameter dari request
-            $product_type_id = $request->input('product_type_id');
-            $filter = $request->input('filter');
+            $perPage = 10; // Jumlah item per halaman, dalam hal ini 25
+            $page = $request->input('page', 1); // Mendapatkan nomor halaman dari request, default 1
+            $search = $request->input('search'); // Mendapatkan input pencarian dari request
+            $order = $request->input('order', 'ASC'); // Mendapatkan input pengurutan dari request, default ASC
+            $sortType = $request->input('sortType', 1); // Default sorting type is Best Match
 
-            // Mulai membangun query dasar
-            $query = "
-                SELECT
-                    p.id as product_id,
-                    p.title as product_name,
-                    p.product_type_id,
-                    pt.name as type_name,
-                    pv.id as product_variant_id,
-                    -- CASE WHEN pv.po_status = 1 THEN 'Preorder' ELSE NULL END AS preorder,
-                    CONCAT(pt.name, ' ', pv.name) as full_name_product,
-                    pv.name as variant_name,
-                    pv.price as variant_price,
-                    pv.descriptions,
-                    SUBSTRING_INDEX(pv.image, '/storage/', -1) as variant_image
-                FROM
-                    products p
-                JOIN product_types pt ON p.product_type_id = pt.id
-                JOIN product_variants pv ON p.id = pv.product_id
-                WHERE p.deleted_at IS NULL
-                AND pt.deleted_at IS NULL
-                AND pv.deleted_at IS NULL
-            ";
+            $productsQuery = DB::table('products as p')
+                ->join('product_types as pt', 'p.product_type_id', '=', 'pt.id')
+                ->join('product_variants as pv', 'p.id', '=', 'pv.product_id')
+                ->leftJoin('product_variant_items as pvi', 'pv.id', '=', 'pvi.product_variant_id')
+                ->leftJoin('variant_item_types as vit', 'vit.id', '=', 'pvi.variant_item_type_id')
+                ->whereNull('p.deleted_at')
+                ->whereNull('pt.deleted_at')
+                ->whereNull('pv.deleted_at')
+                ->groupBy('pv.id')
+                ->select(
+                    'pv.id as product_variant_id',
+                    DB::raw("CONCAT(pt.name, ' - ', pv.name) as full_name_product"),
+                    DB::raw("SUBSTRING_INDEX(pv.image, '/storage/', -1) as variant_image"),
+                    'pv.descriptions',
+                    'pv.stock',
+                    DB::raw("
+                        CASE
+                            WHEN pv.price = (pv.price + COALESCE(MAX(pvi.add_price), 0)) THEN
+                                CONCAT('Rp ', FORMAT(pv.price, 0))
+                            ELSE
+                                CONCAT('Rp ', FORMAT(pv.price, 0), ' - Rp ', FORMAT((pv.price + COALESCE(MAX(pvi.add_price), 0)), 0))
+                        END AS price_display
+                    "),
+                    'pv.price'
+                );
 
-            // Prepare binding parameters
-            $bindings = [];
-
-            // Tambahkan kondisi untuk product_type_id jika ada
-            if (!is_null($product_type_id)) {
-                $query .= " AND pt.id = :product_type_id";
-                $bindings['product_type_id'] = $product_type_id;
+            // Jika ada input search, tambahkan klausa WHERE untuk pencarian
+            if (!empty($search)) {
+                $productsQuery->where(DB::raw("CONCAT(pt.name, ' - ', pv.name)"), 'LIKE', "%{$search}%");
             }
 
-            // Tambahkan kondisi untuk filter explore atau special
-            if ($filter === 'explore') {
-                $query .= " AND pt.id IN (1, 2, 3)";
-            } elseif ($filter === 'special') {
-                $query .= " AND pv.price < 1000000";
+            // Handle sorting based on sortType
+            switch ($sortType) {
+                case 1:
+                    // Best Match (can use some custom sorting logic here if needed)
+                    $productsQuery->orderBy('pv.name', $order);  // Sort by name as an example for Best Match
+                    break;
+                case 2:
+                    // Price Low to High
+                    $productsQuery->orderBy('pv.price', 'ASC');
+                    break;
+                case 3:
+                    // Price High to Low
+                    $productsQuery->orderBy('pv.price', 'DESC');
+                    break;
+                default:
+                    // Default sorting (Best Match)
+                    $productsQuery->orderBy('pv.name', $order);  // Fallback to name sorting
+                    break;
             }
 
-            // Jalankan query dengan parameter binding
-            $results = DB::select($query, $bindings);
+            // Paginate query
+            $products = $productsQuery->paginate($perPage, ['*'], 'page', $page);
 
-            // Return hasil query sebagai response JSON
-            $data = response()->json($results);
+            $productsWithVariantItems = [];
+
+            foreach ($products as $product) {
+                // Fetch variant item types for each product variant
+                $varianttypes = DB::select("
+                    SELECT
+                        vit.id as variant_item_type_id,
+                        vit.name as variant_item_type_name
+                    FROM
+                        product_variants pv
+                        LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                        LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                    WHERE
+                        pv.id = ?
+                        AND pvi.deleted_at IS NULL
+                        AND vit.deleted_at IS NULL
+                    GROUP BY vit.id
+                ", [$product->product_variant_id]);
+
+                // Initialize an empty array to store all variant types and their corresponding items
+                $variantItemDetails = [];
+
+                foreach ($varianttypes as $varianttype) {
+                    // Fetch variant items for each variant item type
+                    $variantItems = DB::select("
+                        SELECT
+                            pvi.id as variant_item_id,
+                            pvi.name as variant_item_name,
+                            CASE WHEN pvi.add_price IS NULL THEN 0 ELSE pvi.add_price END AS add_price
+                        FROM
+                            product_variants pv
+                            LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                            LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                        WHERE
+                            pv.id = ?
+                            AND vit.id = ?
+                            AND pvi.deleted_at IS NULL
+                            AND vit.deleted_at IS NULL
+                    ", [$product->product_variant_id, $varianttype->variant_item_type_id]);
+
+                    // Only add if there are items for the variant type
+                    if (!empty($variantItems)) {
+                        $variantItemDetails[] = [
+                            'variant_item_type_id' => $varianttype->variant_item_type_id,
+                            'variant_item_type_name' => $varianttype->variant_item_type_name,
+                            'items' => $variantItems
+                        ];
+                    }
+                }
+
+                $productsWithVariantItems[] = [
+                    'product_variant_id' => $product->product_variant_id,
+                    'full_name_product' => $product->full_name_product,
+                    'descriptions' => $product->descriptions,
+                    'variant_image' => $product->variant_image,
+                    'price_display' => $product->price_display,
+                    'variant_item_details' => $variantItemDetails // Add variant items grouped by their types
+                ];
+            }
+
+            // Tambahkan count produk dan pagination links
+            $data = [
+                'count' => $products->total(),
+                'products' => $productsWithVariantItems,
+                'pagination' => [
+                    'current_page' => $products->currentPage(),
+                    'last_page' => $products->lastPage(),
+                    'per_page' => $products->perPage(),
+                    'total' => $products->total(),
+                    'next_page_url' => $products->nextPageUrl(),
+                    'prev_page_url' => $products->previousPageUrl(),
+                ]
+            ];
+
             return ApiResponseHelper::success($data, 'Data retrieved successfully');
         } catch (\Exception $e) {
             // Return error jika ada masalah
-            return ApiResponseHelper::error('Something went wrong', 500);
+            Log::error('Error dalam listproductData: ' . $e->getMessage());
+            return ApiResponseHelper::error($e->getMessage(), 500);
         }
     }
 

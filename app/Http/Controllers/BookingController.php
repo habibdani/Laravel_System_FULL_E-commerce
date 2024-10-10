@@ -155,66 +155,62 @@ class BookingController extends Controller
     {
         try {
             $perPage = $request->input('per_page', 10); // Default items per page
-            $currentPage = LengthAwarePaginator::resolveCurrentPage();
-            $skip = ($currentPage - 1) * $perPage;
+            $search = $request->input('search'); // Mendapatkan input pencarian dari request
 
-            $queryListOrder = "
-                SELECT
-                    b.id AS bookings_id,
-                    b.client_name,
-                    b.client_email,
-                    DATE_FORMAT(b.created_at, '%e %M %Y - %H:%i') AS created_at,
-                    CONCAT(b.address,', ',sa.`name`,', ',b.code_pos) AS ship_to,
-                    CASE
-                        WHEN sa.id = sa2.id THEN 'TRUE'
-                        ELSE 'FALSE'
-                    END AS area_match,
-                    DATE_FORMAT(bsh.created_at, '%e %M %Y - %H:%i') AS last_update,
-                    bt.`name` AS status_name,
-                    bt.color_status,
-                    SUM(bi.price) AS amount
-                FROM bookings b
-                JOIN shipping_areas sa ON b.shipping_area_id = sa.id
-                JOIN booking_items bi ON b.id = bi.booking_id
-                JOIN booking_shippings bs ON bs.booking_id = b.id
-                JOIN shipping_districts sd ON sd.id = bs.shipping_district_id
-                JOIN shipping_areas sa2 ON sa2.id = sd.shipping_area_id
-                JOIN booking_status_histories bsh ON bsh.booking_id = b.id
-                JOIN (
-                    SELECT MAX(id) AS id
-                    FROM booking_status_histories
-                    GROUP BY booking_id
-                ) m_bsh ON bsh.id = m_bsh.id
-                JOIN booking_status bt ON bt.id = bsh.booking_status_id
-                WHERE
-                    b.deleted_at IS NULL
-                    AND b.deleted_at IS NULL
-                    AND sa.deleted_at IS NULL
-                    AND bi.deleted_at IS NULL
-                    AND bs.deleted_at IS NULL
-                    AND sd.deleted_at IS NULL
-                    AND sa2.deleted_at IS NULL
-                GROUP BY
-                    b.id
-                ORDER BY b.id DESC
-                LIMIT :skip, :perPage
-            ";
+            // Query menggunakan Laravel query builder atau Eloquent
+            $queryListOrder = DB::table('bookings as b')
+                ->join('shipping_areas as sa', 'b.shipping_area_id', '=', 'sa.id')
+                ->join('booking_items as bi', 'b.id', '=', 'bi.booking_id')
+                ->join('booking_shippings as bs', 'bs.booking_id', '=', 'b.id')
+                ->join('shipping_districts as sd', 'sd.id', '=', 'bs.shipping_district_id')
+                ->join('shipping_areas as sa2', 'sa2.id', '=', 'sd.shipping_area_id')
+                ->join('booking_status_histories as bsh', 'bsh.booking_id', '=', 'b.id')
+                ->join(DB::raw('(SELECT MAX(id) AS id FROM booking_status_histories GROUP BY booking_id) as m_bsh'), 'bsh.id', '=', 'm_bsh.id')
+                ->join('booking_status as bt', 'bt.id', '=', 'bsh.booking_status_id')
+                ->whereNull('b.deleted_at')
+                ->whereNull('sa.deleted_at')
+                ->whereNull('bi.deleted_at')
+                ->whereNull('bs.deleted_at')
+                ->whereNull('sd.deleted_at')
+                ->whereNull('sa2.deleted_at')
+                ->groupBy('b.id')
+                ->select(
+                    'b.id as bookings_id',
+                    'b.client_name',
+                    'b.client_email',
+                    DB::raw("DATE_FORMAT(b.created_at, '%e %M %Y - %H:%i') as created_at"),
+                    DB::raw("CONCAT(b.address, ', ', sa.name, ', ', b.code_pos) as ship_to"),
+                    DB::raw("CASE WHEN sa.id = sa2.id THEN 'TRUE' ELSE 'FALSE' END as area_match"),
+                    DB::raw("DATE_FORMAT(bsh.created_at, '%e %M %Y - %H:%i') as last_update"),
+                    'bt.name as status_name',
+                    'bt.color_status',
+                    DB::raw('SUM(bi.price) as amount')
+                )
+                ->orderBy('bsh.created_at', 'DESC');
 
-            $listOrder = DB::select($queryListOrder, ['skip' => $skip, 'perPage' => $perPage]);
+            // Jika ada pencarian berdasarkan client_name
+            if (!empty($search)) {
+                $queryListOrder->where('b.client_name', 'LIKE', "%{$search}%");
+            }
 
-            $total = DB::table('bookings')
-                ->whereNull('deleted_at')
-                ->count();
+            // Pagination
+            $listOrder = $queryListOrder->paginate($perPage);
 
-            $response = [
-                'data' => $listOrder,
-                'currentPage' => $currentPage,
-                'total' => $total,
-            ];
-
-            return ApiResponseHelper::success($response, 'Data retrieved successfully');
+            return ApiResponseHelper::success([
+                'data' => $listOrder->items(),
+                'currentPage' => $listOrder->currentPage(),
+                'total' => $listOrder->total(),
+                'pagination' => [
+                    'current_page' => $listOrder->currentPage(),
+                    'last_page' => $listOrder->lastPage(),
+                    'per_page' => $listOrder->perPage(),
+                    'total' => $listOrder->total(),
+                    'next_page_url' => $listOrder->nextPageUrl(),
+                    'prev_page_url' => $listOrder->previousPageUrl(),
+                ]
+            ], 'Data retrieved successfully');
         } catch (\Exception $e) {
-            return ApiResponseHelper::error($e, 500);
+            return ApiResponseHelper::error($e->getMessage(), 500);
         }
     }
 
@@ -296,6 +292,7 @@ class BookingController extends Controller
                     'order' => $listOrder,
                     'products' => $productDetails
                 ];
+
             return ApiResponseHelper::success($data, 'Data retrieved successfully');
         } catch (\Exception $e) {
             return ApiResponseHelper::error($e, 500);

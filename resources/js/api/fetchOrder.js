@@ -2,7 +2,7 @@
 
 export async function fetchProductDashboard() {
     try {
-        const response = await fetch('/api/list-products-data');
+        const response = await fetch('/api/list-order');
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
         }
@@ -13,4 +13,3 @@ export async function fetchProductDashboard() {
         throw error;
     }
 }
-    

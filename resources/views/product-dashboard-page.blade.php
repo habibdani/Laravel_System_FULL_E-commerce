@@ -20,26 +20,30 @@
                 <a href="{{ route('dashboard.product.add') }}" class="bg-red-600 text-white px-4 py-2 rounded">+ Tambah Produk</a>
             </div>
 
-            <!-- Product Filter Options -->
             <div class="flex justify-between items-center mt-4">
-                <span>Menampilkan 1-24 dari 205 produk</span>
+                <span class="pagination-info">Menampilkan 1-10 dari 205 produk</span>
                 <div class="flex space-x-4">
                     <select class="border rounded p-2">
-                        <option>Best Match</option>
-                        <option>Price Low to High</option>
-                        <option>Price High to Low</option>
+                        <option value="1">Best Match</option>
+                        <option value="2">Price Low to High</option>
+                        <option value="3">Price High to Low</option>
                     </select>
                     <input type="text" placeholder="Cari produk" class="border rounded p-2 w-64">
                 </div>
             </div>
 
-            <!-- Product List Container (to be filled by JS) -->
             <div id="dashboard-product-list" class="mt-4 space-y-4">
                 <!-- Product list will be rendered here by JavaScript -->
             </div>
+
+            <!-- Pagination Controls -->
+            <div class="flex justify-between mt-6">
+                <button id="prev-page" class="bg-gray-300 text-gray-700 px-4 py-2 rounded" disabled>Previous</button>
+                <button id="next-page" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Next</button>
+            </div>
+
         </div>
     </div>
 
-    <!-- Include your JS -->
     @vite('resources/js/productDashboard-script.js')
 @endsection
