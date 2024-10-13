@@ -1,4 +1,4 @@
-<nav class="fixed top-0 w-full z-50">
+<nav class="fixed top-0 w-full bg-[#F7F6F6] z-50">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div class="flex justify-between items-center">
             <!-- Left Section (Hamburger Menu and Logo) -->

@@ -26,6 +26,7 @@ Route::post('/create-orders', [BookingController::class, 'createOrder']);
 
 Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(function () {
     Route::post('/upload-image', [ProductController::class, 'uploadImage']);
+    Route::delete('/delete-image', [ProductController::class, 'deleteImage']);
     Route::post('/insert-product', [ProductController::class, 'insertProduct']);
     Route::post('/insert-product-type', [ProductController::class, 'createProductType']);
     Route::post('/insert-variant-type', [ProductController::class, 'createVariantType']);

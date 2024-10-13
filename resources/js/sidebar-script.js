@@ -653,7 +653,6 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
     const listOrderContainer = document.getElementById('list-order-container');
     listOrderContainer.appendChild(newProductCard);
 
-    // Simpan produk baru ke sessionStorage
     saveDataToSessionStorage();
 
     console.log('Produk baru ditambahkan ke sidebar');

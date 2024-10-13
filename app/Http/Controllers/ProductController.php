@@ -9,7 +9,7 @@ use App\Helpers\ApiResponseHelper;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ProductVariant;
-
+use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function listproduct(Request $request)
@@ -36,7 +36,8 @@ class ProductController extends Controller
                     products p
                     JOIN product_types pt ON p.product_type_id = pt.id
                     JOIN product_variants pv ON p.id = pv.product_id
-                WHERE p.deleted_at IS NULL
+                WHERE
+                p.deleted_at IS NULL
                 AND pt.deleted_at IS NULL
                 AND pv.deleted_at IS NULL
             ";
@@ -80,6 +81,19 @@ class ProductController extends Controller
         }
 
         try {
+            $productUtama = DB::select("
+                SELECT
+                    p.id,
+                    p.title product_name,
+                    p.product_type_id
+                FROM
+                    products p
+                    JOIN product_variants pv ON p.id = pv.product_id
+                WHERE pv.id = ?
+                    AND p.deleted_at IS NULL
+                    AND pv.deleted_at IS NULL"
+                , [$id]);
+
             // Query to get product details
             $product = DB::select("
                 SELECT
@@ -100,13 +114,13 @@ class ProductController extends Controller
                     pv.price
                 FROM
                     products p
-                JOIN product_types pt ON p.product_type_id = pt.id
-                JOIN product_variants pv ON p.id = pv.product_id
-                LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
-                LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                    JOIN product_types pt ON p.product_type_id = pt.id
+                    JOIN product_variants pv ON p.id = pv.product_id
+                    LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                    LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
                 WHERE
                     pv.id = ?
-                    p.deleted_at IS NULL
+                    AND p.deleted_at IS NULL
                     AND pt.deleted_at IS NULL
                     AND pv.deleted_at IS NULL
                 GROUP BY
@@ -139,7 +153,7 @@ class ProductController extends Controller
                         pv.id product_variant_id,
                         pvi.id variant_item_id,
                         pvi.name variant_item_name,
-                        pvi.add_price
+                        COALESCE(pvi.add_price, 0) AS add_price
                     FROM
                         product_variants pv
                         LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
@@ -165,6 +179,9 @@ class ProductController extends Controller
 
             // Prepare the response
             $response = [
+                'headers' => [
+                    'product_utama' => $productUtama[0] ?? null, // Including $productUtama
+                ],
                 'product' => $product[0], // Single product result
                 'variant_types' => $variantItemDetails,
             ];
@@ -174,7 +191,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             Log::error('Error in productdetails: ' . $e->getMessage());
 
-            return ApiResponseHelper::error('Something went wrong', 500);
+            return ApiResponseHelper::error($e, 500);
         }
     }
 
@@ -297,6 +314,7 @@ class ProductController extends Controller
                     'descriptions' => $product->descriptions,
                     'variant_image' => $product->variant_image,
                     'price_display' => $product->price_display,
+                    'stock' =>$product->stock,
                     'variant_item_details' => $variantItemDetails // Add variant items grouped by their types
                 ];
             }
@@ -467,6 +485,7 @@ class ProductController extends Controller
         }
     }
 
+
     public function createVariantType(Request $request)
     {
         try {
@@ -502,6 +521,7 @@ class ProductController extends Controller
                 'product_variant' => 'required|array',
                 'product_variant.*.product_variant_name' => 'required|string|max:255',
                 'product_variant.*.price' => 'required|numeric|min:0',
+                'product_variant.*.stock' => 'required|numeric|min:0',
                 'product_variant.*.image_url' => 'required|string|max:255', // Validasi URL gambar
                 'product_variant.*.po_status' => 'required|boolean',
                 'product_variant.*.descriptions' => 'required|string|max:255',
@@ -536,6 +556,7 @@ class ProductController extends Controller
                     'product_id' => $productId,
                     'name' => $variant['product_variant_name'],
                     'price' => $variant['price'],
+                    'stock' => $variant['stock'],
                     'image' => $variant['image_url'], // Gunakan URL gambar yang diupload
                     'po_status' => $variant['po_status'],
                     'descriptions' => $variant['descriptions'],
@@ -577,6 +598,7 @@ class ProductController extends Controller
                 'product_variant.*.id' => 'required|integer|exists:product_variants,id',
                 'product_variant.*.product_variant_name' => 'sometimes|required|string|max:255',
                 'product_variant.*.price' => 'sometimes|required|numeric|min:0',
+                'product_variant.*.stock' => 'required|numeric|min:0',
                 'product_variant.*.image_url' => 'sometimes|required|string|max:255',
                 'product_variant.*.po_status' => 'sometimes|required|boolean',
                 'product_variant.*.descriptions' => 'sometimes|required|string|max:255',
@@ -611,6 +633,7 @@ class ProductController extends Controller
                         ->update([
                             'name' => $variant['product_variant_name'] ?? DB::raw('name'),
                             'price' => $variant['price'] ?? DB::raw('price'),
+                            'stock' => $variant['stock'] ?? DB::raw('stock'),
                             'image' => $variant['image_url'] ?? DB::raw('image'),
                             'po_status' => $variant['po_status'] ?? DB::raw('po_status'),
                             'descriptions' => $variant['descriptions'] ?? DB::raw('descriptions'),
@@ -702,6 +725,36 @@ class ProductController extends Controller
             return ApiResponseHelper::success(['image_url' => asset('storage/' . $imagePath)], 'Image uploaded successfully');
         } catch (\Exception $e) {
             Log::error('Error in uploadImage: ' . $e->getMessage());
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    public function deleteImage(Request $request)
+    {
+        try {
+            // Validasi input, pastikan hanya menerima nama file gambar
+            $validator = Validator::make($request->all(), [
+                'image_url' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                return ApiResponseHelper::validationError($validator->errors());
+            }
+
+            // Ambil nama file gambar dari input 'image_url'
+            $imagePath = 'images/' . $request->image_url;
+
+            // Periksa apakah file gambar ada di storage
+            if (Storage::disk('public')->exists($imagePath)) {
+                // Hapus file gambar dari storage
+                Storage::disk('public')->delete($imagePath);
+
+                return ApiResponseHelper::success([], 'Image deleted successfully');
+            } else {
+                return ApiResponseHelper::error('Image not found', 404);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error in deleteImage: ' . $e->getMessage());
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }

@@ -15,6 +15,7 @@
 <body>
     <main>
         @yield('content')
+        @component('components.loading') @endcomponent
     </main>
     @vite('resources/js/app.js')
     @stack('scripts')

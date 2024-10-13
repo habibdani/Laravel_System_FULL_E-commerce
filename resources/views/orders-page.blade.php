@@ -48,9 +48,20 @@
 
                 <div class="p-4 flex justify-between items-center">
                     <button id="prev-page" class="bg-gray-300 text-gray-700 px-4 py-2 rounded" disabled>Previous</button>
-                    <div class="pagination-container">Menampilkan halaman 1 dari 10</div>
+                        <div class="pagination-container">Menampilkan halaman 1 dari 10</div>
                     <button id="next-page" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Next</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <h2 class="text-lg font-semibold mb-4">Konfirmasi Perubahan Status</h2>
+            <p class="text-sm text-gray-700 mb-2">Anda akan mengubah status pesanan ini menjadi:</p>
+            <p id="popup-status" class="text-2xl font-bold text-[#E01535] mb-6"></p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirm-button" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Konfirmasi</button>
+                <button id="cancel-button" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-md">Batal</button>
             </div>
         </div>
     </div>

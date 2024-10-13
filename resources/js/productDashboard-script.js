@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 <p class="text-gray-600 text-sm mb-2">${product.descriptions}</p>
 
                                 ${product.preorder ? `<span class="inline-block mt-2 px-2 py-1 text-white bg-green-600 rounded">Pre Order</span>` : ''}
-                                ${product.stock ? `<span class="inline-block mt-2 px-2 py-1 text-white bg-green-500 rounded">Stock Available</span>` : ''}
                             </div>
                         </div>
 
@@ -72,10 +71,34 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 ${product.price_display}
                             </p>
 
-                            <div class="flex mt-4">
-                                <a href="#" class="bg-blue-500 text-white px-3 py-2 rounded mr-2">Edit</a>
-                                <a href="#" class="bg-red-500 text-white px-3 py-2 rounded">Hapus</a>
+                            <div class="flex items-center space-x-2">
+                                 <p class="bg-green-600 text-white px-2 py-1 mt-1 rounded-md text-sm font-semibold">Stock: ${product.stock}</p>
+                             </div>
+
+                            <div class="flex mt-4 space-x-2">
+                                <!-- Tombol Edit -->
+                                <button id="edit_product_variant_id_${product.product_variant_id}"
+                                        class="bg-blue-500 text-white flex items-center justify-center w-32 h-8 px-4 py-2 rounded-md hover:bg-blue-600 transition duration-150 ease-in-out"
+                                        onclick="window.location.href='/dashboard/product/edit/${product.product_variant_id}'">
+                                        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" stroke="currentColor">
+                                        <path d="M13.1106 4.91081L9.5284 1.32861L1.49133 9.3695L1.45703 12.9822L5.06971 12.9517L13.1106 4.91081Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M7.2832 3.57324L10.8654 7.15544" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Edit
+                                </button>
+
+                                <!-- Tombol Hapus -->
+                                <button id="delete_product_variant_id_${product.product_variant_id}" class="bg-red-500 text-white flex items-center justify-center w-32 h-8 px-4 py-2 rounded-md hover:bg-red-600 transition duration-150 ease-in-out">
+                                    <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18" stroke="currentColor">
+                                        <path d="M12.875 4.36963H1.54297L2.81151 16.7759H11.6065L12.875 4.36963Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4.60938 1.54932H9.81073" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5.59961 8.06494V12.2486" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8.81836 8.06494V12.2486" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Hapus
+                                </button>
                             </div>
+
                         </div>
                     </div>
                 `;
