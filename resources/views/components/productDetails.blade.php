@@ -15,15 +15,15 @@
                     <div class="bg-white p-4 rounded-lg shadow-lg">
                          <!-- Product Title and Price -->
                          <div class="mb-3">
-                            <h1 id="productTitle" product-variant-id="" class="text-[28px] font-bold">Spandek – Spandeck Zincalume</h1>
-                            <p id="productPrice" price-value-product="" class="text-[#E01535] text-xl font-semibold rounded-md p-1 bg-[#F4F4F4] mt-2">Rp. 7.000</p>
+                            <h1 id="productTitle" product-variant-id="" class="text-[28px] font-bold">...</h1>
+                            <p id="productPrice" price-value-product="" class="text-[#E01535] text-xl font-semibold rounded-md p-1 bg-[#F4F4F4] mt-2">...</p>
                         </div>
 
                         <div id="variantContainer"></div>
 
                         <!-- Product Description -->
                         <div>
-                            <h2 class="text-[12px] font-semibold text-[#E01535] border-b-2 border-[#E01535] pb-1">Tentang Produk</h2>
+                            <h2 class="text-[12px] font-semibold text-[#E01535] border-b-2 border-[#E01535] pb-1">...</h2>
                             <span id="productDescription" class="text-[#747474] text-[12px] leading-[16.06px] font-normal mt-2">
                             </span>
                         </div>

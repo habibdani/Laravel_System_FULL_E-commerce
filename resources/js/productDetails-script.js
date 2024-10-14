@@ -1,3 +1,6 @@
+const loadingSpinner = document.getElementById('loading_spinner');
+    loadingSpinner.classList.remove('hidden');
+
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const quantityInput = document.getElementById('quantity');
@@ -48,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.addEventListener('click', () => {
                     // Hapus kelas aktif dari semua tombol
                     variantButtons.forEach(btn => btn.classList.remove('active'));
-
+                    console.log('tesklick');
                     // Tambahkan kelas aktif ke tombol yang diklik
                     button.classList.add('active');
 
@@ -278,5 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
             saveDataToSessionStorage();
         });
 
-    }, 1000);
+    }, 1500);
+    setTimeout(function() {
+        loadingSpinner.classList.add('hidden');
+    }, 500);
 });

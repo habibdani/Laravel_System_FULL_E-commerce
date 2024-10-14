@@ -535,6 +535,7 @@ confirmButton.addEventListener('click', async () => {
         productVariantArray.push({
             product_variant_name: variantName,
             price: price,
+            stock: stock,
             image_url: imageUrl,
             po_status: poStatus,
             descriptions: description,

@@ -2,6 +2,9 @@ import { fetchProduct3 } from './api/fetchProduct3';
 import { fetchExploreProduct } from './api/fetchExploreProduct';
 import { fetchSpecialProduct } from './api/fetchSpecialProduct';
 
+const loadingSpinner = document.getElementById('loading_spinner');
+    loadingSpinner.classList.remove('hidden');
+
 document.addEventListener('DOMContentLoaded', function() {
 
     function showSlide(slideNumber) {
@@ -50,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const totalbayar = document.getElementById('totalbayar');
         totalbayar.classList.remove('hidden');
+
     });
 
     async function renderProducts() {
@@ -244,11 +248,18 @@ document.addEventListener('DOMContentLoaded', function() {
             updateViewAllLink(specialProducts.length, specialProductList.clientWidth, document.getElementById('special-view-all-link'));
             updateViewAllLink(exploreProducts.length, exploreProductList.clientWidth, document.getElementById('explore-view-all-link'));
 
+            setTimeout(function() {
+                loadingSpinner.classList.add('hidden');
+            }, 500);
         } catch (error) {
             console.error('Error rendering products:', error);
+            setTimeout(function() {
+                loadingSpinner.classList.add('hidden');
+            }, 500);
         }
     }
 
     renderProducts();
 
 });
+
