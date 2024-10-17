@@ -1,4 +1,30 @@
+
 document.addEventListener('DOMContentLoaded', function() {
+
+    // script button to alamat
+    function updateButtonText() {
+        const locationValue = sessionStorage.getItem('locationValueAttribute');
+        const pilihAlamatButton = document.getElementById('pilihAlamatok');
+
+        if (locationValue) {
+            try {
+                const locationData = JSON.parse(locationValue);
+                if (locationData.city) {
+                    pilihAlamatButton.innerHTML = `<svg width="15" height="20" viewBox="0 0 15 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.33133 0.664062C3.43041 0.664062 0.256836 3.8381 0.256836 7.73912C0.256836 11.4942 6.67565 20.2674 6.94896 20.6389L7.20403 20.986C7.23386 21.0268 7.28136 21.0507 7.33133 21.0507C7.38208 21.0507 7.42927 21.0268 7.45941 20.986L7.71432 20.6389C7.98779 20.2674 14.4064 11.4942 14.4064 7.73912C14.4064 3.8381 11.2324 0.664062 7.33133 0.664062ZM7.33133 5.20485C8.72904 5.20485 9.86561 6.34146 9.86561 7.73912C9.86561 9.13606 8.72899 10.2734 7.33133 10.2734C5.93444 10.2734 4.79706 9.13606 4.79706 7.73912C4.79706 6.34146 5.93439 5.20485 7.33133 5.20485Z" fill="white"/>
+                    </svg>&nbsp; Dikirim ke ${locationData.city}`;
+                }
+            } catch (e) {
+                console.error("Error parsing locationValueAttribute from sessionStorage", e);
+                pilihAlamatButton.textContent = "Pilih Alamat";
+            }
+        } else {
+            pilihAlamatButton.textContent = "Pilih Alamat";
+        }
+    }
+
+    // Call the function to update the button text when the page loads
+    updateButtonText();
 
     // Fungsi untuk menampilkan slide berdasarkan nomor
     function showSlide(slideNumber) {
@@ -27,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             totalBayarElement.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]');
         }
     });
+
 
     document.getElementById('btn-slide-3').addEventListener('click', function() {
         showSlide(3);
@@ -89,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('to-slide-2-and-shop').addEventListener('click', function() {
+    document.getElementById('pilihAlamat').addEventListener('click', function() {
         showSlide(2);
 
         // Mengambil elemen dan memeriksa apakah elemen tersebut ada
@@ -211,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
  });
 
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
 
     // Fungsi untuk menghitung total item dan total harga
     function updateCartSummary() {
@@ -316,7 +343,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (node.classList && node.classList.contains('sidebar-product-card')) {
                     // Produk baru ditambahkan, ambil productVariantId dari ID elemen
                     const productVariantId = node.querySelector('[id^="sidebar-product-id"]').id.split('sidebar-product-id-')[1];
-                    console.log(`Produk baru ditambahkan dengan ID: ${productVariantId}`);
 
                     // Tambahkan event listener untuk tombol decrease
                     const decreaseButton = document.getElementById(`sidebar-decrease-${productVariantId}`);
@@ -327,7 +353,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (qty > 1) {
                                 qty -= 1;
                                 qtyInput.value = qty;
-                                console.log(`Jumlah produk dengan ID ${productVariantId} berkurang menjadi ${qty}`);
                             }
                         });
                     }
@@ -340,7 +365,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             let qty = parseInt(qtyInput.value);
                             qty += 1;
                             qtyInput.value = qty;
-                            console.log(`Jumlah produk dengan ID ${productVariantId} bertambah menjadi ${qty}`);
                         });
                     }
 
@@ -351,7 +375,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             const productCard = document.getElementById(`sidebar-product-id-${productVariantId}`).closest('.sidebar-product-card');
                             if (productCard) {
                                 productCard.remove();
-                                console.log(`Produk dengan ID ${productVariantId} dihapus`);
                             }
                         });
                     }
@@ -466,17 +489,8 @@ function loadDataFromSessionStorage() {
     const waktuValue = sessionStorage.getItem('waktuValue');
     const tipePembelian = sessionStorage.getItem('tipePembelian');
     const alamatValue = sessionStorage.getItem('alamatValue');
-
     const ongkirValueAttribute = sessionStorage.getItem('ongkirValueAttribute');
     const locationValueAttribute = sessionStorage.getItem('locationValueAttribute');
-
-    console.log('Data ongkir:', ongkirValue);
-    console.log('Data jarak:', jarakValue);
-    console.log('Data waktu:', waktuValue);
-    console.log('Data tipe pembelian:', tipePembelian);
-    console.log('Data alamat:', alamatValue);
-    console.log('Ongkir value attribute:', ongkirValueAttribute);
-    console.log('Location value attribute:', locationValueAttribute);
 
     if (ongkirValue) {
         document.getElementById('ongkir-display').innerText = ongkirValue;
@@ -500,16 +514,15 @@ function loadDataFromSessionStorage() {
         }, 100);
     }
 
-    // Pastikan opsi sudah tersedia sebelum mengatur nilai select "Alamat"
+    // // ubah option pengiriman
     if (alamatValue) {
         const alamatElement = document.getElementById('alamat');
         const checkAlamatInterval = setInterval(() => {
             if (alamatElement.options.length > 0) {
                 alamatElement.value = alamatValue;
                 clearInterval(checkAlamatInterval);
-                console.log('Data select "Alamat" dimuat: ', alamatValue);
             }
-        }, 100);
+        }, 500);
     }
 
     // Set ulang atribut ongkir-value dan location-value
@@ -525,8 +538,6 @@ function loadDataFromSessionStorage() {
     if (savedProductSidebarHTML) {
         const listOrderContainer = document.getElementById('list-order-container');
         listOrderContainer.innerHTML = savedProductSidebarHTML;
-
-        console.log('Produk sidebar dimuat dari sessionStorage');
     }
 
     // Tampilkan data produk yang disimpan
@@ -541,21 +552,12 @@ function loadDataFromSessionStorage() {
         const productPriceText = sessionStorage.getItem(`productPriceText-${i}`);
         const productQuantity = sessionStorage.getItem(`productQuantity-${i}`);
 
-        console.log(`Produk ${i + 1}:`);
-        console.log(' - Gambar:', productImageSrc);
-        console.log(' - ID Produk:', productIdValue);
-        console.log(' - Nama Produk:', productIdText);
-        console.log(' - Harga:', productPriceValue, '-', productPriceText);
-        console.log(' - Kuantitas:', productQuantity);
-
         // Tampilkan variant option jika ada
         let variantIndex = 0;
         while (sessionStorage.getItem(`variantOptionValue-${i}-${variantIndex}`)) {
             const variantOptionValue = sessionStorage.getItem(`variantOptionValue-${i}-${variantIndex}`);
             const variantOptionText = sessionStorage.getItem(`variantOptionText-${i}-${variantIndex}`);
-            console.log(` - Varian ${variantIndex + 1}:`);
-            console.log('   - Nilai Varian:', variantOptionValue);
-            console.log('   - Teks Varian:', variantOptionText);
+
             variantIndex++;
         }
     }
@@ -596,7 +598,6 @@ function renderProductsFromSessionStorage() {
             addProductToSidebar(productIdValue, productImageSrc, productIdText, productPriceText, productPriceValue, productQuantity, variants);
         }
 
-        console.log('Produk berhasil dirender dari sessionStorage');
     } else {
         console.warn('Tidak ada produk yang disimpan di sessionStorage');
     }
@@ -672,12 +673,12 @@ document.getElementById('alamat').addEventListener('change', saveDataToSessionSt
 window.onload = function() {
     setTimeout(() => {
         renderProductsFromSessionStorage();
-    }, 100); // Beri jeda sedikit untuk memastikan DOM sudah siap sepenuhnya
+    }, 500); // Beri jeda sedikit untuk memastikan DOM sudah siap sepenuhnya
 };
 
 document.addEventListener("DOMContentLoaded", function() {
     const dataOngkir = document.getElementById("dataongkir");
-    const buttonToSlide = document.getElementById("to-slide-2-and-shop");
+    const buttonToSlide = document.getElementById("buttonpilihAlamat");
     const jarakElement = document.getElementById("jarak");
 
     // Fungsi untuk mengecek nilai jarak-value
@@ -686,11 +687,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Jika jarak-value kosong
         if (!jarakValue || jarakValue === "") {
-            dataOngkir.classList.add("hidden"); // Tambahkan kelas hidden
-            buttonToSlide.classList.remove("hidden"); // Tampilkan tombol
+            // dataOngkir.classList.add("hidden"); // Tambahkan kelas hidden
+            // buttonToSlide.classList.remove("hidden"); // Tampilkan tombol
         } else {
-            dataOngkir.classList.remove("hidden"); // Hapus kelas hidden
-            buttonToSlide.classList.add("hidden"); // Sembunyikan tombol juga
+            // dataOngkir.classList.remove("hidden"); // Hapus kelas hidden
+            // buttonToSlide.classList.add("hidden"); // Sembunyikan tombol juga
         }
     }
 

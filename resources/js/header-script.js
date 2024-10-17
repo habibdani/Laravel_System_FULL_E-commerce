@@ -165,3 +165,16 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Required elements (category button, dropdown menu, or overlay) not found');
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Ambil nilai dari sessionStorage
+    let productCount = sessionStorage.getItem('productCardCount');
+
+    // Jika nilai null, atur menjadi 0
+    if (productCount === null) {
+        productCount = 0;
+    }
+
+    // Perbarui nilai elemen dengan id="keranjang"
+    document.getElementById('keranjang').textContent = productCount;
+});

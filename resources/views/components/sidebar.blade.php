@@ -120,6 +120,8 @@
                     <!-- Wrapper untuk konten dengan scroll -->
                     <div id="list-order-container" class="list-order-item mt-2 space-y-4 max-h-[340px] overflow-y-auto scrollbar-hide">
                     </div>
+
+
                 </div>
 
                 <!-- Slide 3: Payment -->
@@ -266,7 +268,7 @@
 
             </div>
 
-            <div id="buttom-sidebar" class="mt-auto mb-auto">
+            <div id="buttom-sidebar" class="mt-auto">
                 <hr>
                 <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-left hidden">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalprice" value="">0</span>
@@ -286,12 +288,19 @@
                     </div>
                 </div>
 
-                <button id="to-slide-2-and-shop" class="w-full h-[37.6px] flex items-center  justify-center bg-[#E01535] text-white font-semibold font-[16px] rounded-md hover:bg-red-700 transition duration-300">
-                    Selanjutnya
-                </button>
-                <button id="totalbayar" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
-                </button>
+                <div id="bottonpilihAlamat" class="bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md mb-4 shadow-md flex justify-between items-center">
+                    <form action="{{ url('/view-maps') }}" method="GET" class="w-full h-full">
+                        <input type="hidden" name="client_type_id" value="1">
+                        <button type="submit" id="pilihAlamatok" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
+                            Pilih Alamat
+                        </button>
+                    </form>
+                </div>
 
+                <div class="divtotalbayar">
+                    <button id="totalbayar" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
+                    </button>
+                </div>
             </div>
         </div>
 

@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
     }
 
-    window.addEventListener('load', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         showSlide(1);
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.remove('sidebar-hidden');
@@ -61,7 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const considebar = document.getElementById('container-sidebar');
         considebar.classList.add('z-20');
         considebar.classList.remove('z-0');
+
+        // const buttontotalbayar = document.getElementById('totalbayar');
+        // buttontotalbayar.classList.add('hidden');
+
+        const bottonpilihAlamat = document.getElementById('bottonpilihAlamat');
+        const pilihAlamatok = document.getElementById('pilihAlamatok');
+        bottonpilihAlamat.classList.add('hidden');
+        pilihAlamatok.classList.add('hidden');
     });
+
 
     const defaultOrigin = [-6.2657501, 106.7012177];
 

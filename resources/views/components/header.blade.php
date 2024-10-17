@@ -5,15 +5,18 @@
             <div class="flex space-x-2 justify-center h-10 mx-auto">
                 <!-- Left Side (Logo and Company Name) -->
                 <div class="flex items-center">
-                    {{-- <img class="max-h-full w-auto h-8" src="{{ asset('storage//icons/tokopedia.svg') }}" alt="Logo"> --}}
-                    <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
-                </div>
-                <div class="flex items-center">
-                    <a class="inline-flex items-center bg-[#E01535] text-white px-3 py-2 rounded">
-                        <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4 mr-1.5">
-                        <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left">0</span>
+                    <a href="http://127.0.0.1:8001/">
+                        <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
                     </a>
                 </div>
+
+                <div class="flex items-center">
+                    <a herf="http://127.0.0.1:8001/" class="inline-flex items-center bg-[#E01535] text-white px-3 py-2 rounded">
+                        <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4 mr-1.5">
+                        <span id="keranjang" class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left">0</span>
+                    </a>
+                </div>
+
                 <div class="relative flex items-center">
                     <button id="category" class="bg-[#FFFFFF] w-[90.89px] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center">
                         <img src="{{ asset('storage/icons/category.svg') }}" alt="category" class="h-4 w-4 mr-1.5">
