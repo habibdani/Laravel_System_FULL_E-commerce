@@ -13,7 +13,7 @@
                 <div class="flex items-center">
                     <a herf="http://127.0.0.1:8001/" class="inline-flex items-center bg-[#E01535] text-white px-3 py-2 rounded">
                         <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4 mr-1.5">
-                        <span id="keranjang" class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left">0</span>
+                        <span id="keranjang" class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left mr-3">0</span>
                     </a>
                 </div>
 

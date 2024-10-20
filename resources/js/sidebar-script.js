@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    // script button to alamat
+    // script button to alamat ubah tampilan pengiriman
     function updateButtonText() {
         const locationValue = sessionStorage.getItem('locationValueAttribute');
         const pilihAlamatButton = document.getElementById('pilihAlamatok');
@@ -44,34 +44,159 @@ document.addEventListener('DOMContentLoaded', function() {
         showSlide(1);
     });
 
-    document.getElementById('btn-slide-2').addEventListener('click', function() {
-        showSlide(2);
-        const totalBayarElement = document.getElementById('totalbayar');
-        if (totalBayarElement) {
-            totalBayarElement.setAttribute('disabled', 'disabled'); // Tambahkan atribut disabled
-            totalBayarElement.classList.remove('bg-[#E01535]', 'text-white');
-            totalBayarElement.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]');
+// payment
+    function handleSlideAndPaymentActions() {
+        showSlide(3); // Menampilkan slide 3
+
+        const storedLocation = sessionStorage.getItem('locationValueAttribute');
+        if (storedLocation) {
+            const locationData = JSON.parse(storedLocation);
+            const cityValue = locationData.city; // Ambil nilai city
+
+            // Mengubah isian dari input #kota jika ada nilai city
+            const kotaInput = document.getElementById('kota');
+            if (kotaInput && cityValue) {
+                kotaInput.value = cityValue; // Mengisi input dengan city
+            }
         }
-    });
 
-
-    document.getElementById('btn-slide-3').addEventListener('click', function() {
-        showSlide(3);
-
-        // Mengubah warna tombol total bayar menjadi merah saat slide 3 ditampilkan
-        const totalBayarElement = document.getElementById('totalbayar');
-
-        if (totalBayarElement) {
-            totalBayarElement.removeAttribute('disabled'); // Hapus atribut disabled
-            totalBayarElement.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]'); // Hapus class abu-abu
-            totalBayarElement.classList.add('bg-[#E01535]', 'text-white'); // Tambahkan class merah
+        const buttonPayment = document.getElementById('payment');
+        if (buttonPayment) {
+            buttonPayment.classList.add('hidden'); // Menyembunyikan tombol payment jika ada
         }
-    });
+        const buttonTotalBayar = document.getElementById("totalbayar");
+        buttonTotalBayar.classList.remove('hidden');
 
-    document.getElementById('confirm-button').addEventListener('click', function() {
+    }
+
+    function checkFormInputs() {
+        const namaUser = document.getElementById('nama-user').value.trim();
+        const alamatLengkap = document.getElementById('alamat-lengkap').value.trim();
+        const kota = document.getElementById('kota').value.trim();
+        const kodePos = document.getElementById('kode-pos').value.trim();
+        const nomorTelp = document.getElementById('nomor-telp').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        // Cek apakah semua input terisi
+        if (namaUser && alamatLengkap && kota && kodePos && nomorTelp && email) {
+            const totalBayarElement = document.getElementById('totalbayar');
+            if (totalBayarElement) {
+                totalBayarElement.removeAttribute('disabled'); // Hapus atribut disabled
+                totalBayarElement.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]'); // Hapus class abu-abu
+                totalBayarElement.classList.add('bg-[#E01535]', 'text-white'); // Tambahkan class merah
+            }
+        } else {
+            const totalBayarElement = document.getElementById('totalbayar');
+            if (totalBayarElement) {
+                totalBayarElement.setAttribute('disabled', 'true'); // Tambahkan atribut disabled
+                totalBayarElement.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]'); // Tambahkan class abu-abu
+                totalBayarElement.classList.remove('bg-[#E01535]', 'text-white'); // Hapus class merah
+            }
+        }
+    }
+
+    // Tambahkan event listener onchange pada setiap input
+    document.getElementById('nama-user').addEventListener('change', checkFormInputs);
+    document.getElementById('alamat-lengkap').addEventListener('change', checkFormInputs);
+    document.getElementById('kota').addEventListener('change', checkFormInputs);
+    document.getElementById('kode-pos').addEventListener('change', checkFormInputs);
+    document.getElementById('nomor-telp').addEventListener('change', checkFormInputs);
+    document.getElementById('email').addEventListener('change', checkFormInputs);
+    // Panggil checkFormInputs pada load pertama kali jika sudah ada nilai sebelumnya
+    document.addEventListener('DOMContentLoaded', checkFormInputs);
+
+    // Tambahkan event listener untuk id btn-slide-3
+    document.getElementById('btn-slide-3').addEventListener('click', handleSlideAndPaymentActions);
+
+    // Tambahkan event listener untuk id payment
+    document.getElementById('payment').addEventListener('click', handleSlideAndPaymentActions);
+
+    document.getElementById('confirm-button').addEventListener('click', async function() {
+        // Jalankan showSlide4 dan sembunyikan overlay
         showSlide4(4);
         document.getElementById('overlay').classList.add('hidden');
-    })
+
+        // Ambil nilai input dan sessionStorage
+        const clientName = document.getElementById('nama-user').value.trim();
+        const clientPhoneNumber = document.getElementById('nomor-telp').value.trim();
+        const clientEmail = document.getElementById('email').value.trim();
+        const address = document.getElementById('alamat-lengkap').value.trim();
+        const kodePos = document.getElementById('kode-pos').value.trim();
+        const additionalPricePercentage = document.getElementById('totalbayar').getAttribute('value');
+
+        // Hardcode sementara untuk beberapa nilai
+        const shippingAreaId = 5;
+        const shippingDistrictId = 5;
+        const shippingSubdistrictId = 3;
+        const commissionPercentage = null;
+        const ktpImage = "path/to/ktp_image.jpg";
+        const bankName = "Bank ABC";
+        const bankAccountNumber = "1234567890";
+        const bankAccountHolderName = "John Doe";
+
+        // Ambil jumlah produk dari SessionStorage
+        const productCardCount = sessionStorage.getItem('productCardCount');
+        const bookingItems = [];
+
+        for (let i = 0; i < productCardCount; i++) {
+            const productVariantId = sessionStorage.getItem(`productvariantIdValue-${i}`);
+            const price = sessionStorage.getItem(`productvariantPriceValue-${i}`);
+            const qty = sessionStorage.getItem(`productQuantity-${i}`);
+            const productVariantItemId = sessionStorage.getItem(`productVariantItemIdvalue-${i}-0`);
+            const note = i === 0 ? "Please handle with care" : null; // Contoh note untuk produk pertama
+
+            bookingItems.push({
+                product_variant_id: parseInt(productVariantId),
+                price: parseFloat(price),
+                qty: parseInt(qty),
+                product_variant_item_id: parseInt(productVariantItemId),
+                note: note
+            });
+        }
+
+        // Buat payload untuk dikirim ke API
+        const payload = {
+            client_type_id: 1, // hardcoded
+            client_name: clientName,
+            client_phone_number: clientPhoneNumber,
+            client_email: clientEmail,
+            shipping_area_id: shippingAreaId,
+            shipping_district_id: shippingDistrictId,
+            shipping_subdistrict_id: shippingSubdistrictId,
+            address: address,
+            code_pos: kodePos,
+            additional_price_percentage: additionalPricePercentage ? parseFloat(additionalPricePercentage) : null,
+            commission_percentage: commissionPercentage,
+            booking_items: bookingItems,
+            ktp_image: ktpImage,
+            bank_name: bankName,
+            bank_account_number: bankAccountNumber,
+            bank_account_holder_name: bankAccountHolderName
+        };
+
+        try {
+            // Lakukan permintaan API menggunakan fetch
+            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            console.log('Order created successfully:', result);
+            // Tambahkan aksi yang ingin dilakukan setelah order berhasil dibuat
+        } catch (error) {
+            console.error('Error creating order:', error);
+        }
+    });
+
 
     function showSlide4(slideNumber) {
         document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
@@ -248,6 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const jumlahItemDiv = document.getElementById('jumlahitem');
         const ongkirElement = document.getElementById('ongkir-display');
         const totalBayarElement = document.getElementById('totalbayar');
+        const pyment = document.getElementById('payment');
 
         let totalItem = 0;
         let totalPrice = 0;
@@ -291,11 +417,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Tampilkan atau sembunyikan div jumlah item
         if (totalItem > 0) {
-            jumlahItemDiv.classList.remove('hidden');
-            totalBayarElement.classList.remove('hidden');
+            pyment.removeAttribute('disabled', 'disabled'); // Tambahkan atribut disabled
+            pyment.classList.add('bg-[#E01535]', 'text-white');
+            pyment.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]');
         } else {
-            jumlahItemDiv.classList.add('hidden');
-            totalBayarElement.classList.add('hidden');
+            pyment.setAttribute('disabled', 'disabled'); // Tambahkan atribut disabled
+            pyment.classList.remove('bg-[#E01535]', 'text-white');
+            pyment.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]');
         }
     }
 
@@ -702,3 +830,60 @@ document.addEventListener("DOMContentLoaded", function() {
     const observer = new MutationObserver(checkJarakValue);
     observer.observe(jarakElement, { attributes: true, attributeFilter: ['jarak-value'] });
 });
+
+// hidden tombbol di bebrapa halaman
+document.addEventListener("DOMContentLoaded", function() {
+    const buttonPilihAlamat = document.getElementById("bottonpilihAlamat");
+    const buttonGotoShop = document.getElementById("bottonGoShop");
+    const buttonTotalBayar = document.getElementById("totalbayar");
+    const buttonpyment = document.getElementById('payment');
+    const currentUrl = window.location.pathname;
+
+    // Periksa apakah URL adalah '/view-maps' atau '/'
+    if (currentUrl === '/view-maps') {
+      // Tambahkan class 'hidden' jika di halaman /view-maps
+      buttonPilihAlamat.classList.add('hidden');
+      buttonGotoShop.classList.remove('hidden');
+      buttonTotalBayar.classList.add('hidden');
+      buttonpyment.classList.add('hidden');
+    } else if (currentUrl === '/') {
+      // Hapus class 'hidden' jika di halaman /
+      buttonPilihAlamat.classList.remove('hidden');
+      buttonGotoShop.classList.add('hidden');
+      buttonTotalBayar.classList.add('hidden');
+      buttonpyment.classList.remove('hidden');
+    }else if(currentUrl === '/view-product'){
+      buttonPilihAlamat.classList.add('hidden');
+      buttonGotoShop.classList.remove('hidden');
+      buttonTotalBayar.classList.add('hidden');
+      buttonpyment.classList.add('hidden');
+    }
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const selectAlamat = document.getElementById("alamat");
+
+    // Periksa apakah sessionStorage memiliki key 'locationValueAttribute'
+    const storedLocation = sessionStorage.getItem('locationValueAttribute');
+
+    if (storedLocation) {
+      // Parse nilai yang disimpan dalam sessionStorage
+      const locationData = JSON.parse(storedLocation);
+
+      // Loop melalui semua option di select element
+      for (let i = 0; i < selectAlamat.options.length; i++) {
+        const option = selectAlamat.options[i];
+
+        // Cocokkan option berdasarkan data-city, data-price, dan data-district_id
+        if (
+          option.getAttribute('data-city') === locationData.city &&
+          option.getAttribute('data-price') === locationData.price &&
+          option.getAttribute('data-district_id') === locationData.district_id
+        ) {
+          option.selected = true;
+          break;
+        }
+      }
+    }
+  });

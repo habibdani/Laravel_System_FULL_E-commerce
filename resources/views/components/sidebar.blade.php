@@ -65,7 +65,7 @@
         <div id="sidebar" class="w-full p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom flex flex-col justify-between">
             <!-- Grup Tombol di Bagian Atas -->
 
-            <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-4">
+            <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-2">
                 <button id="btn-slide-2" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Shop</button>
                 <button id="btn-slide-1" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
@@ -99,6 +99,9 @@
                         <div class="relative">
                             <select id="alamat" class="form-select select2 appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]" style="width: 100%;">
                                 <!-- Opsi akan ditambahkan oleh JavaScript -->
+                                <option value="178" data-shipping-area-id="14" data-price="1200" data-city="Anyar, Kabupaten Serang" data-district_id="178">Anyar - Kab Serang</option>
+                                <option value="73" data-shipping-area-id="8" data-price="500000" data-city="Babakan Medang, Kabupaten Bogor" data-district_id="73">Babakan Medang - Kab Bogor</option>
+                                <option value="149" data-shipping-area-id="13" data-price="250000" data-city="Balaraja, Kabupaten Tangerang" data-district_id="149">Balaraja - Kab Tangerang</option>
                             </select>
                             <!-- Tambahkan ikon panah -->
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -114,11 +117,11 @@
 
                 <!-- Slide 2: Shop -->
                 <div id="slide-2" class="hidden">
-                    <h2 class="text-lg font-semibold">Shop</h2>
+                    {{-- <h2 class="text-lg font-semibold">Shop</h2> --}}
                     <p class="text-sm">Item Anda:</p>
 
                     <!-- Wrapper untuk konten dengan scroll -->
-                    <div id="list-order-container" class="list-order-item mt-2 space-y-4 max-h-[340px] overflow-y-auto scrollbar-hide">
+                    <div id="list-order-container" class="list-order-item mt-1 space-y-2 max-h-[320px] overflow-y-auto scrollbar-hide">
                     </div>
 
 
@@ -143,7 +146,7 @@
                         <!-- Kota -->
                         <div>
                             <label for="kota" class="block text-[12px] font-normal text-[#292929]">Kota</label>
-                            <input type="text" id="kota" name="kota" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Jakarta Selatan">
+                            <input type="text" disabled id="kota" name="kota" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Jakarta Selatan">
                         </div>
 
                         <!-- Kode Pos -->
@@ -270,10 +273,10 @@
 
             <div id="buttom-sidebar" class="mt-auto">
                 <hr>
-                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-left hidden">
+                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-left">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalprice" value="">0</span>
                 </div>
-                <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] rounded-b-md mb-4 shadow-md flex justify-between items-center">
+                <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] shadow-md flex justify-between items-center">
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Ongkos kirim:</p>
                         <div id="ongkir-display" location-value="" ongkir-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</div>
@@ -287,8 +290,7 @@
                             <p id="waktu" waktu-value="" class="text-green-600 font-semibold text-[16px]">0 mnt</p> <!-- Tambahkan id="waktu" -->
                     </div>
                 </div>
-
-                <div id="bottonpilihAlamat" class="bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md mb-4 shadow-md flex justify-between items-center">
+                <div id="bottonpilihAlamat" class="bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md shadow-md flex justify-between items-center">
                     <form action="{{ url('/view-maps') }}" method="GET" class="w-full h-full">
                         <input type="hidden" name="client_type_id" value="1">
                         <button type="submit" id="pilihAlamatok" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
@@ -296,10 +298,22 @@
                         </button>
                     </form>
                 </div>
+                <div id="bottonGoShop" class="bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md shadow-md flex justify-between items-center">
+                    <form action="{{ url('/') }}" method="GET" class="w-full h-full">
+                        {{-- <input type="hidden" name="client_type_id" value="1"> --}}
+                        <button type="submit" id="saveAlamat" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
+                            Pilih Produk Lain
+                        </button>
+                    </form>
+                </div>
 
-                <div class="divtotalbayar">
+                <div class="divtotalbayar mt-2">
                     <button id="totalbayar" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
                     </button>
+                </div>
+                <div class="divpayment mt-2">
+                    <button id="payment" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
+                    Payment</button>
                 </div>
             </div>
         </div>

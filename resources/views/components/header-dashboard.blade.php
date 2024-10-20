@@ -10,7 +10,6 @@
                     </svg>
                 </button>
 
-
                 <!-- Logo -->
                 <div class="flex items-center">
                     <img src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo" class="h-8">
