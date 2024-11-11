@@ -1,10 +1,10 @@
 <section name="why" class="py-0 mt-12">
-    <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div class="flex items-stretch justify-center w-[994px] space-x-[30px]">
+    <div class="flex flex-col items-center justify-center mx-auto w-full h-full px-4">
+        <div class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[994px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
             <!-- Left Section -->
-            <div class="shadow-custom w-full max-w-[900px] h-full p-8 flex items-center justify-between rounded-md bg-white relative overflow-visible">
+            <div class="shadow-custom w-full lg:max-w-[900px] h-full p-8 flex items-center justify-between rounded-md bg-white relative overflow-visible">
                 <div class="flex-1 pr-6">
-                    <h2 class="text-[22px] font-semibold mb-6">Why should you choose Andal Prima?</h2>
+                    <h2 class="text-[22px] font-semibold mb-6 text-center lg:text-left">Why should you choose Andal Prima?</h2>
                     <div class="space-y-2">
                         <div class="flex items-start space-x-4 mb-2">
                             <img src="{{ asset('storage/icons/docs.svg') }}" alt="docs" class="w-auto h-[18.7px] mt-1">
@@ -35,12 +35,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="absolute right-[-65px] z-10">
+            </div>
+
+            <!-- Right Section -->
+            <div class="shadow-custom w-full lg:max-w-[245px] h-full p-8 flex flex-col items-center justify-between rounded-md bg-white relative overflow-visible">
+                <div class="absolute left-[-135px] z-10 lg:block">
                     <img src="{{ asset('storage/design/person.svg') }}" alt="person" class="z-1">
                 </div>
-            </div>
-            <!-- Right Section -->
-            <div class="shadow-custom w-full max-w-[245px] h-full p-8 flex flex-col justify-between rounded-md bg-white relative overflow-visible">
                 <div class="flex flex-col justify-center items-start h-full space-y-4">
                     <p class="text-[18px] font-semibold mb-2 w-[106px] text-start">We’re <br> the solution for exclusive products</p>
 
@@ -68,12 +69,39 @@
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
 <style>
     .shadow-custom {
         box-shadow: 0px 4px 4px 0px #00000026;
+    }
+
+    /* Responsive styling */
+    @media (max-width: 768px) {
+        /* Stack Right Section below Left Section */
+        .flex-col.lg\:flex-row {
+            flex-direction: column;
+        }
+
+        /* Center align text for smaller screens */
+        .text-center {
+            text-align: center;
+        }
+
+        /* Adjust the width of left and right sections on smaller screens */
+        .lg\:max-w-[900px] {
+            max-width: 100%;
+        }
+
+        .lg\:max-w-[245px] {
+            max-width: 100%;
+        }
+
+        /* Adjust person image position */
+        .absolute.right-\[-65px\] {
+            position: static;
+            margin-top: 20px;
+        }
     }
 </style>

@@ -5,7 +5,7 @@
             <div id="explore-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
                 <div class="p-5">
                     <h2 id="explore-product-name" class="text-[22px] font-bold text-black">Explore Exclusive Deals Now</h2>
-                    <span class="text-[12px] font-normal text-[#747474]">Bestselling products: curated favorites for style, function, and satisfaction</span>
+                    <span class="text-[12px] explore-description font-normal text-[#747474]">Bestselling products: curated favorites for style, function, and satisfaction</span>
                 </div>
             </div>
 
@@ -59,6 +59,18 @@
 
     button:focus {
         outline: none;
+    }
+
+    #explore-view-all-link,
+    .explore-description {
+        display: flex;
+    }
+
+    @media (max-width: 428px) {
+        #explore-view-all-link,
+        .explore-description {
+            display: none;
+        }
     }
 </style>
 <script>

@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             productPrice.innerText = productData.price_display;
 
             const stockElement = document.getElementById('productStock');
-            stockElement.innerText = productData.stock;
+            stockElement.innerText = productData.stock -1;
 
             const productDescription = document.getElementById('productDescription');
             productDescription.innerHTML = productData.descriptions;
@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         button.innerText = item.variant_item_name;
                         button.setAttribute('add_price', item.add_price);
                         button.setAttribute('variant_item_id', item.variant_item_id);
+                        button.setAttribute('variant_item_name', item.variant_item_name);
 
                         optionDiv.appendChild(button); // Tambahkan tombol ke dalam optionDiv
                     });
@@ -131,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Buat elemen p untuk label varian
                     const labelElement = document.createElement('p');
                     labelElement.id = `type-label-${index + 1}`;  // Set ID dinamis berdasarkan indeks
+                    labelElement.setAttribute('variant_item_type_id',variantType.variant_item_type_id);
+                    labelElement.setAttribute('variant_item_type_name',variantType.variant_item_type_name);
                     labelElement.classList.add('text-gray-600', 'text-[12px]');
                     labelElement.innerText = variantType.variant_item_type_name; // Isi dengan nama variant type
                     variantSideContainer.appendChild(labelElement);
@@ -141,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     valueElement.classList.add('text-gray-800', 'font-semibold', 'mb-2', 'text-[12px]');
                     valueElement.innerText = '-'; // Default value atau bisa di-update nantinya
                     valueElement.setAttribute('variant_item_id', '');
+                    valueElement.setAttribute('variant_item_name', '');
                     variantSideContainer.appendChild(valueElement);
                 });
             }

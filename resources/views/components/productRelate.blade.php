@@ -44,7 +44,7 @@
         box-shadow: 0px 4px 4px 0px #00000026;
     }
 
-    #relate-product-list {
+    #relate-view-all-link {
         padding-bottom: 10px;  /* Adjust as needed */
         margin-bottom: 10px;  /* Adjust as needed */
         overflow-x: auto;  /* Still allows scrolling if necessary */
@@ -52,8 +52,17 @@
         scrollbar-width: none;  /* Firefox */
     }
 
-    #relate-product-list::-webkit-scrollbar {
+    #relate-view-all-link::-webkit-scrollbar {
         display: none;  /* Safari and Chrome */
+    }
+    #relate-view-all-link {
+        display: flex;
+    }
+
+    @media (max-width: 428px) {
+        #relate-view-all-link {
+            display: none;
+        }
     }
 </style>
 <script>

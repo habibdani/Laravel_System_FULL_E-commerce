@@ -40,6 +40,15 @@
 
 <style>
 
+    #special-view-all-link {
+        display: flex;
+    }
+
+    @media (max-width: 428px) {
+        #special-view-all-link {
+            display: none;
+        }
+    }
     .shadow-custom {
         box-shadow: 0px 4px 4px 0px #00000026;
     }

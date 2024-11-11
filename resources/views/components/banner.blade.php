@@ -24,11 +24,32 @@
     </div>
 
     <style>
+        /* Ukuran default untuk layar besar */
         #banner-container {
+            width: 994px;
+            height: 206px;
             transition: opacity 0.5s ease-in-out;
             opacity: 1;
         }
 
+        /* Media query untuk layar dengan lebar maksimum 1440px */
+        @media (max-width: 1440px) {
+            #banner-container {
+                width: 994px;
+                height: 206px;
+            }
+        }
+
+        /* Media query untuk layar dengan lebar maksimum 428px */
+        @media (max-width: 428px) {
+            #banner-container {
+                width: 320.26px;
+                height: 206px;
+                margin-top: 7.5rem; /* mt-30 */
+            }
+        }
+
+        /* Animasi fade out */
         #banner-container.fade-out {
             opacity: 0;
         }
@@ -50,7 +71,7 @@
                 setTimeout(() => {
                     banner.style.backgroundImage = `linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url(${images[index]})`;
                     banner.classList.remove('fade-out');
-                }, 500); // Match this with the fade-out duration
+                }, 500);
             }
 
             function startAutoSlide() {
@@ -84,5 +105,3 @@
         });
     </script>
 </section>
-
-

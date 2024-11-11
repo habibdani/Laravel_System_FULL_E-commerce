@@ -1,18 +1,18 @@
 <section name="detail-product" class="py-0 mt-8 z-5">
     <div class="container mx-auto w-full h-full">
-        <div class="flex flex-col pt-20 lg:flex-row justify-between space-y-3 lg:space-y-0 lg:space-x-3 max-w-[994px] mx-auto">
+        <div class="flex flex-col pt-20 lg:flex-row justify-between space-y-3 lg:space-y-0 lg:space-x-3 lg:max-w-[994px] w-full mx-auto">
              <!-- Left Section (Image and Thumbnails) -->
-             <div class="lg:w-3/4 flex flex-col lg:flex-row items-start space-x-3">
-                <div class="w-full lg:w-1/3 flex flex-col z-10">
+             <div class="lg:w-3/4 w-full flex image-and-thumbnails flex-col lg:flex-row items-start space-x-3">
+                <div class="w-full lg:w-1/3 flex flex-col z-10 responsive-main-image">
                     <img id="mainImage" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}"
 
                     alt="Main Product Image" class="w-full h-[241.5px] object-cover mb-2 rounded-lg shadow-lg">
-                    <div id="list-image-product" class="flex space-x-2 mr-4 z-10 ">
+                    <div id="list-image-product" class="flex space-x-2 mb-3 z-10 ">
                         <!-- Thumbnail Images -->
                     </div>
                 </div>
                 <div class="w-full h-auto lg:w-2/3">
-                    <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <div class="bg-white p-4 rounded-lg shadow-lg main-detail-product">
                          <!-- Product Title and Price -->
                          <div class="mb-3">
                             <h1 id="productTitle" product-variant-id="" class="text-[28px] font-bold">...</h1>
@@ -34,10 +34,11 @@
             <!-- Right Section (Product Details) -->
             <div class="lg:w-1/4 flex flex-col space-y-3">
                 <!-- Order Summary -->
-                <div class="py-4 bg-white rounded-lg shadow-lg">
+                <div class="py-4 bg-white rounded-lg submain-detail-product shadow-lg">
                     <h3 class="px-4 text-gray-800 text-[14px] font-semibold mb-2">Atur jumlah produk</h3>
                     <div class="px-4 flex items-center space-x-4 mb-4">
                         <img id="rightImage" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}" alt="Product Thumbnail" class="border-2 border-gray-300 w-[75px] h-[75px] object-cover rounded-lg">
+
                         <div id="variantSideContainer">
 
                         </div>
@@ -62,11 +63,11 @@
                             <span class="font-roboto text-[16px] font-semibold leading-4.5 tracking-wide text-left">Add</span>
                         </button>
                     </div>
-                    <p class="px-4">Stock: <span id="productStock" class="text-gray-700 font-normal">60</span></p>
+                    <p class="px-4">Stock: <span id="productStock" class="text-gray-700 font-normal"></span></p>
                 </div>
 
                 <!-- Note Section -->
-                <div class="p-4 bg-white rounded-lg shadow-lg">
+                <div class="p-4 bg-white rounded-lg shadow-lg product-note">
                     <p class="text-gray-800 font-semibold mb-2">Note:</p>
                     <ul class="list-disc list-inside font-normal text-[#747474] text-[12px] space-y-2">
                         <li class="leading-[13.72px]" style="text-indent: -17px; padding-left: 15px;">Harap tanyakan kepada kami mengenai ongkos pengiriman, waktu pengiriman, dan ketersediaan stok barang sebelum bertransaksi.</li>
@@ -93,6 +94,62 @@
             background-color: #F9F5F6;
         }
 
+        @media (max-width: 428px) {
+            .responsive-main-image {
+                max-width: 90%;
+                width: 100%;
+                margin: 0 auto; /* Center the div horizontally */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Sesuaikan juga ukuran gambar utama */
+            #mainImage {
+                max-width: 100%; /* Ensure image fits within 390px container */
+                width: 331px;
+                height: auto;
+                object-fit: cover;
+            }
+
+            /* Thumbnail wrapper agar tidak melewati lebar kontainer */
+            #list-image-product {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+                max-width: 90%;
+            }
+
+            .main-detail-product,
+            .submain-detail-product {
+                width: 331px; /* Atur lebar khusus pada layar kecil */
+                margin: 0 auto; /* Center secara horizontal */
+            }
+            .image-and-thumbnails {
+                gap: 0; /* Mengatur jarak horizontal antar-elemen anak ke 0 */
+            }
+
+            .product-note {
+                width: 331px; /* Atur lebar khusus pada layar kecil */
+                margin: 0 auto; /* Center secara horizontal */
+            }
+        }
     </style>
+
+    <script> // script khusu responsive
+        function handleResponsiveClasses() {
+            const element = document.querySelector('.image-and-thumbnails');
+            if (window.innerWidth <= 428) {
+                element.classList.remove('space-x-3');
+            } else {
+                element.classList.add('space-x-3');
+            }
+        }
+
+        // Jalankan fungsi saat halaman dimuat dan ketika ukuran layar berubah
+        window.addEventListener('load', handleResponsiveClasses);
+        window.addEventListener('resize', handleResponsiveClasses);
+    </script>
     @vite('resources/js/productDetails-script.js')
 </section>

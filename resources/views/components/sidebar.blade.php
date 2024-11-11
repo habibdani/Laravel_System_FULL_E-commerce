@@ -59,6 +59,16 @@
         .scrollbar-hide {
             scrollbar-width: none; /* Hides the scrollbar in Firefox */
         }
+        #container-sidebar {
+            width: 25%; /* Sesuai dengan kelas w-1/4 */
+        }
+
+        /* CSS untuk layar ponsel atau ukuran layar 428px ke bawah */
+        @media (max-width: 428px) {
+            #container-sidebar {
+                width: 90%; /* Mengganti w-1/4 dengan w-[85%] */
+            }
+        }
     </style>
 
     <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px]" id="container-sidebar">

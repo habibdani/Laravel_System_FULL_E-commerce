@@ -112,51 +112,47 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('payment').addEventListener('click', handleSlideAndPaymentActions);
 
     document.getElementById('confirm-button').addEventListener('click', async function() {
-        // Jalankan showSlide4 dan sembunyikan overlay
-        showSlide4(4);
-        document.getElementById('overlay').classList.add('hidden');
 
-        // Ambil nilai input dan sessionStorage
-        const clientName = document.getElementById('nama-user').value.trim();
-        const clientPhoneNumber = document.getElementById('nomor-telp').value.trim();
-        const clientEmail = document.getElementById('email').value.trim();
-        const address = document.getElementById('alamat-lengkap').value.trim();
-        const kodePos = document.getElementById('kode-pos').value.trim();
-        const additionalPricePercentage = document.getElementById('totalbayar').getAttribute('value');
 
-        // Hardcode sementara untuk beberapa nilai
-        const shippingAreaId = 5;
-        const shippingDistrictId = 5;
-        const shippingSubdistrictId = 3;
-        const commissionPercentage = null;
-        const ktpImage = "path/to/ktp_image.jpg";
-        const bankName = "Bank ABC";
-        const bankAccountNumber = "1234567890";
-        const bankAccountHolderName = "John Doe";
+        // Collect data from inputs and SessionStorage
+        const clientName = document.getElementById('nama-user').value;
+        const clientPhoneNumber = document.getElementById('nomor-telp').value;
+        const clientEmail = document.getElementById('email').value;
+        const shippingAreaId = sessionStorage.getItem('shipping_area_id');
+        const shippingDistrictId = sessionStorage.getItem('shipping_district_id');
+        const shippingSubdistrictId = 3; // Hardcoded temporarily
+        const address = document.getElementById('alamat-lengkap').value;
+        const kodePos = document.getElementById('kode-pos').value;
+        const additionalPricePercentage = document.getElementById('totalbayar') ? document.getElementById('totalbayar').value : null;
+        const commissionPercentage = null; // Hardcoded temporarily
+        const ktpImage = "path/to/ktp_image.jpg"; // Hardcoded temporarily
+        const bankName = "Bank ABC"; // Hardcoded
+        const bankAccountNumber = "1234567890"; // Hardcoded
+        const bankAccountHolderName = "John Doe"; // Hardcoded
 
-        // Ambil jumlah produk dari SessionStorage
-        const productCardCount = sessionStorage.getItem('productCardCount');
+        // Generate booking_items array dynamically from SessionStorage
         const bookingItems = [];
+        const productCardCount = sessionStorage.getItem('productCardCount') || 0;
 
         for (let i = 0; i < productCardCount; i++) {
             const productVariantId = sessionStorage.getItem(`productvariantIdValue-${i}`);
             const price = sessionStorage.getItem(`productvariantPriceValue-${i}`);
             const qty = sessionStorage.getItem(`productQuantity-${i}`);
             const productVariantItemId = sessionStorage.getItem(`productVariantItemIdvalue-${i}-0`);
-            const note = i === 0 ? "Please handle with care" : null; // Contoh note untuk produk pertama
+            const note = sessionStorage.getItem(`productVariantNode-${i}`) || "";
 
             bookingItems.push({
-                product_variant_id: parseInt(productVariantId),
+                product_variant_id: productVariantId,
                 price: parseFloat(price),
-                qty: parseInt(qty),
-                product_variant_item_id: parseInt(productVariantItemId),
+                qty: parseInt(qty, 10),
+                product_variant_item_id: productVariantItemId,
                 note: note
             });
         }
 
-        // Buat payload untuk dikirim ke API
+        // Prepare payload
         const payload = {
-            client_type_id: 1, // hardcoded
+            client_type_id: 1, // Hardcoded
             client_name: clientName,
             client_phone_number: clientPhoneNumber,
             client_email: clientEmail,
@@ -174,8 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
             bank_account_holder_name: bankAccountHolderName
         };
 
+        console.log(payload);
+        // Send API request
         try {
-            // Lakukan permintaan API menggunakan fetch
             const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
                 method: 'POST',
                 headers: {
@@ -191,10 +188,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const result = await response.json();
             console.log('Order created successfully:', result);
-            // Tambahkan aksi yang ingin dilakukan setelah order berhasil dibuat
+            // Additional actions after successful order creation
+            // Jalankan showSlide4 dan sembunyikan overlay
+            showSlide4(4);
+            document.getElementById('overlay').classList.add('hidden');
         } catch (error) {
             console.error('Error creating order:', error);
         }
+
     });
 
 
@@ -472,15 +473,46 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Produk baru ditambahkan, ambil productVariantId dari ID elemen
                     const productVariantId = node.querySelector('[id^="sidebar-product-id"]').id.split('sidebar-product-id-')[1];
 
+                    const updateTotalPrice = () => {
+                        const priceElements = document.querySelectorAll('[id^="sidebar_price_product_"]');
+                        let totalPrice = 0;
+                        priceElements.forEach(priceElement => {
+                            const priceValue = parseFloat(priceElement.getAttribute('sidebar_value_price')) || 0;
+                            totalPrice += priceValue;
+                        });
+
+                        // Perbarui elemen total harga
+                        const totalPriceElement = document.getElementById('totalprice');
+                        totalPriceElement.setAttribute('value', totalPrice);
+                        totalPriceElement.textContent = `Rp. ${totalPrice.toLocaleString('id-ID')}`;
+                    };
+
+                    // Fungsi untuk memperbarui harga total berdasarkan qty dan satuan harga
+                    const updatePriceDisplay = () => {
+                        const qtyInput = document.getElementById(`sidebar_quantity_${productVariantId}`);
+                        const quantity = parseInt(qtyInput.value);
+                        const priceElement = document.getElementById(`sidebar_price_product_${productVariantId}`);
+                        const unitPrice = parseFloat(priceElement.getAttribute('sidebar_price_satuan'));
+                        const totalPrice = unitPrice * quantity;
+
+                        // Update attribute dan tampilan harga
+                        priceElement.setAttribute('sidebar_value_price', totalPrice);
+                        const priceTextElement = document.getElementById(`sidebar-price-text-${productVariantId}`);
+                        priceTextElement.textContent = `Rp. ${totalPrice.toLocaleString('id-ID')}`;
+
+                        updateTotalPrice();
+                    };
+
                     // Tambahkan event listener untuk tombol decrease
                     const decreaseButton = document.getElementById(`sidebar-decrease-${productVariantId}`);
                     if (decreaseButton) {
                         decreaseButton.addEventListener('click', () => {
-                            const qtyInput = document.getElementById(`sidebar-quantity-${productVariantId}`);
+                            const qtyInput = document.getElementById(`sidebar_quantity_${productVariantId}`);
                             let qty = parseInt(qtyInput.value);
                             if (qty > 1) {
                                 qty -= 1;
                                 qtyInput.value = qty;
+                                updatePriceDisplay(); // Update harga setelah pengurangan qty
                             }
                         });
                     }
@@ -489,10 +521,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const increaseButton = document.getElementById(`sidebar-increase-${productVariantId}`);
                     if (increaseButton) {
                         increaseButton.addEventListener('click', () => {
-                            const qtyInput = document.getElementById(`sidebar-quantity-${productVariantId}`);
+                            const qtyInput = document.getElementById(`sidebar_quantity_${productVariantId}`);
                             let qty = parseInt(qtyInput.value);
                             qty += 1;
                             qtyInput.value = qty;
+                            updatePriceDisplay(); // Update harga setelah penambahan qty
                         });
                     }
 
@@ -503,9 +536,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             const productCard = document.getElementById(`sidebar-product-id-${productVariantId}`).closest('.sidebar-product-card');
                             if (productCard) {
                                 productCard.remove();
+                                updateTotalPrice();
                             }
                         });
                     }
+
+                    // Inisialisasi tampilan harga saat produk pertama kali ditambahkan
+                    updatePriceDisplay();
                 }
             });
         });
@@ -534,41 +571,42 @@ function saveDataToSessionStorage() {
         const ongkirValueAttribute = ongkirDisplay.getAttribute('ongkir-value');
         const locationValueAttribute = ongkirDisplay.getAttribute('location-value');
 
-        sessionStorage.setItem('ongkirValue', ongkirValue);
-        sessionStorage.setItem('ongkirValueAttribute', ongkirValueAttribute);
-        sessionStorage.setItem('locationValueAttribute', locationValueAttribute);
+        sessionStorage.setItem('ongkir_value', ongkirValue);
+        sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute);
+        sessionStorage.setItem('location_value_attribute', locationValueAttribute);
     }
     if (jarak) {
-        sessionStorage.setItem('jarakValue', jarak.innerText);
+        sessionStorage.setItem('jarak_value', jarak.innerText);
     }
     if (waktu) {
-        sessionStorage.setItem('waktuValue', waktu.innerText);
+        sessionStorage.setItem('waktu_value', waktu.innerText);
     }
     if (tipePembelian) {
-        sessionStorage.setItem('tipePembelian', tipePembelian.value);
+        sessionStorage.setItem('tipe_pembelian', tipePembelian.value);
     }
     if (tiepClient) {
-        sessionStorage.setItem('tiepClient', tiepClient.value);
+        sessionStorage.setItem('tiep_client', tiepClient.value);
     }
     if (tipePengiriman) {
-        sessionStorage.setItem('tipePengiriman', tipePengiriman.value);
+        sessionStorage.setItem('tipe_pengiriman', tipePengiriman.value);
     }
     if (alamat) {
-        sessionStorage.setItem('alamatValue', alamat.value);
+        sessionStorage.setItem('alamat_value', alamat.value);
     }
     if (listOrderContainer) {
-        sessionStorage.setItem('productSidebarHTML', listOrderContainer.innerHTML);
+        sessionStorage.setItem('List_product_sidebar_HTML', listOrderContainer.innerHTML);
     }
     // Cek dan simpan jumlah sidebar-product-card
     const productCardCount = listOrderItems.length;
-    sessionStorage.setItem('productCardCount', productCardCount);
+    sessionStorage.setItem('product_card_count', productCardCount);
 
     // Simpan data dari tiap-tiap sidebar-product-card
     listOrderItems.forEach((productCard, index) => {
         const imgElement = productCard.querySelector('img');
         const productIdElement = productCard.querySelector(`[id^="sidebar-product-id-"]`);
-        const priceElement = productCard.querySelector(`[id^="price-product-sidebar-"]`);
-        const quantityElement = productCard.querySelector(`[id^="sidebar-quantity-"]`);
+        const priceElement = productCard.querySelector(`[id^="sidebar_price_product_"]`);
+        const priceDisplayElement = productCard.querySelector(`[id^="sidebar-price-text-"]`);
+        const quantityElement = productCard.querySelector(`[id^="sidebar_quantity_"]`);
 
         // Simpan data gambar
         if (imgElement) {
@@ -576,33 +614,45 @@ function saveDataToSessionStorage() {
         }
 
         // Simpan ID produk dan text-nya
-        if (productIdElement) {
-            const productIdValue = productIdElement.getAttribute(`value-${productIdElement.id}`);
-            sessionStorage.setItem(`productIdValue-${index}`, productIdValue);
-            sessionStorage.setItem(`productIdText-${index}`, productIdElement.innerText);
+        const productVariantIdValue = productIdElement.getAttribute('value-sidebar-product-id');
+        if (productVariantIdValue) {
+            sessionStorage.setItem(`product_variant_id_${index}`, productVariantIdValue);
+            sessionStorage.setItem(`product_variant_name_${index}`, productIdElement.innerText);
         }
 
-        // Cek apakah ada variant label di sidebar-list-varaint-label
-        const variantLabels = productCard.querySelectorAll('.sidebar-variant-label');
-        variantLabels.forEach((label, variantIndex) => {
-            const optionElement = label.querySelector(`[id^="sidebar-option-type-"]`);
-            if (optionElement) {
-                const optionValue = optionElement.getAttribute(`value-${optionElement.id}`);
-                sessionStorage.setItem(`variantOptionValue-${index}-${variantIndex}`, optionValue);
-                sessionStorage.setItem(`variantOptionText-${index}-${variantIndex}`, optionElement.innerText);
-            }
-        });
+        // Ambil semua elemen varian di dalam productCard
+        const variantLabels = productCard.querySelectorAll('[id^="sidebar_label_variant_item_type_"]');
+
+        if (variantLabels.length > 0) {
+            variantLabels.forEach((label, variantIndex) => {
+                const variantTypeId = label.getAttribute('sidebar_variant_item_type_id');
+                const variantTypeName = label.textContent.trim().split(':')[0].trim(); // Nama varian sebelum ":"
+
+                // Ambil elemen span di dalam label untuk mendapatkan item varian
+                const variantValueElem = label.querySelector('span[id^="sidebar_variant_item_"]');
+                if (variantValueElem) {
+                    const variantItemId = variantValueElem.getAttribute('sidebar_variant_item_id');
+                    const variantItemName = variantValueElem.textContent.trim();
+
+                    // Simpan data varian ke dalam sessionStorage dengan kunci unik
+                    sessionStorage.setItem(`variant_type_name_${index}_${variantIndex}`, variantTypeName);
+                    sessionStorage.setItem(`variant_type_id_${index}_${variantIndex}`, variantTypeId);
+                    sessionStorage.setItem(`variant_item_id_${index}_${variantIndex}`, variantItemId);
+                    sessionStorage.setItem(`variant_item_name_${index}_${variantIndex}`, variantItemName);
+                }
+            });
+        }
 
         // Simpan harga produk dan text-nya
         if (priceElement) {
-            const priceValue = priceElement.getAttribute(`value-${priceElement.id}`);
-            sessionStorage.setItem(`productPriceValue-${index}`, priceValue);
-            sessionStorage.setItem(`productPriceText-${index}`, priceElement.innerText);
+            const priceValue = priceElement.getAttribute(`sidebar_value_price`);
+            sessionStorage.setItem(`product_variant_price_value_${index}`, priceValue);
+            sessionStorage.setItem(`product_price_text_${index}`, priceDisplayElement.innerText);
         }
 
         // Simpan kuantitas produk
         if (quantityElement) {
-            sessionStorage.setItem(`productQuantity-${index}`, quantityElement.value);
+            sessionStorage.setItem(`product_varaint_quantity_${index}`, quantityElement.value);
         }
     });
 

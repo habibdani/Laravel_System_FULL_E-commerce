@@ -128,6 +128,26 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    document.getElementById('alamat').addEventListener('change', function () {
+        // Ambil elemen terpilih
+        const selectedOption = this.options[this.selectedIndex];
+
+        // Ambil nilai data dari option yang terpilih
+        const shippingAreaId = selectedOption.getAttribute('data-shipping-area-id');
+        const districtId = selectedOption.getAttribute('data-district_id');
+
+        // Cek apakah key sudah ada di SessionStorage
+        if (sessionStorage.getItem('shipping_area_id') && sessionStorage.getItem('district_id')) {
+            // Jika ada, update nilainya
+            sessionStorage.setItem('shipping_area_id', shippingAreaId);
+            sessionStorage.setItem('district_id', districtId);
+        } else {
+            // Jika belum ada, simpan nilai baru
+            sessionStorage.setItem('shipping_area_id', shippingAreaId);
+            sessionStorage.setItem('district_id', districtId);
+        }
+    });
+
     // Function to render shipping list and auto-select based on sessionStorage
     async function renderListShipping() {
         try {
