@@ -1,23 +1,24 @@
 
 <nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-2 z-50">
     <!-- hidden Row -->
-    <div class="max-w-[90%] hidden-row mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="flex space-x-2 justify-center h-10 mx-auto">
-            <!-- Left Side (Logo and Company Name) -->
-            <div class="flex items-center hidden-row-logo">
+    <div class="max-w-[90%] hidden-row mx-auto px-2 lg:px-8">
+        <div class="flex justify-between items-center h-10 mx-auto space-x-2">
+            <!-- Left Section: Logo and Company Name -->
+            <div class="flex items-center logo-section">
                 <a href="http://127.0.0.1:8001/">
                     <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
                 </a>
             </div>
 
-            <!-- Right Side (Contact Info or Other Icons) -->
-            <div class="flex items-center hidden-row-nomor">
+            <!-- Right Section: Contact Information or Other Icons -->
+            <div class="flex items-center contact-section">
                 <a href="#" class="inline-flex items-center">
                     <img src="{{ asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4 mr-1.5">
                     <span class="font-roboto text-sm font-medium leading-4.5 tracking-wide text-left">(042) 883219</span>
                 </a>
             </div>
         </div>
+
     </div>
 
     <!-- First Row -->
@@ -64,7 +65,7 @@
         <div class="flex mx-auto justify-between h-10">
             <div class="flex justify-center h-10 mx-auto overflow-x-auto nanonano whitespace-nowrap scrollbar-hide">
                 <!-- Navbar links -->
-                <div class="space-x-1 sm:-my-px sm:ml-3 sm:flex mx-auto">
+                <div class="space-x-1 sm:-my-px sm:ml-3 nanonanolist sm:flex mx-auto">
                     <a href="#" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/untuk-anda-gray.svg') }}" alt="Untuk Anda" class="h-5 w-5 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/untuk-anda-red.svg') }}" alt="Untuk Anda" class="h-5 w-5 mr-1 hidden group-hover:block">
@@ -152,7 +153,7 @@
     /* Responsive styling */
     @media (max-width: 1440px) {
         .nanonano {
-            overflow-y: auto;
+            overflow-x: auto;
         }
 
     }
@@ -186,7 +187,7 @@
 
         /* Adjust search input width to fit within 331px container */
         #search-input {
-            width: 120%; /* Full width minus the button width */
+            width: 100%; /* Full width minus the button width */
             font-size: 0.75rem; /* Adjust font size if needed */
             padding-left: 2.5rem; /* Space for search icon */
             padding-right: 0.5rem; /* Reduced padding for smaller screens */
@@ -203,16 +204,30 @@
             display: flex; /* Tampilkan elemen hidden-row */
         }
 
-        #secondrow .overflow-x-auto {
-            overflow-x: auto;       /* Enable horizontal scroll */
-            white-space: nowrap;    /* Prevent items from wrapping to new lines */
-            display: flex;          /* Align items in a row */
-            width: 120%;
-        }
 
         /* Ensure each link item stays in one row */
         .space-x-1 > a {
             flex-shrink: 0; /* Prevent items from shrinking */
+        }
+
+         /* Container for horizontal scrolling */
+        .nanonanolist {
+            display: flex;
+            overflow-x: auto; /* Enables horizontal scroll */
+            white-space: nowrap; /* Prevents items from wrapping to the next line */
+            -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
+            scrollbar-width: none; /* Hides scrollbar in Firefox */
+        }
+
+        /* Hides scrollbar in WebKit browsers */
+        .nanonanolist::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Adjust spacing between links */
+        .nanonanolist .space-x-1 > a {
+            flex-shrink: 0; /* Prevent items from shrinking */
+            margin-right: 8px; /* Space between items */
         }
     }
 </style>
