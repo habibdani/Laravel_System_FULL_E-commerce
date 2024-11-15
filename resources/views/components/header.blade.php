@@ -3,7 +3,7 @@
     <!-- hidden Row -->
     <div class="max-w-[90%] hidden-row mx-auto px-2 lg:px-8">
         <div class="flex justify-between items-center h-10 mx-auto space-x-2">
-            <!-- Left Section: Logo and Company Name -->
+            <!-- Left Section: Logo and tes Company Name -->
             <div class="flex items-center logo-section">
                 <a href="http://127.0.0.1:8001/">
                     <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
