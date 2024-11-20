@@ -135,16 +135,36 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ambil nilai data dari option yang terpilih
         const shippingAreaId = selectedOption.getAttribute('data-shipping-area-id');
         const districtId = selectedOption.getAttribute('data-district_id');
-
+        const ongkirValue = ongkirDisplay.innerText;
+        const ongkirValueAttribute = ongkirDisplay.getAttribute('ongkir-value');
+        const locationValueAttribute = ongkirDisplay.getAttribute('location-value');
+        const jarakValue = jarak.innerText.trim();
+        const jarakValueAttribute = jarak.getAttribute('jarak-value');
+        const waktuValue = waktu.innerText.trim();
+        const waktuValueAttribute = waktu.getAttribute('waktu-value');
         // Cek apakah key sudah ada di SessionStorage
         if (sessionStorage.getItem('shipping_area_id') && sessionStorage.getItem('district_id')) {
             // Jika ada, update nilainya
             sessionStorage.setItem('shipping_area_id', shippingAreaId);
             sessionStorage.setItem('district_id', districtId);
+            sessionStorage.setItem('ongkir_value', ongkirValue);
+            sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute || '');
+            sessionStorage.setItem('location_value_attribute', locationValueAttribute || '');
+            sessionStorage.setItem('jarak_value', jarakValue || '0 km');
+            sessionStorage.setItem('jarak_value_attribute', jarakValueAttribute || '');
+            sessionStorage.setItem('waktu_value', waktuValue || '0 mnt');
+            sessionStorage.setItem('waktu_value_attribute', waktuValueAttribute || '');
         } else {
             // Jika belum ada, simpan nilai baru
             sessionStorage.setItem('shipping_area_id', shippingAreaId);
             sessionStorage.setItem('district_id', districtId);
+            sessionStorage.setItem('ongkir_value', ongkirValue);
+            sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute || '');
+            sessionStorage.setItem('location_value_attribute', locationValueAttribute || '');
+            sessionStorage.setItem('jarak_value', jarakValue || '0 km');
+            sessionStorage.setItem('jarak_value_attribute', jarakValueAttribute || '');
+            sessionStorage.setItem('waktu_value', waktuValue || '0 mnt');
+            sessionStorage.setItem('waktu_value_attribute', waktuValueAttribute || '');
         }
     });
 
