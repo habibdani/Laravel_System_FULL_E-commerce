@@ -165,8 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const ongkirDisplay = document.getElementById('ongkir-display');
             const iframe = document.getElementById("map");
 
-            // Check if sessionStorage has 'locationValueAttribute'
-            const storedLocation = sessionStorage.getItem('locationValueAttribute');
+            // Check if sessionStorage has 'ongkir_value_attribute'
+            const storedLocation = sessionStorage.getItem('ongkir_value_attribute');
             if (storedLocation) {
                 const locationData = JSON.parse(storedLocation);
                 for (let i = 0; i < selectAlamat.options.length; i++) {
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ongkirDisplay.setAttribute('location-value', JSON.stringify(jsonData));
 
                 // Save the selected value to sessionStorage
-                sessionStorage.setItem('locationValueAttribute', JSON.stringify(jsonData));
+                sessionStorage.setItem('ongkir_value_attribute', JSON.stringify(jsonData));
 
                 const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
                 iframe.src = url;

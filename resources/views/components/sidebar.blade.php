@@ -109,9 +109,7 @@
                         <div class="relative">
                             <select id="alamat" class="form-select select2 appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]" style="width: 100%;">
                                 <!-- Opsi akan ditambahkan oleh JavaScript -->
-                                <option value="178" data-shipping-area-id="14" data-price="1200" data-city="Anyar, Kabupaten Serang" data-district_id="178">Anyar - Kab Serang</option>
-                                <option value="73" data-shipping-area-id="8" data-price="500000" data-city="Babakan Medang, Kabupaten Bogor" data-district_id="73">Babakan Medang - Kab Bogor</option>
-                                <option value="149" data-shipping-area-id="13" data-price="250000" data-city="Balaraja, Kabupaten Tangerang" data-district_id="149">Balaraja - Kab Tangerang</option>
+
                             </select>
                             <!-- Tambahkan ikon panah -->
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -121,8 +119,8 @@
                             </div>
                         </div>
                     </div>
-                    <div hidden class="hidden" id="type-client" value=""></div>
-                    <div hidden class="hidden" id="pengiriman" value=""></div>
+                    <div hidden class="hidden" id="type-client" value="1"></div>
+                    <div hidden class="hidden" id="pengiriman" value="2"></div>
                 </div>
 
                 <!-- Slide 2: Shop -->
