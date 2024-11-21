@@ -3,17 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // script button to alamat ubah tampilan pengiriman
     function updateButtonText() {
-        const locationValue = sessionStorage.getItem('ongkir_value_attribute');
+        const locationValue = sessionStorage.getItem('city_value');
         const pilihAlamatButton = document.getElementById('pilihAlamatok');
 
         if (locationValue) {
             try {
-                const locationData = JSON.parse(locationValue);
-                if (locationData.city) {
+                const locationValue = sessionStorage.getItem('city_value');
                     pilihAlamatButton.innerHTML = `<svg width="15" height="20" viewBox="0 0 15 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7.33133 0.664062C3.43041 0.664062 0.256836 3.8381 0.256836 7.73912C0.256836 11.4942 6.67565 20.2674 6.94896 20.6389L7.20403 20.986C7.23386 21.0268 7.28136 21.0507 7.33133 21.0507C7.38208 21.0507 7.42927 21.0268 7.45941 20.986L7.71432 20.6389C7.98779 20.2674 14.4064 11.4942 14.4064 7.73912C14.4064 3.8381 11.2324 0.664062 7.33133 0.664062ZM7.33133 5.20485C8.72904 5.20485 9.86561 6.34146 9.86561 7.73912C9.86561 9.13606 8.72899 10.2734 7.33133 10.2734C5.93444 10.2734 4.79706 9.13606 4.79706 7.73912C4.79706 6.34146 5.93439 5.20485 7.33133 5.20485Z" fill="white"/>
-                    </svg>&nbsp; Dikirim ke ${locationData.city}`;
-                }
+                    </svg>&nbsp; Dikirim ke ${locationValue}`;
             } catch (e) {
                 console.error("Error parsing ongkir_value_attribute from sessionStorage", e);
                 pilihAlamatButton.textContent = "Pilih Alamat";
@@ -48,16 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleSlideAndPaymentActions() {
         showSlide(3); // Menampilkan slide 3
 
-        const storedLocation = sessionStorage.getItem('ongkir_value_attribute');
+        const storedLocation = sessionStorage.getItem('city_value');
         if (storedLocation) {
-            const locationData = JSON.parse(storedLocation);
-            const cityValue = locationData.city; // Ambil nilai city
 
             // Mengubah isian dari input #kota jika ada nilai city
             const kotaInput = document.getElementById('kota');
-            if (kotaInput && cityValue) {
-                kotaInput.value = cityValue; // Mengisi input dengan city
-            }
+            kotaInput.value = storedLocation; // Mengisi input dengan city
         }
 
         const buttonPayment = document.getElementById('payment');
@@ -320,14 +314,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentQty > 1) { // Jangan kurang dari 1
                 qtyInput.value = currentQty - 1;
             }
-            updateTotalPrice(productVariantId); // Memanggil fungsi untuk mengupdate total harga
+            updateTotalPricPerProduct(productVariantId); // Memanggil fungsi untuk mengupdate total harga
         });
 
         // Tambahkan event listener untuk tombol increase
         increaseButton.addEventListener('click', () => {
             let currentQty = parseInt(qtyInput.value);
             qtyInput.value = currentQty + 1;
-            updateTotalPrice(productVariantId); // Memanggil fungsi untuk mengupdate total harga
+            updateTotalPricPerProduct(productVariantId); // Memanggil fungsi untuk mengupdate total harga
         });
 
         // Tambahkan event listener untuk perubahan langsung di input field
@@ -336,12 +330,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isNaN(currentQty) || currentQty < 1) {
                 qtyInput.value = 1; // Set minimal 1 jika input tidak valid
             }
-            updateTotalPrice(productVariantId); // Memanggil fungsi untuk mengupdate total harga
+            updateTotalPricPerProduct(productVariantId); // Memanggil fungsi untuk mengupdate total harga
         });
     }
 
     // Fungsi untuk mengupdate total harga (sesuaikan dengan perhitungan harga Anda)
-    function updateTotalPrice(productVariantId) {
+    function updateTotalPricPerProduct(productVariantId) {
         const qtyInput = document.getElementById(`sidebar-quantity-${productVariantId}`);
         const priceElement = document.getElementById(`price-product-sidebar-${productVariantId}`);
 
@@ -350,8 +344,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const qty = parseInt(qtyInput.value);
             const price = parseInt(priceElement.getAttribute('value-price-product-sidebar'));
 
-            const totalPrice = qty * price; // Hitung total harga berdasarkan qty
-            priceElement.innerText = `Rp. ${totalPrice.toLocaleString()}`; // Update display harga
+            const totalPricPerProduct = qty * price; // Hitung total harga berdasarkan qty
+            priceElement.innerText = `Rp. ${totalPricPerProduct.toLocaleString()}`; // Update display harga
         } else {
             console.warn(`Elemen dengan ID sidebar-quantity-${productVariantId} atau price-product-sidebar-${productVariantId} tidak ditemukan.`);
         }
@@ -359,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Pastikan fungsi ini dipanggil hanya jika productVariantId sudah didefinisikan
     if (typeof productVariantId !== 'undefined') {
-        updateTotalPrice(productVariantId);
+        updateTotalPricPerProduct(productVariantId);
     }
 
  });
@@ -492,11 +486,11 @@ document.addEventListener('DOMContentLoaded', function () {
             priceTextElement.textContent = `Rp. ${totalPrice.toLocaleString('id-ID')}`;
 
             // Perbarui total harga semua produk
-            updateTotalPrice();
+            updateTotalPriceAll();
         };
 
         // Fungsi untuk memperbarui total harga semua produk
-        const updateTotalPrice = () => {
+        const updateTotalPriceAll = () => {
             const priceElements = document.querySelectorAll('[id^="sidebar_price_product_"]');
             let totalPrice = 0;
 
@@ -507,7 +501,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const totalPriceElement = document.getElementById('totalprice');
             if (totalPriceElement) {
-                totalPriceElement.textContent = `Rp. ${totalPrice.toLocaleString('id-ID')}`;
+                totalPriceElement.textContent = `${totalPrice.toLocaleString('id-ID')}`;
+                totalPriceElement.value = totalPrice;
             }
         };
 
@@ -545,11 +540,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const productCard = document.getElementById(`sidebar-product-id-${productVariantId}`)?.closest('.sidebar-product-card');
                 if (productCard) {
                     productCard.remove();
-                    updateTotalPrice();
+                    updateTotalPriceAll();
                 }
             });
+            const sessionKey = `productImageSrc-${productVariantId}`;
+            sessionStorage.removeItem(sessionKey);
         }
-
         // Inisialisasi tampilan harga saat produk pertama kali ditambahkan
         updatePriceDisplay();
     };
@@ -606,6 +602,7 @@ function saveDataToSessionStorage() {
     const alamat = document.getElementById('alamat');
     const listOrderContainer = document.getElementById('list-order-container');
     const listOrderItems = document.querySelectorAll('.list-order-item .sidebar-product-card');
+    const totalPriceElement = document.getElementById('totalprice');
 
     // Cek dan simpan jika elemen-elemen tersebut ada
     if (ongkirDisplay) {
@@ -661,7 +658,13 @@ function saveDataToSessionStorage() {
     }
     // Cek dan simpan jumlah sidebar-product-card
     const productCardCount = listOrderItems.length;
+
     sessionStorage.setItem('product_card_count', productCardCount);
+
+    if(totalPriceElement){
+        sessionStorage.setItem('total_price_value',totalPriceElement.value);
+    }
+
 
     // Simpan data dari tiap-tiap sidebar-product-card
     listOrderItems.forEach((productCard, index) => {
@@ -729,116 +732,7 @@ function saveDataToSessionStorage() {
 function loadDataFromSessionStorage() {
 
     console.log(`tes`);
-    const ongkirValue = sessionStorage.getItem('ongkir_value');
-    const ongkirValueAttribute = sessionStorage.getItem('ongkir_value_attribute');
-    const locationValueAttribute = sessionStorage.getItem('location_value_attribute');
-    const jarakValue = sessionStorage.getItem('jarak_value');
-    const waktuValue = sessionStorage.getItem('waktu_value');
-    const tipePembelian = sessionStorage.getItem('tipe_pembelian');
-    const alamatValue = sessionStorage.getItem('alamat_value');
-    const listOrderContainer = sessionStorage.setItem('List_product_sidebar_HTML');
-    const totalItemValue = sessionStorage.getItem('total_item_value');
-    const totalPriceValue = sessionStorage.getItem('total_price_value');
 
-    // Perbarui data Ongkos Kirim, Jarak, dan Durasi
-    // const ongkirDisplay = document.getElementById('ongkir-display');
-    // if (ongkirDisplay && ongkirValue) {
-    //     ongkirDisplay.innerText = ongkirValue;
-    //     if (ongkirValueAttribute) {
-    //         ongkirDisplay.setAttribute('ongkir-value', ongkirValueAttribute);
-    //     }
-    //     if (locationValueAttribute) {
-    //         ongkirDisplay.setAttribute('location-value', locationValueAttribute);
-    //     }
-    //     console.log(`Ongkir value dimuat: ${ongkirValue}`);
-    //     console.log(`Ongkir attributes dimuat: ongkir-value=${ongkirValueAttribute}, location-value=${locationValueAttribute}`);
-    // } else {
-    //     console.warn('Elemen #ongkir-display tidak ditemukan atau ongkir_value kosong.');
-    // }
-
-    // if (jarakValue) {
-    //     const jarakElement = document.getElementById('jarak');
-    //     jarakElement.innerText = jarakValue;
-    //     const jarakValueAttribute = sessionStorage.getItem('jarak_value_attribute');
-    //     if (jarakValueAttribute) jarakElement.setAttribute('jarak-value', jarakValueAttribute);
-    // }
-
-    // if (waktuValue) {
-    //     const waktuElement = document.getElementById('waktu');
-    //     waktuElement.innerText = waktuValue;
-    //     const waktuValueAttribute = sessionStorage.getItem('waktu_value_attribute');
-    //     if (waktuValueAttribute) waktuElement.setAttribute('waktu-value', waktuValueAttribute);
-    // }
-
-    // // Perbarui select tipe pembelian
-    // if (tipePembelian) {
-    //     const tipePembelianElement = document.getElementById('tipe-pembelian');
-    //     if (tipePembelianElement) {
-    //         tipePembelianElement.value = tipePembelian;
-    //         console.log('Tipe pembelian dimuat:', tipePembelian);
-    //     }
-    // }
-
-    // // Perbarui input alamat
-    // if (alamatValue) {
-    //     const alamatElement = document.getElementById('alamat');
-    //     if (alamatElement) {
-    //         alamatElement.value = alamatValue;
-    //         console.log('Alamat dimuat:', alamatValue);
-    //     }
-    // }
-
-    // // Perbarui data total item dan harga
-    // if (totalItemValue && totalPriceValue) {
-    //     const totalItemElement = document.getElementById('totalitem');
-    //     const totalPriceElement = document.getElementById('totalprice');
-    //     const jumlahItemElement = document.getElementById('jumlahitem');
-
-    //     totalItemElement.innerText = totalItemValue;
-    //     totalPriceElement.innerText = `Rp. ${parseInt(totalPriceValue).toLocaleString('id-ID')}`;
-    //     jumlahItemElement.classList.remove('hidden');
-    // }
-
-    console.log('Data dari sessionStorage berhasil dimuat ke dalam HTML.');
-
-    // // Set ulang atribut ongkir-value dan location-value
-    // if (ongkirValueAttribute) {
-    //     document.getElementById('ongkir-display').setAttribute('ongkir-value', ongkirValueAttribute);
-    // }
-    // if (locationValueAttribute) {
-    //     document.getElementById('ongkir-display').setAttribute('location-value', locationValueAttribute);
-    // }
-
-    // // Muat kembali elemen produk yang disimpan di sessionStorage
-    // if (listOrderContainer) {
-    //     const listproductOrderContainer = document.getElementById('list-order-container');
-    //     listproductOrderContainer.innerHTML = listOrderContainer;
-    // }
-
-    // Tampilkan data produk yang disimpan
-    // const productCardCount = sessionStorage.getItem('product_card_count');
-    // console.log('Jumlah produk dalam sidebar:', productCardCount);
-
-    // for (let i = 0; i < productCardCount; i++) {
-    //     const productImageSrc = sessionStorage.getItem(`productImageSrc-${i}`);
-    //     const productIdValue = sessionStorage.getItem(`product_variant_id_${i}`);
-    //     const productIdText = sessionStorage.getItem(`product_variant_name_${i}`);
-    //     const productPriceValue = sessionStorage.getItem(`product_variant_price_value_${i}`);
-    //     const productPriceValueSatuan = sessionStorage.getItem(`product_variant_price_value_satuan_${i}`);
-    //     const productPriceText = sessionStorage.getItem(`product_price_text_${i}`);
-    //     const productQuantity = sessionStorage.getItem(`product_varaint_quantity_${i}`);
-
-    //     // Tampilkan variant option jika ada
-    //     let variantIndex = 0;
-    //     while (sessionStorage.getItem(`variant_type_id_${i}_${variantIndex}`)) {
-    //         const variantTypeName = sessionStorage.getItem(`variant_type_name_${i}_${variantIndex}`);
-    //         const variantTypeId = sessionStorage.getItem(`variant_type_id_${i}_${variantIndex}`);
-    //         const variantItemId = sessionStorage.getItem(`variant_item_id_${i}_${variantIndex}`);
-    //         const variantItemName = sessionStorage.getItem(`variant_item_name_${i}_${variantIndex}`);
-
-    //         variantIndex++;
-    //     }
-    // }
 }
 
 function renderProductsFromSessionStorage() {
@@ -856,7 +750,7 @@ function renderProductsFromSessionStorage() {
         waktuValueAttribute: sessionStorage.getItem('waktu_value_attribute'),
         tipePembelian: sessionStorage.getItem('tipe_pembelian'),
         alamatValue: sessionStorage.getItem('alamat_value'),
-        totalItemValue: sessionStorage.getItem('total_item_value'),
+        totalItemValue: sessionStorage.getItem('product_card_count'),
         totalPriceValue: sessionStorage.getItem('total_price_value'),
     };
 
@@ -897,18 +791,20 @@ function renderProductsFromSessionStorage() {
 
     // Perbarui input alamat
     const alamatElement = document.getElementById('alamat');
+    const kotaElement = document.getElementById('kota');
     if (alamatElement && data.alamatValue) {
         alamatElement.value = data.alamatValue;
+        kotaElement.value = data.alamatValue;
         console.log('Alamat dimuat:', data.alamatValue);
     }
 
     // Perbarui data total item dan harga
-    if (data.totalItemValue && data.totalPriceValue) {
+    if (data.totalItemValue) {
         const totalItemElement = document.getElementById('totalitem');
         const totalPriceElement = document.getElementById('totalprice');
         const jumlahItemElement = document.getElementById('jumlahitem');
 
-        if (totalItemElement && totalPriceElement && jumlahItemElement) {
+        if (totalItemElement) {
             totalItemElement.innerText = data.totalItemValue;
             totalPriceElement.innerText = `Rp. ${parseInt(data.totalPriceValue).toLocaleString('id-ID')}`;
             jumlahItemElement.classList.remove('hidden');
@@ -1053,23 +949,26 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
 
     saveDataToSessionStorage();
 
-    updateTotalItemAndPrice();
+    // updateTotalItemAndPrice();
 
     console.log('Produk baru ditambahkan ke sidebar');
 
     // Fungsi untuk menghitung total harga dan jumlah item di sidebar
     function updateTotalItemAndPrice() {
-        // Seleksi semua elemen harga produk
-        const priceElements = document.querySelectorAll('[id^="sidebar_price_product_"]');
+        // Ambil semua key dari SessionStorage
+        const keys = Object.keys(sessionStorage);
         let totalPrice = 0;
         let totalItems = 0;
 
-        // Iterasi untuk menghitung total harga dan jumlah item
-        priceElements.forEach(priceElement => {
-            const priceValue = parseFloat(priceElement.getAttribute('sidebar_value_price')) || 0;
-            if (priceValue > 0) {
-                totalPrice += priceValue;
-                totalItems += 1;
+        // Iterasi semua key di SessionStorage
+        keys.forEach(key => {
+            // Cek apakah key sesuai pola harga produk
+            if (key.startsWith("product_variant_price_value_")) {
+                const priceValue = parseFloat(sessionStorage.getItem(key)) || 0; // Ambil nilai harga
+                if (priceValue > 0) {
+                    totalPrice += priceValue; // Tambahkan ke total harga
+                    totalItems += 1; // Tambahkan ke jumlah item
+                }
             }
         });
 
@@ -1082,7 +981,7 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
         if (totalItemElement && totalPriceElement && jumlahItemElement) {
             // Perbarui jumlah item dan total harga di UI
             totalItemElement.innerText = totalItems;
-            totalPriceElement.innerText = `Rp. ${totalPrice.toLocaleString('id-ID')}`;
+            totalPriceElement.innerText = `Rp. ${totalPrice.toLocaleString('id-ID')}`; // Format angka Rupiah
 
             // Tampilkan jumlah item jika ada produk
             if (totalItems > 0) {
@@ -1095,14 +994,16 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
         }
     }
 
+    // Panggil fungsi untuk memperbarui total
+    updateTotalItemAndPrice();
+
 }
 
 
 
-
 // Event listener untuk menyimpan nilai select "Tipe Pembelian" dan "Alamat" setiap kali berubah
-document.getElementById('tipe-pembelian').addEventListener('change', saveDataToSessionStorage);
-document.getElementById('alamat').addEventListener('change', saveDataToSessionStorage);
+// document.getElementById('tipe-pembelian').addEventListener('change', saveDataToSessionStorage);
+// document.getElementById('alamat').addEventListener('change', saveDataToSessionStorage);
 
 
 window.onload = function() {
@@ -1206,7 +1107,6 @@ window.onbeforeunload = function () {
     }
 };
 
-// Muat ulang data setelah halaman selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
     try {
         loadDataFromSessionStorage();
@@ -1215,3 +1115,4 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Gagal memuat data dari sessionStorage:', error);
     }
 });
+

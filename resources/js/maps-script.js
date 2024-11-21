@@ -228,6 +228,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Save the selected value to sessionStorage
                 sessionStorage.setItem('ongkir_value_attribute', JSON.stringify(jsonData));
+                sessionStorage.setItem('location_value_attribute', JSON.stringify(jsonData));
+                sessionStorage.setItem('city_value',city);
+                sessionStorage.setItem('alamat_value', district_id);
+
+                const jarakValue = jarak.innerText.trim();
+                const jarakValueAttribute = jarak.getAttribute('jarak-value');
+                sessionStorage.setItem('jarak_value', jarakValue);
+                sessionStorage.setItem('jarak_value_attribute', jarakValueAttribute);
+
+                const ongkirValue = ongkirDisplay.innerText;
+                const ongkirValueAttribute = ongkirDisplay.getAttribute('ongkir-value');
+                const locationValueAttribute = ongkirDisplay.getAttribute('location-value');
+                sessionStorage.setItem('ongkir_value', ongkirValue);
+                sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute);
+                sessionStorage.setItem('location_value_attribute', locationValueAttribute);
+
+                const waktuValue = waktu.innerText.trim();
+                const waktuValueAttribute = waktu.getAttribute('waktu-value');
+                sessionStorage.setItem('waktu_value', waktuValue);
+                sessionStorage.setItem('waktu_value_attribute', waktuValueAttribute);
 
                 const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
                 iframe.src = url;
