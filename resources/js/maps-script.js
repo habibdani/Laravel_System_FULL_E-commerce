@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .bindPopup('PT.Andal Prima')
         .openPopup();
 
-    // Change handler for 'alamat' select element
+    // Change handler for 'alamat' select element and total price + ongkir
     $('#alamat').change(function() {
         const selectedOption = $(this).find('option:selected');
         const cityName = selectedOption.data('city');
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .openPopup();
 
             const url = `http://router.project-osrm.org/route/v1/driving/${defaultOrigin[1]},${defaultOrigin[0]};${destination.lon},${destination.lat}?overview=full&geometries=geojson`;
-            console.log(url);
+            // console.log(url);
 
             fetch(url)
                 .then(response => response.json())
@@ -100,12 +100,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     map.fitBounds(window.currentRoute.getBounds());
 
-                    const distance = data.routes[0].distance / 1000;
-                    const duration = data.routes[0].duration / 60;
-                    console.log(`Distance: ${distance.toFixed(2)} km, Duration: ${duration.toFixed(2)} mnt`);
+                    const distance = (data.routes[0].distance / 1000).toFixed(2); // in km
+                    const duration = Math.round(data.routes[0].duration / 60); // in minutes
+            
+                    // console.log(`Distance: ${distance} km, Duration: ${duration} mnt`);
+            
+                    // Update UI
+                    $('#jarak').text(`${distance} km`).attr('jarak-value', distance);
+                    $('#waktu').text(`${duration} mnt`).attr('waktu-value', duration);
+                    
+                    sessionStorage.setItem('jarak_value', `${distance} km`);
+                    sessionStorage.setItem('jarak_value_attribute', distance);
+                    sessionStorage.setItem('waktu_value', `${duration} mnt`);
+                    sessionStorage.setItem('waktu_value_attribute', duration);
 
-                    $('#jarak').text(`${distance.toFixed(2)} km`).attr('jarak-value', distance.toFixed(2));
-                    $('#waktu').text(`${duration.toFixed(0)} mnt`).attr('waktu-value', duration.toFixed(0));
                 })
                 .catch(error => console.error('Error fetching route:', error));
         }).catch(error => console.error('Error geocoding city:', error));
@@ -128,46 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    document.getElementById('alamat').addEventListener('change', function () {
-        // Ambil elemen terpilih
-        const selectedOption = this.options[this.selectedIndex];
-
-        // Ambil nilai data dari option yang terpilih
-        const shippingAreaId = selectedOption.getAttribute('data-shipping-area-id');
-        const districtId = selectedOption.getAttribute('data-district_id');
-        const ongkirValue = ongkirDisplay.innerText;
-        const ongkirValueAttribute = ongkirDisplay.getAttribute('ongkir-value');
-        const locationValueAttribute = ongkirDisplay.getAttribute('location-value');
-        const jarakValue = jarak.innerText.trim();
-        const jarakValueAttribute = jarak.getAttribute('jarak-value');
-        const waktuValue = waktu.innerText.trim();
-        const waktuValueAttribute = waktu.getAttribute('waktu-value');
-        // Cek apakah key sudah ada di SessionStorage
-        if (sessionStorage.getItem('shipping_area_id') && sessionStorage.getItem('district_id')) {
-            // Jika ada, update nilainya
-            sessionStorage.setItem('shipping_area_id', shippingAreaId);
-            sessionStorage.setItem('district_id', districtId);
-            sessionStorage.setItem('ongkir_value', ongkirValue);
-            sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute || '');
-            sessionStorage.setItem('location_value_attribute', locationValueAttribute || '');
-            sessionStorage.setItem('jarak_value', jarakValue || '0 km');
-            sessionStorage.setItem('jarak_value_attribute', jarakValueAttribute || '');
-            sessionStorage.setItem('waktu_value', waktuValue || '0 mnt');
-            sessionStorage.setItem('waktu_value_attribute', waktuValueAttribute || '');
-        } else {
-            // Jika belum ada, simpan nilai baru
-            sessionStorage.setItem('shipping_area_id', shippingAreaId);
-            sessionStorage.setItem('district_id', districtId);
-            sessionStorage.setItem('ongkir_value', ongkirValue);
-            sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute || '');
-            sessionStorage.setItem('location_value_attribute', locationValueAttribute || '');
-            sessionStorage.setItem('jarak_value', jarakValue || '0 km');
-            sessionStorage.setItem('jarak_value_attribute', jarakValueAttribute || '');
-            sessionStorage.setItem('waktu_value', waktuValue || '0 mnt');
-            sessionStorage.setItem('waktu_value_attribute', waktuValueAttribute || '');
-        }
-    });
-
     // Function to render shipping list and auto-select based on sessionStorage
     async function renderListShipping() {
         try {
@@ -184,9 +152,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectAlamat = document.getElementById('alamat');
             const ongkirDisplay = document.getElementById('ongkir-display');
             const iframe = document.getElementById("map");
-
-            // Check if sessionStorage has 'ongkir_value_attribute'
-            const storedLocation = sessionStorage.getItem('ongkir_value_attribute');
+            const totalPriceElement = document.getElementById('totalprice');
+          
+            // Check if sessionStorage has 'location_value_attribute'
+            const storedLocation = sessionStorage.getItem('location_value_attribute');
             if (storedLocation) {
                 const locationData = JSON.parse(storedLocation);
                 for (let i = 0; i < selectAlamat.options.length; i++) {
@@ -208,10 +177,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             selectAlamat.addEventListener('change', function() {
                 const selectedOption = selectAlamat.options[selectAlamat.selectedIndex];
-                const price = selectedOption.dataset.price;
+                const price = parseFloat(selectedOption.dataset.price);
                 const city = selectedOption.dataset.city;
                 const district_id = selectedOption.dataset.district_id;
                 const shipping_area_id = selectedOption.dataset.shippingAreaId;
+                const subdistrict_id = selectedOption.dataset.subdistrict_id;
 
                 const formattedPrice = `Rp.${parseInt(price).toLocaleString('id-ID')}`;
 
@@ -219,35 +189,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     price: price,
                     city: city,
                     district_id: district_id,
-                    shipping_area_id: shipping_area_id
+                    shipping_area_id: shipping_area_id,
+                    subdistrict_id: subdistrict_id
                 };
 
                 ongkirDisplay.textContent = formattedPrice;
                 ongkirDisplay.setAttribute('ongkir-value', price);
                 ongkirDisplay.setAttribute('location-value', JSON.stringify(jsonData));
 
+                 // Update total price
+                const currentTotalPrice = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
+                const newTotalPrice = currentTotalPrice + price;
+                totalPriceElement.setAttribute('value', newTotalPrice);
+                totalPriceElement.textContent = `${parseInt(newTotalPrice).toLocaleString('id-ID')}`;
+
                 // Save the selected value to sessionStorage
-                sessionStorage.setItem('ongkir_value_attribute', JSON.stringify(jsonData));
                 sessionStorage.setItem('location_value_attribute', JSON.stringify(jsonData));
-                sessionStorage.setItem('city_value',city);
-                sessionStorage.setItem('alamat_value', district_id);
+                sessionStorage.setItem('city_value', city);
+                sessionStorage.setItem('district_id', district_id);
+                sessionStorage.setItem('subdistrict_id', subdistrict_id);
+                sessionStorage.setItem('shipping_area_id', shipping_area_id);
 
-                const jarakValue = jarak.innerText.trim();
-                const jarakValueAttribute = jarak.getAttribute('jarak-value');
-                sessionStorage.setItem('jarak_value', jarakValue);
-                sessionStorage.setItem('jarak_value_attribute', jarakValueAttribute);
-
-                const ongkirValue = ongkirDisplay.innerText;
-                const ongkirValueAttribute = ongkirDisplay.getAttribute('ongkir-value');
-                const locationValueAttribute = ongkirDisplay.getAttribute('location-value');
-                sessionStorage.setItem('ongkir_value', ongkirValue);
-                sessionStorage.setItem('ongkir_value_attribute', ongkirValueAttribute);
-                sessionStorage.setItem('location_value_attribute', locationValueAttribute);
-
-                const waktuValue = waktu.innerText.trim();
-                const waktuValueAttribute = waktu.getAttribute('waktu-value');
-                sessionStorage.setItem('waktu_value', waktuValue);
-                sessionStorage.setItem('waktu_value_attribute', waktuValueAttribute);
+                sessionStorage.setItem('ongkir_value', formattedPrice);
+                sessionStorage.setItem('ongkir_value_attribute', price);
+                sessionStorage.setItem('total_price_value', newTotalPrice);
 
                 const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
                 iframe.src = url;
@@ -259,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const option = document.createElement('option');
                 option.value = district.district_id;
                 option.dataset.shippingAreaId = district.shipping_area_id;
+                option.dataset.subdistrict_id = district.subdistrict_id;
                 option.dataset.price = district.price;
                 option.dataset.city = district.city;
                 option.dataset.district_id = district.district_id;
@@ -270,6 +236,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // function untuk select type pembelian
+    const selectTipePembelian = document.getElementById('tipe-pembelian');
+    const savedTipePembelian = sessionStorage.getItem('tipe_pembelian');
+    if (savedTipePembelian) {
+        selectTipePembelian.value = savedTipePembelian;
+    }else {
+        selectTipePembelian.value = 2;
+    }
+    if (!savedTipePembelian) {
+        sessionStorage.setItem('tipe_pembelian', selectTipePembelian.value);
+    }
+    selectTipePembelian.addEventListener('change', () => {
+        const selectedValue = selectTipePembelian.value;
+        sessionStorage.setItem('tipe_pembelian', selectedValue);
+    });
+    
     // Initial render of shipping list
     renderListShipping();
 });

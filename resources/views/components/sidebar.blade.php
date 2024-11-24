@@ -316,7 +316,7 @@
                 </div>
 
                 <div class="divtotalbayar mt-2">
-                    <button id="totalbayar" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
+                    <button id="totalbayar" value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
                     </button>
                 </div>
                 <div class="divpayment mt-2">
@@ -342,7 +342,7 @@
             <p class="text-sm text-gray-700 mb-2">Pastikan alamat dan data Anda sudah benar,<br>Anda akan membayar sebesar</p>
             <p id="popup-price" class="text-2xl font-bold text-[#E01535] mb-6"></p>
             <div class="flex justify-center space-x-4">
-                <button id="confirm-button" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Konfirmasi</button>
+                <button id="createorder" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Konfirmasi</button>
                 <button id="cancel-button" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-md">Batal</button>
             </div>
         </div>

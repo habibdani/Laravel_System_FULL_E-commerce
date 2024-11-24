@@ -12,15 +12,16 @@
                 <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
             </div>
             <!-- Right Section -->
-            <div id="right-section" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover rounded-md bg-center p-4 text-center" style="background-image: url('{{ asset('storage/images/em9YuIaleCIngKzyqiVgvpJWiT514QZoKh1Xzxzr.jpg') }}');">
+            <div id="right-section" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover rounded-md bg-center p-4 text-center" 
+            style="background-image: url('{{ asset('storage/images/istockphoto-870572906-612x612.jpg') }}');">
                 <!-- Left rectangle -->
-                <div id="left-tangle" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
+                <!-- <div id="left-tangle" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
                     <img src="{{ asset('storage/icons/left.svg') }}" alt="icon-left" class="w-[6px] h-[11px]">
-                </div>
+                </div> -->
                 <!-- Right rectangle -->
-                <div id="right-tangle" class="absolute right-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
+                <!-- <div id="right-tangle" class="absolute right-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
                     <img src="{{ asset('storage/icons/right.svg') }}" alt="icon-right" class="w-[6px] h-[11px]">
-                </div>
+                </div> -->
                 <h2 id="right-section-title" class="text-left lg:text-left text-[18px] font-poppins font-bold mb-2 text-[#292929] font-semibold">Dapatkan Penawaran Baru Dari Kami!</h2>
                 <a id="right-section-button" class="inline-block font-poppins bg-white text-[16px] text-[#E01535] flex items-center justify-center h-[30px] w-auto rounded font-semibold">Total 75% Discount!</a>
             </div>
@@ -29,6 +30,36 @@
 </section>
 
 <style>
+    #right-section {
+    transition: background-image 1s ease-in-out;
+    }
+
+    .fade-out {
+        animation: fadeOut 1s forwards;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
     .shadow-custom {
         box-shadow: 0px 4px 4px 0px #00000026;
     }
@@ -93,3 +124,40 @@
 }
 
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const rightSection = document.getElementById('right-section');
+    const images = [
+        '{{ asset("storage/images/istockphoto-870572906-612x612.jpg") }}',
+        '{{ asset("storage/images/istockphoto-2159958745-612x612.jpg") }}',
+        '{{ asset("storage/images/istockphoto-870572802-612x612.jpg") }}'
+    ];
+
+    let currentIndex = 0;
+
+    function changeBackground() {
+        // Tambahkan animasi fade-out
+        rightSection.classList.add('fade-out');
+
+        // Ganti gambar setelah animasi selesai
+        setTimeout(() => {
+            currentIndex = (currentIndex + 1) % images.length; // Update index
+            rightSection.style.backgroundImage = `url('${images[currentIndex]}')`;
+
+            // Tambahkan animasi fade-in setelah mengganti gambar
+            rightSection.classList.remove('fade-out');
+            rightSection.classList.add('fade-in');
+
+            // Hapus kelas fade-in setelah selesai
+            setTimeout(() => {
+                rightSection.classList.remove('fade-in');
+            }, 1000); // Durasi animasi fade-in
+        }, 1000); // Durasi animasi fade-out
+    }
+
+    // Ubah gambar setiap 5 detik
+    setInterval(changeBackground, 5000);
+});
+
+</script>

@@ -61,7 +61,7 @@
             const images = [
                 "{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}",
                 "{{ asset('storage/images/em9YuIaleCIngKzyqiVgvpJWiT514QZoKh1Xzxzr.jpg') }}",
-                "{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}",
+                "{{ asset('storage/images/istockphoto-1288462556-612x612.jpg') }}",
             ];
             let currentIndex = 0;
             let autoSlideInterval;

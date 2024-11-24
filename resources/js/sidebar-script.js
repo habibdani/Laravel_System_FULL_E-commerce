@@ -75,14 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (namaUser && alamatLengkap && kota && kodePos && nomorTelp && email) {
             const totalBayarElement = document.getElementById('totalbayar');
             if (totalBayarElement) {
-                totalBayarElement.removeAttribute('disabled'); // Hapus atribut disabled
+                // totalBayarElement.removeAttribute('disabled'); // Hapus atribut disabled
                 totalBayarElement.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]'); // Hapus class abu-abu
                 totalBayarElement.classList.add('bg-[#E01535]', 'text-white'); // Tambahkan class merah
             }
         } else {
             const totalBayarElement = document.getElementById('totalbayar');
             if (totalBayarElement) {
-                totalBayarElement.setAttribute('disabled', 'true'); // Tambahkan atribut disabled
+                // totalBayarElement.setAttribute('disabled', 'true'); // Tambahkan atribut disabled
                 totalBayarElement.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]'); // Tambahkan class abu-abu
                 totalBayarElement.classList.remove('bg-[#E01535]', 'text-white'); // Hapus class merah
             }
@@ -104,94 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Tambahkan event listener untuk id payment
     document.getElementById('payment').addEventListener('click', handleSlideAndPaymentActions);
-
-    document.getElementById('confirm-button').addEventListener('click', async function() {
-
-
-        // Collect data from inputs and SessionStorage
-        const clientName = document.getElementById('nama-user').value;
-        const clientPhoneNumber = document.getElementById('nomor-telp').value;
-        const clientEmail = document.getElementById('email').value;
-        const shippingAreaId = sessionStorage.getItem('shipping_area_id');
-        const shippingDistrictId = sessionStorage.getItem('shipping_district_id');
-        const shippingSubdistrictId = 3; // Hardcoded temporarily
-        const address = document.getElementById('alamat-lengkap').value;
-        const kodePos = document.getElementById('kode-pos').value;
-        const additionalPricePercentage = document.getElementById('totalbayar') ? document.getElementById('totalbayar').value : null;
-        const commissionPercentage = null; // Hardcoded temporarily
-        const ktpImage = "path/to/ktp_image.jpg"; // Hardcoded temporarily
-        const bankName = "Bank ABC"; // Hardcoded
-        const bankAccountNumber = "1234567890"; // Hardcoded
-        const bankAccountHolderName = "John Doe"; // Hardcoded
-
-        // Generate booking_items array dynamically from SessionStorage
-        const bookingItems = [];
-        const productCardCount = sessionStorage.getItem('productCardCount') || 0;
-
-        for (let i = 0; i < productCardCount; i++) {
-            const productVariantId = sessionStorage.getItem(`productvariantIdValue-${i}`);
-            const price = sessionStorage.getItem(`productvariantPriceValue-${i}`);
-            const qty = sessionStorage.getItem(`productQuantity-${i}`);
-            const productVariantItemId = sessionStorage.getItem(`productVariantItemIdvalue-${i}-0`);
-            const note = sessionStorage.getItem(`productVariantNode-${i}`) || "";
-
-            bookingItems.push({
-                product_variant_id: productVariantId,
-                price: parseFloat(price),
-                qty: parseInt(qty, 10),
-                product_variant_item_id: productVariantItemId,
-                note: note
-            });
-        }
-
-        // Prepare payload
-        const payload = {
-            client_type_id: 1, // Hardcoded
-            client_name: clientName,
-            client_phone_number: clientPhoneNumber,
-            client_email: clientEmail,
-            shipping_area_id: shippingAreaId,
-            shipping_district_id: shippingDistrictId,
-            shipping_subdistrict_id: shippingSubdistrictId,
-            address: address,
-            code_pos: kodePos,
-            additional_price_percentage: additionalPricePercentage ? parseFloat(additionalPricePercentage) : null,
-            commission_percentage: commissionPercentage,
-            booking_items: bookingItems,
-            ktp_image: ktpImage,
-            bank_name: bankName,
-            bank_account_number: bankAccountNumber,
-            bank_account_holder_name: bankAccountHolderName
-        };
-
-        console.log(payload);
-        // Send API request
-        try {
-            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            console.log('Order created successfully:', result);
-            // Additional actions after successful order creation
-            // Jalankan showSlide4 dan sembunyikan overlay
-            showSlide4(4);
-            document.getElementById('overlay').classList.add('hidden');
-        } catch (error) {
-            console.error('Error creating order:', error);
-        }
-
-    });
-
 
     function showSlide4(slideNumber) {
         document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
@@ -356,7 +268,142 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotalPricPerProduct(productVariantId);
     }
 
- });
+    document.getElementById('createorder').addEventListener('click', async function () {
+        try {
+            // Collect data from inputs and SessionStorage
+            const clientName = sessionStorage.getItem('client_name');
+            const clientPhoneNumber = sessionStorage.getItem('client_nomor_telp');
+            const clientEmail = sessionStorage.getItem('client_email');
+            const kodePos = sessionStorage.getItem('client_codepos');
+            const clientAlamat = sessionStorage.getItem('client_alamat');
+            const shippingAreaId = sessionStorage.getItem('shipping_area_id');
+            const shippingDistrictId = sessionStorage.getItem('district_id');
+            const shippingSubdistrictId = sessionStorage.getItem('subdistrict_id');
+            const address = sessionStorage.getItem('client_alamat');
+            const additionalPricePercentage = sessionStorage.getItem('total_price_value') || null;
+            const commissionPercentage = null; // Hardcoded temporarily
+            const ktpImage = "path/to/ktp_image.jpg"; // Hardcoded temporarily
+            const bankName = "Bank ABC"; // Hardcoded
+            const bankAccountNumber = "1234567890"; // Hardcoded
+            const bankAccountHolderName = "John Doe"; // Hardcoded
+        
+            // console.log({
+            //     clientName,
+            //     clientPhoneNumber,
+            //     clientEmail,
+            //     shippingAreaId,
+            //     shippingDistrictId,
+            //     shippingSubdistrictId,
+            //     address,
+            //     kodePos,
+            //     additionalPricePercentage,
+            //     commissionPercentage,
+            //     ktpImage,
+            //     bankName,
+            //     bankAccountNumber,
+            //     bankAccountHolderName
+            // });
+        
+            // Validate mandatory fields
+            if (!clientName || !clientPhoneNumber || !clientEmail || !address || !kodePos) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+        
+            // Generate booking_items array dynamically from SessionStorage
+            const bookingItems = [];
+            const productCardCount = parseInt(sessionStorage.getItem('product_card_count') || 0);
+        
+            for (let i = 0; i < productCardCount; i++) {
+                const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
+                const price = parseInt(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
+                const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
+        
+                if (!productVariantId || qty <= 0 || price <= 0) {
+                    console.warn(`Skipping invalid booking item: ${i}`);
+                    continue;
+                }
+        
+                const productVariantItemCount = parseInt(sessionStorage.getItem(`product_variant_item_count_${i}`)) || 0;
+        
+                if (productVariantItemCount > 0) {
+                    for (let j = 0; j < productVariantItemCount; j++) {
+                        const productVariantItemId = sessionStorage.getItem(`variant_item_id_${i}_${j}`);
+                        const note = sessionStorage.getItem(`variant_item_name_${i}_${j}`);
+        
+                        bookingItems.push({
+                            product_variant_id: productVariantId,
+                            price,
+                            qty,
+                            product_variant_item_id: productVariantItemId || null,
+                            note: note || null
+                        });
+                    }
+                } else {
+                    bookingItems.push({
+                        product_variant_id: productVariantId,
+                        price,
+                        qty,
+                        product_variant_item_id: null,
+                        note: null
+                    });
+                }
+            }
+        
+            console.log("Booking Items:", bookingItems);
+    
+            // Prepare payload
+            // const payload = {
+            //     client_type_id: 1, // Hardcoded
+            //     client_name: clientName,
+            //     client_phone_number: clientPhoneNumber,
+            //     client_email: clientEmail,
+            //     shipping_area_id: shippingAreaId,
+            //     shipping_district_id: shippingDistrictId,
+            //     shipping_subdistrict_id: shippingSubdistrictId,
+            //     address,
+            //     code_pos: kodePos,
+            //     additional_price_percentage: additionalPricePercentage || null,
+            //     commission_percentage: commissionPercentage,
+            //     booking_items: bookingItems,
+            //     ktp_image: ktpImage,
+            //     bank_name: bankName,
+            //     bank_account_number: bankAccountNumber,
+            //     bank_account_holder_name: bankAccountHolderName
+            // };
+    
+            // console.log('Payload:', payload);
+    
+            // Send API request
+            // const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(payload)
+            // });
+    
+            // if (!response.ok) {
+            //     const errorDetails = await response.json();
+            //     console.error('Error details:', errorDetails);
+            //     alert(`Failed to create order: ${errorDetails.message || 'Unknown error'}`);
+            //     return;
+            // }
+    
+            // const result = await response.json();
+            // console.log('Order created successfully:', result);
+    
+            // // Additional actions after successful order creation
+            // showSlide4(4);
+            // document.getElementById('overlay').classList.add('hidden');
+    
+        } catch (error) {
+            console.error('Error creating order:', error);
+            alert(`An unexpected error occurred: ${error.message}`);
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -1068,33 +1115,36 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+// function form data client 
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = [
+        { id: 'nama-user', key: 'client_name' },
+        { id: 'alamat-lengkap', key: 'client_alamat' },
+        { id: 'kode-pos', key: 'client_codepos' },
+        { id: 'nomor-telp', key: 'client_nomor_telp' },
+        { id: 'email', key: 'client_email' }
+    ];
 
-//   document.addEventListener("DOMContentLoaded", function() {
-//     const selectAlamat = document.getElementById("alamat");
+    inputs.forEach(input => {
+        const element = document.getElementById(input.id);
 
-//     // Periksa apakah sessionStorage memiliki key 'locationValueAttribute'
-//     // const storedLocation = sessionStorage.getItem('locationValueAttribute');
+        if (element) {
+            // Periksa dan isi nilai dari sessionStorage
+            const savedValue = sessionStorage.getItem(input.key);
+            if (savedValue) {
+                element.value = savedValue;
+            }
 
-//     if (storedLocation) {
-//       // Parse nilai yang disimpan dalam sessionStorage
-//       const locationData = JSON.parse(storedLocation);
-
-//       // Loop melalui semua option di select element
-//       for (let i = 0; i < selectAlamat.options.length; i++) {
-//         const option = selectAlamat.options[i];
-
-//         // Cocokkan option berdasarkan data-city, data-price, dan data-district_id
-//         if (
-//           option.getAttribute('data-city') === locationData.city &&
-//           option.getAttribute('data-price') === locationData.price &&
-//           option.getAttribute('data-district_id') === locationData.district_id
-//         ) {
-//           option.selected = true;
-//           break;
-//         }
-//       }
-//     }
-//   });
+            // Simpan nilai ke sessionStorage setiap kali input berubah
+            element.addEventListener('keyup', () => {
+                const value = element.value.trim();
+                sessionStorage.setItem(input.key, value);
+            });
+        } else {
+            console.warn(`Element with ID ${input.id} not found.`);
+        }
+    });
+});
 
 
 // Simpan data sebelum halaman ditutup atau direfresh
