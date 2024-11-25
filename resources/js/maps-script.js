@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectAlamat = document.getElementById('alamat');
             const ongkirDisplay = document.getElementById('ongkir-display');
             const iframe = document.getElementById("map");
-            const totalPriceElement = document.getElementById('totalprice');
+            const totalPriceElement = document.getElementById('totalallprice');
           
             // Check if sessionStorage has 'location_value_attribute'
             const storedLocation = sessionStorage.getItem('location_value_attribute');
@@ -207,12 +207,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 sessionStorage.setItem('location_value_attribute', JSON.stringify(jsonData));
                 sessionStorage.setItem('city_value', city);
                 sessionStorage.setItem('district_id', district_id);
+                sessionStorage.setItem('alamat_value', district_id);
                 sessionStorage.setItem('subdistrict_id', subdistrict_id);
                 sessionStorage.setItem('shipping_area_id', shipping_area_id);
 
                 sessionStorage.setItem('ongkir_value', formattedPrice);
                 sessionStorage.setItem('ongkir_value_attribute', price);
-                sessionStorage.setItem('total_price_value', newTotalPrice);
+                // sessionStorage.setItem('total_price_value', newTotalPrice);
 
                 const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
                 iframe.src = url;

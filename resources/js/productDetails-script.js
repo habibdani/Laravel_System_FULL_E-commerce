@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <rect opacity="0.5" x="12.3574" y="0.718262" width="2.77002" height="11.8347" transform="rotate(90 12.3574 0.718262)" fill="white"/>
                                 </svg>
                             </button>
-                            <input id="sidebar_quantity_${productVariantId}" type="text" value="${qty}" class="w-7 bg-[#E01535] text-center font-semibold border-none focus:outline-none text-white" />
+                            <input id="sidebar-quantity-${productVariantId}" type="text" value="${qty}" class="w-7 bg-[#E01535] text-center font-semibold border-none focus:outline-none text-white" />
                             <button id="sidebar-increase-${productVariantId}" class="px-2 h-full text-gray-700 focus:outline-none">
                                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="12.1514" y="4.71851" width="2.77002" height="11.8347" transform="rotate(90 12.1514 4.71851)" fill="white"/>
@@ -246,21 +246,18 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const totalItemElement = document.getElementById('totalitem');
-            const totalPriceElement = document.getElementById('totalprice');
+            const totalPriceElement = document.getElementById('totalallprice');
             const jumlahItemElement = document.getElementById('jumlahitem');
 
             if (totalItemElement && totalPriceElement && jumlahItemElement) {
                 totalItemElement.innerText = totalItems;
-                totalPriceElement.innerText = `Rp. ${totalPrice.toLocaleString('id-ID')}`;
+                totalPriceElement.innerText = ` ${totalPrice.toLocaleString('id-ID')}`;
                 jumlahItemElement.classList.remove('hidden');
             } else {
                 console.error('Elemen totalitem, totalprice, atau jumlahitem tidak ditemukan');
             }
         }
 
-        function saveDataToSessionStorage() {
-            // Implementasi penyimpanan data di session storage jika dibutuhkan.
-        }
 
         setTimeout(() => {
             loadingSpinner.classList.add('hidden');

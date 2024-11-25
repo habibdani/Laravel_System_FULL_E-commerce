@@ -34,12 +34,19 @@ class BookingController extends Controller
                 'booking_items.*.price' => 'required|numeric',
                 'booking_items.*.qty' => 'required|integer',
                 'booking_items.*.product_variant_item_id' => [
-                    'required',
+                    'nullable', // Tambahkan nullable untuk memperbolehkan null
                     'integer',
                     function ($attribute, $value, $fail) use ($request) {
+                        // Jika nilai adalah null, lewati validasi
+                        if (is_null($value)) {
+                            return;
+                        }
+
+                        // Ambil indeks dari atribut
                         $index = (int) filter_var($attribute, FILTER_SANITIZE_NUMBER_INT);
                         $productVariantId = $request->input("booking_items.$index.product_variant_id");
 
+                        // Validasi apakah product_variant_item_id sesuai dengan product_variant_id
                         $match = DB::table('product_variant_items')
                             ->where('id', $value)
                             ->where('product_variant_id', $productVariantId)
@@ -57,28 +64,37 @@ class BookingController extends Controller
                 'bank_account_holder_name' => 'nullable|string|max:255',
             ]);
 
-            // Validasi shipping_district_id dan shipping_area_id terhadap shipping_subdistrict_id
             $validator->after(function ($validator) use ($request) {
+                $shippingSubdistrictId = $request->input('shipping_subdistrict_id');
+            
+                // Jika shipping_subdistrict_id adalah 0, anggap null dan abaikan validasi
+                if ($shippingSubdistrictId == 0) {
+                    $request->merge(['shipping_subdistrict_id' => null]);
+                    return;
+                }
+            
+                // Lanjutkan validasi jika shipping_subdistrict_id tidak bernilai 0
                 $shippingData = DB::table('shipping_subdistricts as ss')
                     ->join('shipping_districts as sd', 'sd.id', '=', 'ss.shipping_district_id')
                     ->whereNull('ss.deleted_at')
                     ->whereNull('sd.deleted_at')
-                    ->where('ss.id', $request->input('shipping_subdistrict_id'))
+                    ->where('ss.id', $shippingSubdistrictId)
                     ->select('sd.shipping_area_id', 'ss.shipping_district_id')
                     ->first();
-
+            
                 if (!$shippingData) {
                     $validator->errors()->add('shipping_subdistrict_id', 'Invalid shipping_subdistrict_id.');
                 } else {
                     if ($shippingData->shipping_district_id != $request->input('shipping_district_id')) {
                         $validator->errors()->add('shipping_district_id', 'The selected shipping_district_id does not match the shipping_subdistrict_id.');
                     }
-
+            
                     if ($shippingData->shipping_area_id != $request->input('shipping_area_id')) {
                         $validator->errors()->add('shipping_area_id', 'The selected shipping_area_id does not match the shipping_subdistrict_id.');
                     }
                 }
             });
+            
 
             if ($validator->fails()) {
                 return ApiResponseHelper::validationError($validator->errors());
