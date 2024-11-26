@@ -17,7 +17,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             const token = sessionStorage.getItem('authToken');
 
             if (!token) {
-                throw new Error('Token is missing, please log in again.');
+                alert("Session expired. Please log in again.");
+                window.location.href = "http://127.0.0.1:8001/login"; // Redirect to login
+                return;
             }
 
             // Build the query parameters
@@ -40,7 +42,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             const data = await response.json();
 
             if (!response.ok || !data.success) {
-                throw new Error('Failed to fetch products');
+                if (data.message === "Unauthenticated" || response.status === 401) {
+                    alert("Session expired. Please log in again.");
+                    window.location.href = "http://127.0.0.1:8001/login"; // Redirect to login
+                } else {
+                    throw new Error('Failed to fetch products');
+                }
             }
 
             const products = data.data.products;
@@ -114,6 +121,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             prevButton.disabled = currentPage === 1;
             nextButton.disabled = currentPage === data.data.pagination.last_page;
 
+            setupDeleteButtons(); // Call setupDeleteButtons here to add event listeners
         } catch (error) {
             console.error("Failed to fetch product list", error);
             productContainer.innerHTML = "<p class='text-red-500'>Failed to load products.</p>";
@@ -161,5 +169,51 @@ document.addEventListener("DOMContentLoaded", async function () {
         currentPage -= 1; // Move to previous page
         fetchProducts(); // Fetch previous page
     });
-
+ 
 });
+
+// Function to handle delete button clicks
+function setupDeleteButtons() {
+    const deleteButtons = document.querySelectorAll('[id^="delete_product_variant_id_"]');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function () {
+            const productVariantId = this.id.replace('delete_product_variant_id_', ''); // Extract the variant ID from the button ID
+            
+            if (confirm("Are you sure you want to delete this product variant?")) {
+                try {
+                    // Get the token from sessionStorage
+                    const token = sessionStorage.getItem('authToken');
+                    
+                    if (!token) {
+                        throw new Error('Token is missing, please log in again.');
+                    }
+
+                    // Call the delete API
+                    const response = await fetch(`http://127.0.0.1:8001/api/deleted-product/${productVariantId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || 'Failed to delete product variant.');
+                    }
+
+                    alert("Product variant deleted successfully!");
+
+                    // Re-fetch the product list to update the UI
+                    fetchProducts();
+                } catch (error) {
+                    console.error("Error deleting product variant:", error);
+                    alert("Failed to delete product variant. Please try again.");
+                }
+            }
+        });
+    });
+}
+

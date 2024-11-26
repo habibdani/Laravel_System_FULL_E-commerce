@@ -674,29 +674,31 @@ class ProductController extends Controller
             // Memulai transaksi database
             DB::beginTransaction();
 
-            // Hapus item varian produk terlebih dahulu
+            $currentTimestamp = now(); // Dapatkan waktu saat ini untuk kolom deleted_at
+
+            // Soft delete item varian produk
             DB::table('product_variant_items')
                 ->whereIn('product_variant_id', function ($query) use ($id) {
                     $query->select('id')
                         ->from('product_variants')
                         ->where('product_id', $id);
                 })
-                ->delete();
+                ->update(['deleted_at' => $currentTimestamp]);
 
-            // Hapus varian produk
+            // Soft delete varian produk
             DB::table('product_variants')
                 ->where('product_id', $id)
-                ->delete();
+                ->update(['deleted_at' => $currentTimestamp]);
 
-            // Hapus produk
+            // Soft delete produk
             DB::table('products')
                 ->where('id', $id)
-                ->delete();
+                ->update(['deleted_at' => $currentTimestamp]);
 
             // Commit transaksi database
             DB::commit();
 
-            return ApiResponseHelper::success([], 'Product deleted successfully');
+            return ApiResponseHelper::success([], 'Product soft-deleted successfully');
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi error
             DB::rollBack();
