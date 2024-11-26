@@ -25,6 +25,8 @@ class BookingController extends Controller
                 'shipping_area_id' => 'required|integer',
                 'shipping_district_id' => 'required|integer',
                 'shipping_subdistrict_id' => 'required|integer',
+                'shipping_id' => 'required|integer',
+                'ongkir' => 'required|integer',
                 'address' => 'required|string|max:255',
                 'code_pos' => 'required|string|max:10',
                 'additional_price_percentage' => 'nullable|numeric',
@@ -119,7 +121,7 @@ class BookingController extends Controller
             $bookingShippingId = DB::table('booking_shippings')->insertGetId([
                 'booking_id' => $bookingId,
                 'shipping_id' => $request->input('shipping_id'),
-                'price' => $request->input('price'),
+                'price' => $request->input('ongkir'),
                 'shipping_district_id' => $request->input('shipping_district_id'),
                 'shipping_subdistrict_id' => $request->input('shipping_subdistrict_id'),
                 'created_at' => now(),
@@ -153,7 +155,7 @@ class BookingController extends Controller
             // Insert ke tabel booking_status_histories
             DB::table('booking_status_histories')->insertGetId([
                 'booking_id' => $bookingId,
-                'booking_status_id' => 2,
+                'booking_status_id' => 6,
                 'created_at' => now(),
             ]);
 

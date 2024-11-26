@@ -82,6 +82,8 @@
                 w-1/3 h-[26.95px] flex-grow font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Pilih Tujuan</button>
                 <button id="btn-slide-3" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
+                <button id="btn-slide-4" class="hidden custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
             </div>
 
             <div class="flex-grow">
@@ -189,21 +191,21 @@
                         <h2 class="text-lg font-semibold text-center mb-4">Detail Pembayaran</h2>
 
                         <!-- Detail Pembayaran Button -->
-                        <button class="bg-red-600 text-white w-full px-4 py-2 rounded-md font-semibold mb-4">Detail Pembayaran</button>
+                        <!-- <button class="bg-red-600 text-white w-full px-4 py-2 rounded-md font-semibold mb-4">Detail Pembayaran</button> -->
 
                         <!-- Informasi Pembayaran -->
                         <div class="border rounded-lg p-4 mb-6">
                             <div class="flex items-center space-x-2 mb-4">
-                                <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <!-- <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m-4 4h8v-1a3 3 0 00-3-3h-1a3 3 0 00-3 3v1z" />
-                                </svg>
+                                </svg> -->
                                 <span class="text-sm text-gray-700">Kami mengirimkan detail pemesanan dan pembayaran Anda ke email yang sudah Anda daftarkan.</span>
                             </div>
 
                             <!-- Total Bayar -->
                             <div class="text-center mb-4">
                                 <img src="{{ asset('storage/design/bca.svg') }}" alt="BCA Logo" class="mx-auto mb-2 w-20">
-                                <p class="font-semibold text-lg text-red-600">Total Bayar: Rp. 420.700</p>
+                                <p id="infototalbayar" class="font-semibold text-lg text-red-600">Total Bayar: Rp. 420.700</p>
                             </div>
 
                             <!-- Rekening Info -->
@@ -225,12 +227,13 @@
 
                             <!-- Detail Pesanan -->
                             <div class="mb-4">
-                                <p class="text-sm"><span class="font-bold">Tanggal Pemesanan:</span> 5 Mei 2024 - 21:44</p>
-                                <p class="text-sm"><span class="font-bold">Jumlah Item:</span> 60 Item</p>
+                                <p class="text-sm"><span class="font-bold">Tanggal Pemesanan: </span>
+                                <span id="infowaktupemesanan"> 5 Mei 2024 - 21:44</span></p>
+                                <!-- <p class="text-sm"><span class="font-bold">Jumlah Item:</span> 60 Item</p> -->
                             </div>
 
                             <!-- Item Pesanan -->
-                            <div class="border rounded-lg p-4 mb-4">
+                            <!-- <div class="border rounded-lg p-4 mb-4">
                                 <div class="flex space-x-4 mb-2">
                                     {{-- <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md"> --}}
                                     <div>
@@ -240,9 +243,9 @@
                                         <p class="text-sm">Jumlah Item: 50</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
-                            <div class="border rounded-lg p-4 mb-4">
+                            <!-- <div class="border rounded-lg p-4 mb-4">
                                 <div class="flex space-x-4 mb-2">
                                     {{-- <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md"> --}}
                                     <div>
@@ -253,11 +256,11 @@
                                         <p class="font-bold text-right">Total Harga: Rp. 50.700</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- Total Item -->
                             <div class="bg-green-100 rounded-md p-2 text-center font-semibold text-green-600">
-                                60 Item Dibeli - Rp. 350.700
+                                <span id="infocounttotalproduct"></span> Item Dibeli - <span id="infototalbayar">Rp.</span>
                             </div>
 
                             <!-- Detail Pengiriman -->

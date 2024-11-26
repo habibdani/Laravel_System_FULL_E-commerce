@@ -50,7 +50,7 @@
                                     <rect x="12.1143" y="0.0161133" width="0.943847" height="11.8347" transform="rotate(90 12.1143 0.0161133)" fill="#292929"/>
                                 </svg>
                             </button>
-                            <input id="quantity" type="text" value="1" class="w-7 text-center border-none focus:outline-none text-gray-800" />
+                            <input id="quantity" type="number" value="1" min="1" class="w-7 text-center border-none focus:outline-none text-gray-800 no-arrows" />
                             <button id="increase" class="px-2 h-full text-gray-700 focus:outline-none">
                                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="12.7861" y="6.01611" width="0.943847" height="11.8347" transform="rotate(90 12.7861 6.01611)" fill="#292929"/>
@@ -133,6 +133,18 @@
             .product-note {
                 width: 331px; /* Atur lebar khusus pada layar kecil */
                 margin: 0 auto; /* Center secara horizontal */
+            }
+
+            input[type="number"].no-arrows::-webkit-inner-spin-button,
+            input[type="number"].no-arrows::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Hilangkan spinner di Firefox */
+            input[type="number"].no-arrows {
+                -moz-appearance: textfield; /* Firefox */
+                appearance: textfield; /* Browser modern lainnya */
             }
         }
     </style>

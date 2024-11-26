@@ -215,6 +215,7 @@ class ProductController extends Controller
                 ->groupBy('pv.id')
                 ->select(
                     'pv.id as product_variant_id',
+                    'pv.product_id',
                     DB::raw("CONCAT(pt.name, ' - ', pv.name) as full_name_product"),
                     DB::raw("SUBSTRING_INDEX(pv.image, '/storage/', -1) as variant_image"),
                     'pv.descriptions',
@@ -309,6 +310,7 @@ class ProductController extends Controller
                 }
 
                 $productsWithVariantItems[] = [
+                    'product_id' => $product->product_id,
                     'product_variant_id' => $product->product_variant_id,
                     'full_name_product' => $product->full_name_product,
                     'descriptions' => $product->descriptions,
@@ -678,22 +680,18 @@ class ProductController extends Controller
 
             // Soft delete item varian produk
             DB::table('product_variant_items')
-                ->whereIn('product_variant_id', function ($query) use ($id) {
-                    $query->select('id')
-                        ->from('product_variants')
-                        ->where('product_id', $id);
-                })
+                ->where('product_variant_id', $id)
                 ->update(['deleted_at' => $currentTimestamp]);
 
             // Soft delete varian produk
             DB::table('product_variants')
-                ->where('product_id', $id)
+                ->where('id', $id)
                 ->update(['deleted_at' => $currentTimestamp]);
 
             // Soft delete produk
-            DB::table('products')
-                ->where('id', $id)
-                ->update(['deleted_at' => $currentTimestamp]);
+            // DB::table('products')
+            //     ->where('id', $id)
+            //     ->update(['deleted_at' => $currentTimestamp]);
 
             // Commit transaksi database
             DB::commit();

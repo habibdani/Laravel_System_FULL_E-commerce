@@ -60,11 +60,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <td class="px-6 py-4">
                             <button style="background-color: ${order.color_status}" class="text-sm text-white font-medium px-2.5 py-1 rounded toggle-dropdown">${order.status_name}</button>
                             <ul class="dropdown hidden absolute text-left z-20 mt-2 w-40 bg-white border rounded shadow-lg">
+                                <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="3" data-status-name="Ship">Ship</li>
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="2" data-status-name="Paid">Paid</li>
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="4" data-status-name="Confirmed">Confirmed</li>
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="5" data-status-name="Delivered">Delivered</li>
-                                <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="6" data-status-name="Edit">Edit</li>
+                                <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="6" data-status-name="Unpaid">Unpaid</li>
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="7" data-status-name="Reject">Reject</li>
+                                <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="1" data-status-name="Order Receipt">Order Receipt</li>
                             </ul>
                         </td>
                         <td class="px-6 py-4">Rp. ${new Intl.NumberFormat('id-ID').format(order.amount)}</td>

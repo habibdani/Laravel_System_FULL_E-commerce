@@ -42,6 +42,165 @@ document.addEventListener('DOMContentLoaded', function() {
         showSlide(1);
     });
 
+    document.getElementById('createorder').addEventListener('click', async function () {
+        try {
+            // Collect data from inputs and SessionStorage
+            const clientName = sessionStorage.getItem('client_name')?.trim();
+            const clientPhoneNumber = sessionStorage.getItem('client_nomor_telp')?.trim();
+            const clientEmail = sessionStorage.getItem('client_email')?.trim();
+            const kodePos = sessionStorage.getItem('client_codepos')?.trim();
+            const clientAlamat = sessionStorage.getItem('client_alamat')?.trim();
+            const shippingAreaId = sessionStorage.getItem('shipping_area_id');
+            const shippingDistrictId = sessionStorage.getItem('district_id');
+            const shippingSubdistrictId = sessionStorage.getItem('subdistrict_id');
+            const ongkir = sessionStorage.getItem('ongkir_value_attribute');
+            const shipping_id = sessionStorage.getItem('tipe_pembelian');
+            const additionalPricePercentage = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
+    
+            // Hardcoded fields
+            const commissionPercentage = null; // Placeholder for commission
+            const ktpImage = "path/to/ktp_image.jpg"; // Placeholder
+            const bankName = "Bank ABC"; // Placeholder
+            const bankAccountNumber = "1234567890"; // Placeholder
+            const bankAccountHolderName = "John Doe"; // Placeholder
+    
+            // Validate mandatory fields
+            if (!clientName || !clientPhoneNumber || !clientEmail || !clientAlamat || !kodePos || !shippingAreaId || !shippingDistrictId) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+    
+            // Generate booking_items array dynamically from SessionStorage
+            const bookingItems = [];
+            const productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;
+    
+            for (let i = 0; i < productCardCount; i++) {
+                const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
+                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
+                const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
+    
+                if (!productVariantId || qty <= 0 || price <= 0) {
+                    console.warn(`Skipping invalid booking item: ${i}`);
+                    continue; // Skip invalid items
+                }
+    
+                const productVariantItemCount = parseInt(sessionStorage.getItem(`product_variant_item_count_${i}`)) || 0;
+    
+                if (productVariantItemCount > 0) {
+                    for (let j = 0; j < productVariantItemCount; j++) {
+                        const productVariantItemIdRaw = sessionStorage.getItem(`variant_item_id_${i}_${j}`);
+                        const productVariantItemId = productVariantItemIdRaw ? parseInt(productVariantItemIdRaw, 10) : null; 
+                        const note = sessionStorage.getItem(`variant_item_name_${i}_${j}`);
+    
+                        bookingItems.push({
+                            product_variant_id: productVariantId,
+                            price,
+                            qty,
+                            product_variant_item_id: productVariantItemId,
+                            note: note || null
+                        });
+                    }
+                } else {
+                    bookingItems.push({
+                        product_variant_id: productVariantId,
+                        price,
+                        qty,
+                        product_variant_item_id: null,
+                        note: null
+                    });
+                }
+            }
+            // Log the booking items for debugging
+            console.log("Booking Items:", bookingItems);
+    
+            // Prepare the payload
+            const payload = {
+                client_type_id: 1, // Placeholder
+                client_name: clientName,
+                client_phone_number: clientPhoneNumber,
+                client_email: clientEmail,
+                shipping_area_id: shippingAreaId,
+                shipping_district_id: shippingDistrictId,
+                shipping_subdistrict_id: shippingSubdistrictId,
+                address: clientAlamat,
+                ongkir: ongkir,
+                shipping_id: shipping_id,
+                code_pos: kodePos,
+                additional_price_percentage: additionalPricePercentage || null,
+                commission_percentage: commissionPercentage,
+                booking_items: bookingItems,
+                ktp_image: ktpImage,
+                bank_name: bankName,
+                bank_account_number: bankAccountNumber,
+                bank_account_holder_name: bankAccountHolderName
+            };
+    
+            console.log("Payload:", payload);
+            sessionStorage.setItem('order_data',JSON.stringify({payload}));
+
+            // Send the API request
+            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to create order. Please try again.');
+            }
+    
+            const result = await response.json();
+            console.log('Order created successfully:', result);
+    
+            // Additional actions after successful order creation
+            alert('Order created successfully!');
+            showSlide(4); // Display slide 4
+            document.getElementById('overlay').classList.add('hidden'); // Hide overlay
+            // Pemanggilan fungsi
+            // Panggil fungsi untuk mengirim email
+            sendEmail();
+        } catch (error) {
+            console.error('Error creating order:', error);
+            alert('Error creating order. Please try again.');
+        }
+    });
+ 
+    async function sendEmail() {
+        const clientEmail = sessionStorage.getItem('client_email');
+        const orderData = sessionStorage.getItem('order_data');
+    
+        if (!clientEmail || !orderData) {
+            console.error("Email atau data pesanan tidak ditemukan di sessionStorage.");
+            return;
+        }
+    
+        try {
+            const response = await fetch('http://127.0.0.1:8001/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    to: clientEmail,
+                    subject: "Informasi Pesanan Anda",
+                    body: orderData,
+                }),
+            });
+    
+            if (response.ok) {
+                console.log("Email berhasil dikirim.");
+            } else {
+                console.error("Gagal mengirim email:", await response.json());
+            }
+        } catch (error) {
+            console.error("Terjadi kesalahan saat mengirim email:", error);
+        }
+    }
+    
+    
 // payment
     function handleSlideAndPaymentActions() {
         showSlide(3); // Menampilkan slide 3
@@ -92,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setInterval(() => {
         checkFormInputs();
+        updateInfoFromSessionStorage();
     }, 500);
 
     function updateTotalBayarText() {
@@ -261,6 +421,29 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof productVariantId !== 'undefined') {
         updateTotalPricPerProduct(productVariantId);
     }
+
+    function updateInfo(totalPriceValue, productCardCount) {
+    // Update infototalbayar
+    const infoTotalBayar = document.getElementById('infototalbayar');
+    if (infoTotalBayar) {
+        infoTotalBayar.innerText = `Total Bayar: Rp. ${totalPriceValue.toLocaleString('id-ID')}`;
+    }
+
+    // Update infowaktupemesanan
+    const infoWaktuPemesanan = document.getElementById('infowaktupemesanan');
+    if (infoWaktuPemesanan) {
+        const currentDate = new Date();
+        const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        const formattedDate = currentDate.toLocaleDateString('id-ID', options);
+        infoWaktuPemesanan.innerText = formattedDate;
+    }
+
+    // Update infocounttotalproduct
+    const infoCountTotalProduct = document.getElementById('infocounttotalproduct');
+    if (infoCountTotalProduct) {
+        infoCountTotalProduct.innerText = productCardCount;
+    }
+}
 
 });
 
@@ -984,7 +1167,7 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
                             <rect opacity="0.5" x="12.3574" y="0.718262" width="2.77002" height="11.8347" transform="rotate(90 12.3574 0.718262)" fill="white"/>
                         </svg>
                     </button>
-                    <input id="sidebar-quantity-${productVariantId}" type="text" value="${qty}" class="w-7 bg-[#E01535] text-center font-semibold border-none focus:outline-none text-white" />
+                    <input id="sidebar-quantity-${productVariantId}" type="text" disabled value="${qty}" class="w-7 bg-[#E01535] text-center font-semibold border-none focus:outline-none text-white" />
                     <button id="sidebar-increase-${productVariantId}" class="px-2 h-full text-gray-700 focus:outline-none">
                         <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="12.1514" y="4.71851" width="2.77002" height="11.8347" transform="rotate(90 12.1514 4.71851)" fill="white"/>
@@ -1227,124 +1410,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+function updateInfoFromSessionStorage() {
+    // Ambil total_price_value dari sessionStorage
+    const totalPriceValue = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
 
+    // Ambil product_card_count dari sessionStorage
+    const productCardCount = parseInt(sessionStorage.getItem('product_card_count'), 10) || 0;
 
-
-document.getElementById('createorder').addEventListener('click', async function () {
-    try {
-        // Collect data from inputs and SessionStorage
-        const clientName = sessionStorage.getItem('client_name')?.trim();
-        const clientPhoneNumber = sessionStorage.getItem('client_nomor_telp')?.trim();
-        const clientEmail = sessionStorage.getItem('client_email')?.trim();
-        const kodePos = sessionStorage.getItem('client_codepos')?.trim();
-        const clientAlamat = sessionStorage.getItem('client_alamat')?.trim();
-        const shippingAreaId = sessionStorage.getItem('shipping_area_id');
-        const shippingDistrictId = sessionStorage.getItem('district_id');
-        const shippingSubdistrictId = sessionStorage.getItem('subdistrict_id');
-        const additionalPricePercentage = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
-
-        // Hardcoded fields
-        const commissionPercentage = null; // Placeholder for commission
-        const ktpImage = "path/to/ktp_image.jpg"; // Placeholder
-        const bankName = "Bank ABC"; // Placeholder
-        const bankAccountNumber = "1234567890"; // Placeholder
-        const bankAccountHolderName = "John Doe"; // Placeholder
-
-        // Validate mandatory fields
-        if (!clientName || !clientPhoneNumber || !clientEmail || !clientAlamat || !kodePos || !shippingAreaId || !shippingDistrictId) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        // Generate booking_items array dynamically from SessionStorage
-        const bookingItems = [];
-        const productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;
-
-        for (let i = 0; i < productCardCount; i++) {
-            const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
-            const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
-            const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
-
-            if (!productVariantId || qty <= 0 || price <= 0) {
-                console.warn(`Skipping invalid booking item: ${i}`);
-                continue; // Skip invalid items
-            }
-
-            const productVariantItemCount = parseInt(sessionStorage.getItem(`product_variant_item_count_${i}`)) || 0;
-
-            if (productVariantItemCount > 0) {
-                for (let j = 0; j < productVariantItemCount; j++) {
-                    const productVariantItemIdRaw = sessionStorage.getItem(`variant_item_id_${i}_${j}`);
-                    const productVariantItemId = productVariantItemIdRaw ? parseInt(productVariantItemIdRaw, 10) : null; 
-                    const note = sessionStorage.getItem(`variant_item_name_${i}_${j}`);
-
-                    bookingItems.push({
-                        product_variant_id: productVariantId,
-                        price,
-                        qty,
-                        product_variant_item_id: productVariantItemId,
-                        note: note || null
-                    });
-                }
-            } else {
-                bookingItems.push({
-                    product_variant_id: productVariantId,
-                    price,
-                    qty,
-                    product_variant_item_id: null,
-                    note: null
-                });
-            }
-        }
-
-        // Log the booking items for debugging
-        console.log("Booking Items:", bookingItems);
-
-        // Prepare the payload
-        const payload = {
-            client_type_id: 1, // Placeholder
-            client_name: clientName,
-            client_phone_number: clientPhoneNumber,
-            client_email: clientEmail,
-            shipping_area_id: shippingAreaId,
-            shipping_district_id: shippingDistrictId,
-            shipping_subdistrict_id: shippingSubdistrictId,
-            address: clientAlamat,
-            code_pos: kodePos,
-            additional_price_percentage: additionalPricePercentage || null,
-            commission_percentage: commissionPercentage,
-            booking_items: bookingItems,
-            ktp_image: ktpImage,
-            bank_name: bankName,
-            bank_account_number: bankAccountNumber,
-            bank_account_holder_name: bankAccountHolderName
-        };
-
-        console.log("Payload:", payload);
-
-        // Send the API request
-        const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to create order. Please try again.');
-        }
-
-        const result = await response.json();
-        console.log('Order created successfully:', result);
-
-        // Additional actions after successful order creation
-        alert('Order created successfully!');
-        showSlide(4); // Display slide 4
-        document.getElementById('overlay').classList.add('hidden'); // Hide overlay
-    } catch (error) {
-        console.error('Error creating order:', error);
-        alert('Error creating order. Please try again.');
+    // Update infototalbayar
+    const infoTotalBayar = document.getElementById('infototalbayar');
+    if (infoTotalBayar) {
+        infoTotalBayar.innerText = `Total Bayar: Rp. ${totalPriceValue.toLocaleString('id-ID')}`;
     }
-});
+
+    // Update infowaktupemesanan
+    const infoWaktuPemesanan = document.getElementById('infowaktupemesanan');
+    if (infoWaktuPemesanan) {
+        const currentDate = new Date();
+        const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        const formattedDate = currentDate.toLocaleDateString('id-ID', options);
+        infoWaktuPemesanan.innerText = formattedDate;
+    }
+
+    // Update infocounttotalproduct
+    const infoCountTotalProduct = document.getElementById('infocounttotalproduct');
+    if (infoCountTotalProduct) {
+        infoCountTotalProduct.innerText = `${productCardCount}`;
+    }
+}
+
+// Jalankan fungsi untuk memperbarui informasi
+
+
+
+
+

@@ -8,9 +8,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\EmailController;
 
 Route::get('/shippings', [ShippingController::class, 'getShippings']);
 Route::get('/shipping-districts', [ShippingController::class, 'getShippingDistricts']);
+Route::post('/send-email', [EmailController::class, 'sendEmail']);
 
 Route::get('/list-products', [ProductController::class, 'listproduct']);
 Route::get('/product/details', [ProductController::class, 'productdetails']);
