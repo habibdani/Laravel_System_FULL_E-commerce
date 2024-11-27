@@ -1,6 +1,6 @@
-<section name="why" class="py-0 mt-12">
-    <div class="flex flex-col items-center justify-center mx-auto w-full h-full px-4">
-        <div class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[994px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
+<section name="why" id="sessionwhy" class="py-0 mt-12">
+    <div class="flex flex-col items-center justify-center mx-auto w-full px-4" style="height: 279px !important;">
+        <div id="subsessionwhy" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[1200px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
             <!-- Left Section -->
             <div class="shadow-custom w-full lg:max-w-[900px] h-full p-8 flex items-center justify-between rounded-md bg-white relative overflow-visible">
                 <div class="flex-1 pr-6">
@@ -39,7 +39,7 @@
 
             <!-- Right Section -->
             <div class="shadow-custom w-full lg:max-w-[245px] h-full p-8 flex flex-col items-center justify-between rounded-md bg-white relative overflow-visible">
-                <div class="absolute left-[-135px] z-10 lg:block">
+                <div id="whyright" class="absolute left-[-135px] z-10 lg:block">
                     <img src="{{ asset('storage/design/person.svg') }}" alt="person" class="z-1">
                 </div>
                 <div class="flex flex-col justify-center items-start h-full space-y-4">
@@ -78,30 +78,16 @@
     }
 
     /* Responsive styling */
-    @media (max-width: 768px) {
-        /* Stack Right Section below Left Section */
-        .flex-col.lg\:flex-row {
-            flex-direction: column;
+    
+    @media (max-width: 450px) {
+        #subsessionwhy{
+            width: 80%;
         }
 
-        /* Center align text for smaller screens */
-        .text-center {
-            text-align: center;
+        #sessionwhy {
+            display: none;
         }
-
-        /* Adjust the width of left and right sections on smaller screens */
-        .lg\:max-w-[900px] {
-            max-width: 100%;
-        }
-
-        .lg\:max-w-[245px] {
-            max-width: 100%;
-        }
-
-        /* Adjust person image position */
-        .absolute.right-\[-65px\] {
-            position: static;
-            margin-top: 20px;
-        }
+        
+       
     }
 </style>

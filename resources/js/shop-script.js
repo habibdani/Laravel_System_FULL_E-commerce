@@ -175,10 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 productCard.appendChild(productName);
                 productCard.appendChild(productPrice);
                 
-                
-                const totalProducts = document.getElementsByClassName('product-card').length;
-                productCard.style.animationDelay = `${totalProducts * 0.1}s`;
-                
                 // Append productCard to the form
                 form.appendChild(productCard);
 

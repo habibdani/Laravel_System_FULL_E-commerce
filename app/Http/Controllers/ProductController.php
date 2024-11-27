@@ -18,6 +18,7 @@ class ProductController extends Controller
             // Ambil parameter dari request
             $product_type_id = $request->input('product_type_id');
             $filterByPencaarian = $request->input('filter_by_pencarian');
+            $filterByProductId = $request->input('Product_id');
             $filter = $request->input('filter');
 
             // Mulai membangun query dasar
@@ -55,7 +56,10 @@ class ProductController extends Controller
                 $query .= " AND CONCAT(pt.name, ' ', pv.name) LIKE :fill";
                 $bindings['fill'] = '%' . $filterByPencaarian . '%';
             }
-
+            if (!is_null($filterByProductId)){
+                $query .= " AND p.id = :filterbyproductID";
+                $bindings['filterbyproductID'] = $filterByProductId;
+            }
             // Tambahkan kondisi untuk filter explore atau special
             if ($filter === 'explore') {
                 $query .= " AND pt.id IN (1, 2, 3)";

@@ -9,6 +9,7 @@
     @component('components.sidebar') @endcomponent
     @component('components.banner')@endcomponent
     @component('components.productFilter')@endcomponent
+    @component('components.productFilterByProductId')@endcomponent
     @component('components.productExplore')@endcomponent
     @component('components.productSpecial')@endcomponent
     @component('components.product3')@endcomponent

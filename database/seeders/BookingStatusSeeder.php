@@ -16,7 +16,7 @@ class BookingStatusSeeder extends Seeder
             ['id' => 3, 'name' => 'Ship', 'color_status' => '#1E90FF'],
             ['id' => 4, 'name' => 'Confirmed', 'color_status' => '#008000'],
             ['id' => 5, 'name' => 'Delivered', 'color_status' => '#4B0082'],
-            ['id' => 6, 'name' => 'Edit', 'color_status' => '#FFA500'],
+            ['id' => 6, 'name' => 'Unpaid', 'color_status' => '#FFA500'],
             ['id' => 7, 'name' => 'Reject', 'color_status' => '#FF4500'],
         ]);
     }

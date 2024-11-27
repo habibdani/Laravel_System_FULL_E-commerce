@@ -1,9 +1,9 @@
 <section name="consult" class="py-0 mt-12">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
         <!-- Ubah kelas flex agar responsif -->
-        <div class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[994px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
+        <div id="subsessionconsule" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[1200px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
             <!-- Left Section -->
-            <div class="shadow-custom w-full lg:w-[720px] h-[245px] p-4 flex items-center rounded-md bg-white space-x-[20px]">
+            <div class="shadow-custom w-full lg:w-[900px] h-[245px] p-4 flex items-center rounded-md bg-white space-x-[20px]">
                 <div class="ml-[10px]">
                     <h2 class="font-roboto text-[22px] font-bold mb-3">Consult your needs now</h2>
                     <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Get the best offer from us, contact us and we will immediately serve what you need.</p>
@@ -12,7 +12,7 @@
                 <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
             </div>
             <!-- Right Section -->
-            <div id="right-section" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover rounded-md bg-center p-4 text-center" 
+            <div id="right-section-consule" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover z-[-10] rounded-md bg-center p-4 text-center" 
             style="background-image: url('{{ asset('storage/images/istockphoto-870572906-612x612.jpg') }}');">
                 <!-- Left rectangle -->
                 <!-- <div id="left-tangle" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
@@ -30,7 +30,7 @@
 </section>
 
 <style>
-    #right-section {
+    #right-section-consule {
     transition: background-image 1s ease-in-out;
     }
 
@@ -64,7 +64,7 @@
         box-shadow: 0px 4px 4px 0px #00000026;
     }
 
-    @media (max-width: 428px) {
+    @media (max-width: 450px) {
     /* Stack Right Section below Left Section */
     section[name="consult"] .flex.flex-col.lg\:flex-row {
         flex-direction: column;
@@ -121,13 +121,16 @@
         text-align: center;
         width: auto;
     }
+    #subsessionconsule{
+        width: 80%;
+    }
 }
 
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const rightSection = document.getElementById('right-section');
+    const rightSection = document.getElementById('right-section-consule');
     const images = [
         '{{ asset("storage/images/istockphoto-870572906-612x612.jpg") }}',
         '{{ asset("storage/images/istockphoto-2159958745-612x612.jpg") }}',

@@ -1,5 +1,5 @@
 <footer class=" py-0 mt-8 mx-9">
-    <div class="mx-auto p-2 bg-[#E01535] w-[994px] text-white h-[121.86px] rounded-lg flex items-center justify-between">
+    <div class="mx-auto p-2 bg-[#E01535] w-[1200px] text-white h-[121.86px] rounded-lg flex items-center justify-between">
     {{-- <div class="mx-auto p-2 bg-[#00AA5B] w-[994px] text-white h-[121.86px] rounded-lg flex items-center justify-between"> --}}
         <!-- Left Section: Logo and Social Media Icons -->
         <div class="flex flex-col items-center lg:w-1/4 h-full justify-center">

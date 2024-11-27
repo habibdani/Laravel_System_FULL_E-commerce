@@ -1,23 +1,24 @@
 import { fetchListProduct } from './api/fetchListProduct';
 
 // Fungsi untuk memasukkan teks ke input ketika varian diklik
-const addClickEventToVariants = () => {
-    const variantLinks = document.querySelectorAll('.variantM');
-    const searchInput = document.getElementById('search-input');
+// const addClickEventToVariants = () => {
+//     const variantLinks = document.querySelectorAll('.variantM');
+//     const searchInput = document.getElementById('searchproduct');
 
-    variantLinks.forEach((variant) => {
-        variant.addEventListener('click', (event) => {
-            event.preventDefault();
-            const variantText = variant.textContent;
-            if (searchInput) {
-                searchInput.value = variantText;  // Masukkan teks varian ke input
-            }
-        });
-    });
-};
+//     variantLinks.forEach((variant) => {
+//         variant.addEventListener('click', (event) => {
+//             event.preventDefault();
+//             const variantText = variant.textContent;
+//             if (searchInput) {
+//                 searchInput.value = variantText;  // Masukkan teks varian ke input
+//             }
+//         });
+//     });
+// };
 
 // Fungsi untuk render ulang dropdown berdasarkan semua data produk
 const renderAllProducts = (productTypes) => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Ambil CSRF token
     const dropdownContent = document.querySelector('.listdropdown');
     dropdownContent.innerHTML = ''; // Kosongkan konten dropdown sebelum render ulang
 
@@ -42,10 +43,17 @@ const renderAllProducts = (productTypes) => {
             product.variants.forEach((variant) => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
-                a.href = '#';
+
+                // Bangun URL dengan parameter
+                const url = new URL('http://127.0.0.1:8001/view-product');
+                url.searchParams.append('_token', csrfToken);
+                url.searchParams.append('product_variant_id', variant.id);
+                url.searchParams.append('product_type_id', productType.id);
+
+                a.href = url.toString(); // Tetapkan URL ke atribut href
                 a.classList.add('variantM', 'text-[#6B6B6B]', 'text-[12px]', 'hover:text-gray-900');
-                a.setAttribute('value', variant.id);
                 a.textContent = variant.name;
+
                 li.appendChild(a);
                 ul.appendChild(li);
             });
@@ -58,6 +66,7 @@ const renderAllProducts = (productTypes) => {
     // Tambahkan event listener pada semua varian setelah mereka dirender
     addClickEventToVariants();
 };
+
 
 // Fungsi untuk render ulang dropdown berdasarkan data dari satu productType
 const renderDropdownContent = (productType) => {
@@ -359,3 +368,33 @@ searchInput.addEventListener(
         renderfilterProducts(searchQuery);
     }, 300) // Debounce delay in milliseconds
 );
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchproduct');
+    const productFilterSection = document.getElementById('sessionproductfilter');
+    const exploreProductSection = document.getElementById('sessionproductexplore');
+    const specialProductSection = document.getElementById('sessionproductspecial');
+
+    function toggleSections() {
+        const searchValue = searchInput.value.trim();
+
+        if (searchValue) {
+            // Jika ada value di search input
+            productFilterSection.style.display = 'block'; // Tampilkan filter-product
+            exploreProductSection.style.display = 'none'; // Sembunyikan explore-product
+            specialProductSection.style.display = 'none'; // Sembunyikan special-product
+        } else {
+            // Jika tidak ada value di search input
+            productFilterSection.style.display = 'none'; // Sembunyikan filter-product
+            exploreProductSection.style.display = 'block'; // Tampilkan explore-product
+            specialProductSection.style.display = 'block'; // Tampilkan special-product
+        }
+    }
+
+    // Jalankan toggleSections saat input berubah
+    searchInput.addEventListener('input', toggleSections);
+
+    // Jalankan sekali saat halaman dimuat
+    toggleSections();
+});
+

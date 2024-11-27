@@ -1,7 +1,6 @@
 <section name="banner" class="py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div class="relative w-[994px] h-[206px] mt-20 shadow-custom bg-cover rounded-md bg-center p-4 text-center" id="banner-container" style="background-image: linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url('{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}');">
-
+        <div id="subbanner" class="relative w-[1200px] h-[256px] mt-20 shadow-custom bg-cover rounded-md bg-center overflow-hidden" style="background-image: linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url('{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}');">
             <!-- Tombol kiri -->
             <button class="absolute -left-10 top-1/2 transform -translate-y-1/2 bg-[#E8E8E8] hover:bg-opacity-50 text-white w-[26px] h-[26px] rounded-full flex items-center justify-center focus:outline-none" id="prev-button">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,92 +15,130 @@
                 </svg>
             </button>
 
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <h2 class="font-roboto text-[22px] font-bold text-white mb-3">TOKO BESI TERLENGKAP</h2>
-                <p class="font-roboto text-[12px] w-[320.39px] text-white mb-3">We offer competitive prices with the best quality, so you get maximum value for every purchase.</p>
+            <!-- Kontainer Teks -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-container">
+                <h2 class="font-roboto text-[22px] font-bold text-white mb-3 banner-title">TOKO BESI TERLENGKAP</h2>
+                <p class="font-roboto text-[12px] w-[320.39px] text-white mb-3 banner-description">
+                    We offer competitive prices with the best quality, so you get maximum value for every purchase.
+                </p>
             </div>
         </div>
     </div>
+</section>
 
-    <style>
-        /* Ukuran default untuk layar besar */
-        #banner-container {
-            width: 994px;
-            height: 206px;
-            transition: opacity 0.5s ease-in-out;
-            opacity: 1;
+<style>
+    /* Subbanner (Default) */
+    #subbanner {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Kontainer Teks dan Gambar */
+    .text-container,
+    .image-container {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+        opacity: 1;
+    }
+
+    /* Saat Pergantian */
+    .fade-out {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    .fade-in {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    /* Responsif */
+    @media (max-width: 450px) {
+        #subbanner {
+            width: 80%;
+            height: 180px;
         }
 
-        /* Media query untuk layar dengan lebar maksimum 1440px */
-        @media (max-width: 1440px) {
-            #banner-container {
-                width: 994px;
-                height: 206px;
-            }
+        .banner-title {
+            font-size: 18px;
         }
 
-        /* Media query untuk layar dengan lebar maksimum 428px */
-        @media (max-width: 428px) {
-            #banner-container {
-                width: 320.26px;
-                height: 206px;
-                margin-top: 7.5rem; /* mt-30 */
-            }
+        .banner-description {
+            font-size: 10px;
+            width: 250px;
+        }
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const banner = document.getElementById('subbanner');
+        const title = document.querySelector('.banner-title');
+        const description = document.querySelector('.banner-description');
+        const images = [
+            "{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}",
+            "{{ asset('storage/images/em9YuIaleCIngKzyqiVgvpJWiT514QZoKh1Xzxzr.jpg') }}",
+            "{{ asset('storage/images/istockphoto-1288462556-612x612.jpg') }}"
+        ];
+        const titles = [
+            "TOKO BESI TERLENGKAP",
+            "PROMO BULANAN HEBAT",
+            "HARGA TERBAIK UNTUK ANDA"
+        ];
+        const descriptions = [
+            "We offer competitive prices with the best quality, so you get maximum value for every purchase.",
+            "Enjoy great deals every month, only at our store.",
+            "Quality products at the most affordable prices."
+        ];
+        let currentIndex = 0;
+
+        function setBackground(index) {
+            // Fade out
+            banner.classList.add('fade-out');
+            title.classList.add('fade-out');
+            description.classList.add('fade-out');
+
+            setTimeout(() => {
+                // Ganti gambar dan teks
+                banner.style.backgroundImage = `linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url(${images[index]})`;
+                title.textContent = titles[index];
+                description.textContent = descriptions[index];
+
+                // Fade in
+                banner.classList.remove('fade-out');
+                title.classList.remove('fade-out');
+                description.classList.remove('fade-out');
+                banner.classList.add('fade-in');
+                title.classList.add('fade-in');
+                description.classList.add('fade-in');
+            }, 1000); // Durasi animasi keluar
         }
 
-        /* Animasi fade out */
-        #banner-container.fade-out {
-            opacity: 0;
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const banner = document.getElementById('banner-container');
-            const images = [
-                "{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}",
-                "{{ asset('storage/images/em9YuIaleCIngKzyqiVgvpJWiT514QZoKh1Xzxzr.jpg') }}",
-                "{{ asset('storage/images/istockphoto-1288462556-612x612.jpg') }}",
-            ];
-            let currentIndex = 0;
-            let autoSlideInterval;
-
-            function setBackground(index) {
-                banner.classList.add('fade-out');
-                setTimeout(() => {
-                    banner.style.backgroundImage = `linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url(${images[index]})`;
-                    banner.classList.remove('fade-out');
-                }, 500);
-            }
-
-            function startAutoSlide() {
-                autoSlideInterval = setInterval(() => {
-                    currentIndex = (currentIndex + 1) % images.length;
-                    setBackground(currentIndex);
-                }, 7000); // Change every 7 seconds
-            }
-
-            function stopAutoSlide() {
-                clearInterval(autoSlideInterval);
-            }
-
-            document.getElementById('next-button').addEventListener('click', () => {
-                stopAutoSlide();
+        function startAutoSlide() {
+            setInterval(() => {
                 currentIndex = (currentIndex + 1) % images.length;
                 setBackground(currentIndex);
-                startAutoSlide(); // Restart auto slide
-            });
+            }, 7000); // Ganti setiap 7 detik
+        }
 
-            document.getElementById('prev-button').addEventListener('click', () => {
-                stopAutoSlide();
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                setBackground(currentIndex);
-                startAutoSlide(); // Restart auto slide
-            });
-
-            // Initialize
+        // Tombol navigasi
+        document.getElementById('next-button').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
             setBackground(currentIndex);
-            startAutoSlide();
         });
-    </script>
-</section>
+
+        document.getElementById('prev-button').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            setBackground(currentIndex);
+        });
+
+        // Initialize
+        setBackground(currentIndex);
+        startAutoSlide();
+    });
+
+</script>

@@ -9,9 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (locationValue) {
             try {
                 const locationValue = sessionStorage.getItem('city_value');
-                    pilihAlamatButton.innerHTML = `<svg width="15" height="20" viewBox="0 0 15 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.33133 0.664062C3.43041 0.664062 0.256836 3.8381 0.256836 7.73912C0.256836 11.4942 6.67565 20.2674 6.94896 20.6389L7.20403 20.986C7.23386 21.0268 7.28136 21.0507 7.33133 21.0507C7.38208 21.0507 7.42927 21.0268 7.45941 20.986L7.71432 20.6389C7.98779 20.2674 14.4064 11.4942 14.4064 7.73912C14.4064 3.8381 11.2324 0.664062 7.33133 0.664062ZM7.33133 5.20485C8.72904 5.20485 9.86561 6.34146 9.86561 7.73912C9.86561 9.13606 8.72899 10.2734 7.33133 10.2734C5.93444 10.2734 4.79706 9.13606 4.79706 7.73912C4.79706 6.34146 5.93439 5.20485 7.33133 5.20485Z" fill="white"/>
-                    </svg>&nbsp; Dikirim ke ${locationValue}`;
+                    pilihAlamatButton.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg> &nbsp NEXT &nbsp  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>`;
             } catch (e) {
                 console.error("Error parsing ongkir_value_attribute from sessionStorage", e);
                 pilihAlamatButton.textContent = "Pilih Alamat";
@@ -1234,7 +1240,7 @@ document.addEventListener("DOMContentLoaded", function() {
       buttonPilihAlamat.classList.add('hidden');
       buttonGotoShop.classList.remove('hidden');
       buttonTotalBayar.classList.add('hidden');
-      buttonpyment.classList.add('hidden');
+      buttonpyment.classList.remove('hidden');
     } else if (currentUrl === '/') {
       // Hapus class 'hidden' jika di halaman /
       buttonPilihAlamat.classList.remove('hidden');
@@ -1292,25 +1298,62 @@ window.onbeforeunload = function () {
 };
 
 const updatePaymentButtonState = () => {
-    const payment = document.getElementById('payment');
+    const buttonpayment = document.getElementById('payment');
+    const buttonpilihalamat = document.getElementById('pilihAlamatok');
     const productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;
     const districtId = parseInt(sessionStorage.getItem('district_id')) || 0;
+    const bingkaibuttonalamt = document.getElementById('bottonpilihAlamat');
+    const bingkaibuttonpayment = document.getElementById('bingkaibuttonpyment');
+    const checkclientemail = sessionStorage.getItem('client_email');
+    // Dapatkan URL halaman saat ini
+    const currentUrl = window.location.href;
 
-    // Tampilkan atau sembunyikan tombol payment berdasarkan kondisi
-    if (productCardCount > 0 && districtId > 0) {
-        payment.removeAttribute('disabled'); // Hapus atribut disabled
-        payment.classList.add('bg-[#E01535]', 'text-white');
-        payment.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]', 'hidden');
+    // Periksa kondisi utama (productCardCount dan districtId)
+    if (productCardCount === 0) {
+        // Sembunyikan tombol alamat jika productCardCount = 0
+        bingkaibuttonalamt.classList.add('hidden');
+        bingkaibuttonpayment.classList.add('hidden');
+    } else if (productCardCount > 0 && districtId > 0 && checkclientemail) {
+        // Aktifkan tombol payment jika kedua kondisi terpenuhi
+        buttonpayment.removeAttribute('disabled');
+        buttonpayment.classList.add('bg-[#E01535]', 'text-white');
+        buttonpayment.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]', 'hidden');
+
+        // Sembunyikan tombol alamat
+        bingkaibuttonalamt.classList.add('hidden');
+
+        // Tampilkan tombol Payment
+        bingkaibuttonpayment.classList.remove('hidden');
     } else {
-        payment.setAttribute('disabled', 'disabled'); // Tambahkan atribut disabled
-        payment.classList.remove('bg-[#E01535]', 'text-white');
-        payment.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]', 'hidden');
+        // Sembunyikan semua tombol jika kondisi tidak terpenuhi
+        bingkaibuttonalamt.classList.add('hidden');
+        bingkaibuttonpayment.classList.add('hidden');
+    }
+
+    // Periksa posisi route halaman
+    if (currentUrl === "http://127.0.0.1:8001/") {
+        // Sembunyikan bingkaibuttonpayment
+        bingkaibuttonalamt.classList.remove('hidden');
+        bingkaibuttonpayment.classList.add('hidden');
+    } else if (currentUrl.startsWith("http://127.0.0.1:8001/view-maps?client_type_id=1")) {
+        // Sembunyikan bingkaibuttonalamt
+        bingkaibuttonalamt.classList.add('hidden');
     }
 };
 
-// setInterval(() => {
-//     updatePaymentButtonState();
-// }, 1000);
+
+// // Tambahkan event listener untuk tombol pilih alamat
+// const buttonpilihalamat = document.getElementById('pilihAlamatok');
+// buttonpilihalamat.addEventListener('click', (e) => {
+//     e.preventDefault(); // Mencegah default submit form jika diperlukan
+//     sessionStorage.setItem('district_id', '1'); // Simulasikan pemilihan alamat
+//     updatePaymentButtonState(); // Perbarui status tombol setelah klik
+// });
+
+
+setInterval(() => {
+    updatePaymentButtonState();
+}, 1000);
 
 const updateTotalPriceAllAfterRender = () => {
     const productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;

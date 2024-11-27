@@ -76,23 +76,27 @@
             <!-- Grup Tombol di Bagian Atas -->
 
             <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-2">
-                <button id="btn-slide-2" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                <button id="btn-slide-2" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Shop</button>
-                <button id="btn-slide-1" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                <button id="btn-slide-1" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] flex-grow font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Pilih Tujuan</button>
-                <button id="btn-slide-3" class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                <button id="btn-slide-3" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
-                <button id="btn-slide-4" class="hidden custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
-                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Payment</button>
+                <button id="btn-slide-4" disabled class="hidden custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
+                w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent"></button>
             </div>
 
             <div class="flex-grow">
                 <!-- Slide 1: Pilih Tujuan -->
-                <div id="slide-1" class="">
-                    <h2 class="text-[22px] font-roboto font-medium text-[#292929] mb-4">Pilih Tujuan</h2>
+                <div id="slide-1" class="scroll-containe">
+                    <h2 class="text-[22px] font-roboto font-medium text-[#292929] mb-2">Pilih Tujuan</h2>
 
-                    <div class="relative mb-4">
-                        <label for="tipe-pembelian" class="font-roboto block text-[#747474] text-[12px] mb-2">Tipe Pembelian:</label>
+                    <div class="mb-1">
+                        <label for="nama-user" class="block text-[12px] font-normal text-[#747474]">Nama Penerima</label>
+                        <input type="text" id="nama-user" name="nama-user" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Budi">
+                    </div>
+                    <div class="relative mb-1">
+                        <label for="tipe-pembelian" class="font-roboto block text-[#747474] text-[12px] mb-1">Tipe Pembelian:</label>
                         <div class="relative">
                             <select id="tipe-pembelian" class="appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]">
                                 <!-- Option akan diisi dengan data dari API -->
@@ -106,8 +110,8 @@
                         </div>
                     </div>
 
-                    <div class="relative mb-4">
-                        <label for="alamat" class="font-roboto block text-[#747474] text-[12px] mb-2">Alamat:</label>
+                    <div class="relative mb-1">
+                        <label for="alamat" class="font-roboto block text-[#747474] text-[12px] mb-1">Pilih Area Pengiriman</label>
                         <div class="relative">
                             <select id="alamat" class="form-select select2 appearance-none h-[29.84px] w-full border border-[#DADCE0] rounded-[4px] px-2 focus:outline-none focus:ring-2 focus:ring-[#E01535]" style="width: 100%;">
                                 <!-- Opsi akan ditambahkan oleh JavaScript -->
@@ -121,19 +125,46 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Alamat Lengkap -->
+                    <div class="mb-1">
+                        <label for="alamat-lengkap" class="block text-[12px] font-normal text-[#747474]">Masukkan Detail Alamat</label>
+                        <input type="text" id="alamat-lengkap" name="alamat-lengkap" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Jl. Kesehatan, No.25, Karang Ranji">
+                    </div>
                     <div hidden class="hidden" id="type-client" value="1"></div>
                     <div hidden class="hidden" id="pengiriman" value="2"></div>
+
+                     <!-- Kode Pos -->
+                     <div class="mb-1">
+                        <label for="kode-pos" class="block text-[12px] font-normal text-[#747474]">Kode Pos</label>
+                        <input type="text" id="kode-pos" name="kode-pos" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="44327">
+                    </div>
+
+                    <!-- Nomor Telepon -->
+                    <div class="mb-1">
+                        <label for="nomor-telp" class="block text-[12px] font-normal text-[#747474]">Nomor Telp. (WA di recomendasikan)</label>
+                        <input type="text" id="nomor-telp" name="nomor-telp" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="0867321773">
+                    </div>
+
+                    <!-- Alamat Email -->
+                    <div class="mb-1">
+                        <label for="email" class="block text-[12px] font-normal text-[#747474]">Alamat Email</label>
+                        <input type="email" id="email" name="email" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="budisetiawan@gmail.com">
+                    </div>
+
+                    <div class="bg-gray-100 p-3 rounded-md text-sm text-gray-700 flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8S2 14.418 2 10 5.582 2 10 2s8 3.582 8 8zm-8 3a1 1 0 100-2 1 1 0 000 2zm1-8a1 1 0 10-2 0v4a1 1 0 102 0V5z" clip-rule="evenodd"/></svg>
+                        <p class="text-[12px] font-normal text-[#292929]">Isi data pribadi Anda dengan benar, kami akan mengirimkan paket Anda ke alamat tersebut dan konfirmasi ke alamat Email Anda.</p>
+                    </div>
                 </div>
 
                 <!-- Slide 2: Shop -->
-                <div id="slide-2" class="hidden">
-                    {{-- <h2 class="text-lg font-semibold">Shop</h2> --}}
+                <div id="slide-2" class="hidden scroll-containe">
+                    <h2 class="text-lg font-semibold">Shop</h2>
                     <p class="text-sm">Item Anda:</p>
 
                     <!-- Wrapper untuk konten dengan scroll -->
-                    <div id="list-order-container" class="list-order-item mt-1 space-y-2 max-h-[320px] overflow-y-auto scrollbar-hide">
+                    <div id="list-order-container" class="list-order-item mt-1 space-y-2 max-h-[420px] overflow-y-auto">
                     </div>
-
 
                 </div>
 
@@ -141,47 +172,17 @@
                 <div id="slide-3" class="hidden">
                     <h2 class="text-lg font-semibold mb-4">Payment</h2>
                     <form class="space-y-2 max-h-[330px] overflow-y-auto scrollbar-hide">
-                        <!-- Nama Penerima -->
-                        <div>
-                            <label for="nama-user" class="block text-[12px] font-normal text-[#292929]">Nama Penerima</label>
-                            <input type="text" id="nama-user" name="nama-user" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Budi">
-                        </div>
-
-                        <!-- Alamat Lengkap -->
-                        <div>
-                            <label for="alamat-lengkap" class="block text-[12px] font-normal text-[#292929]">Alamat Lengkap</label>
-                            <input type="text" id="alamat-lengkap" name="alamat-lengkap" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Jl. Kesehatan, No.25, Karang Ranji">
-                        </div>
+                       
 
                         <!-- Kota -->
-                        <div>
+                        <div hidden>
                             <label for="kota" class="block text-[12px] font-normal text-[#292929]">Kota</label>
                             <input type="text" disabled id="kota" name="kota" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Jakarta Selatan">
                         </div>
 
-                        <!-- Kode Pos -->
-                        <div>
-                            <label for="kode-pos" class="block text-[12px] font-normal text-[#292929]">Kode Pos</label>
-                            <input type="text" id="kode-pos" name="kode-pos" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="44327">
-                        </div>
-
-                        <!-- Nomor Telepon -->
-                        <div>
-                            <label for="nomor-telp" class="block text-[12px] font-normal text-[#292929]">Nomor Telp.</label>
-                            <input type="text" id="nomor-telp" name="nomor-telp" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="0867321773">
-                        </div>
-
-                        <!-- Alamat Email -->
-                        <div>
-                            <label for="email" class="block text-[12px] font-normal text-[#292929]">Alamat Email</label>
-                            <input type="email" id="email" name="email" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="budisetiawan@gmail.com">
-                        </div>
-
+                    
                         <!-- Catatan -->
-                        <div class="bg-gray-100 p-3 rounded-md text-sm text-gray-700 flex items-start">
-                            <svg class="w-6 h-6 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 4.418-3.582 8-8 8S2 14.418 2 10 5.582 2 10 2s8 3.582 8 8zm-8 3a1 1 0 100-2 1 1 0 000 2zm1-8a1 1 0 10-2 0v4a1 1 0 102 0V5z" clip-rule="evenodd"/></svg>
-                            <p class="text-[12px] font-normal text-[#292929]">Isi data pribadi Anda dengan benar, kami akan mengirimkan paket Anda ke alamat tersebut dan konfirmasi ke alamat Email Anda.</p>
-                        </div>
+                       
                     </form>
                 </div>
 
@@ -211,10 +212,11 @@
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
                                 <p class="font-semibold">Nomor Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
-<path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
-</svg>
-</span></p>
+                                    <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
+                                    <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
+                                    </svg>
+                                    </span>
+                                </p>
                                 <p>a/n <span class="font-bold">BUDIONO NUGROHO</span></p>
                             </div>
 
@@ -313,27 +315,28 @@
                         </button>
                     </form>
                 </div>
-                <div id="bottonGoShop" class="bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md shadow-md flex justify-between items-center">
+                <!-- <div id="bottonGoShop" class="bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md shadow-md flex justify-between items-center">
                     <form action="{{ url('/') }}" method="GET" class="w-full h-full">
                         {{-- <input type="hidden" name="client_type_id" value="1"> --}}
                         <button type="submit" id="saveAlamat" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
                             Pilih Produk Lain
                         </button>
                     </form>
+                </div> -->
+                <div id="bingkaibuttonpyment" class="divpayment bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md shadow-md flex justify-between items-center">
+                    <button id="payment" value="" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
+                    Payment</button>
                 </div>
 
                 <div class="divtotalbayar mt-2">
                     <button id="totalbayar" value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
                     </button>
                 </div>
-                <div class="divpayment mt-2">
-                    <button id="payment" disabled value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
-                    Payment</button>
-                </div>
+                
             </div>
         </div>
 
-        <button id="toggle" name="tt" class="p-3 h-[32.09px] sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
+        <button id="toggle" style="height: 80px !important;" name="tt" class="p-3 sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
                 data-visible-icon="{{ asset('storage/icons/vector.svg') }}"
                 data-hidden-icon="{{ asset('storage/icons/vector-hidden.svg') }}">
             <img id="toggleimg" src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
@@ -358,3 +361,47 @@
     @vite('resources/js/sidebar-script.js')
 
 </section>
+
+<style>
+    #slide-1, #slide-2, #slide-3 {
+        max-height: 440px; /* Membatasi tinggi maksimal */
+        overflow-y: auto; /* Scrollbar vertikal */
+        padding-right: 1rem; /* Opsional: Tambahkan ruang untuk konten */
+        -ms-overflow-style: none; /* Hapus scrollbar default untuk Internet Explorer */
+        scrollbar-width: thin; /* Scrollbar lebih tipis */
+        scrollbar-color: #E01535 #f0f0f0; /* Warna scrollbar */
+    }
+
+    /* Scrollbar untuk Webkit (Chrome, Safari, Edge) */
+    #slide-1::-webkit-scrollbar, 
+    #slide-2::-webkit-scrollbar, 
+    #slide-3::-webkit-scrollbar {
+        width: 8px; /* Lebar scrollbar vertikal */
+    }
+
+    #slide-1::-webkit-scrollbar-track, 
+    #slide-2::-webkit-scrollbar-track, 
+    #slide-3::-webkit-scrollbar-track {
+        background: #f0f0f0; /* Warna latar track scrollbar */
+        border-radius: 4px; /* Membuat track melengkung */
+    }
+
+    #slide-1::-webkit-scrollbar-thumb, 
+    #slide-2::-webkit-scrollbar-thumb, 
+    #slide-3::-webkit-scrollbar-thumb {
+        background-color: #E01535; /* Warna scrollbar */
+        border-radius: 4px; /* Membuat scrollbar melengkung */
+        border: 2px solid #f0f0f0; /* Margin di sekitar scrollbar */
+    }
+
+    #slide-1::-webkit-scrollbar-thumb:hover, 
+    #slide-2::-webkit-scrollbar-thumb:hover, 
+    #slide-3::-webkit-scrollbar-thumb:hover {
+        background-color: #b3122a; /* Warna saat scrollbar di-hover */
+    }
+
+    /* Tambahan opsional untuk efek hover pada tombol atau elemen lain */
+    button:focus {
+        outline: none;
+    }
+</style>

@@ -1,6 +1,6 @@
-<section name="special-product" class="py-0 mt-8">
+<section name="special-product" id="sessionproductspecial" class="py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div class="relative w-[994px] flex items-center justify-between">
+        <div id="subsessionproductspecial" class="relative w-[1200px] flex items-center justify-between">
             <!-- Bagian Kiri (Produk Spesial) -->
             <div id="special-product" class="relative z-0 shadow-custom w-full h-[285.14px] bg-white rounded-md overflow-hidden">
                 <div class="p-5">
@@ -15,12 +15,12 @@
 
              <!-- Link 'View All' -->
              <div id="view-all-container" class="absolute top-[10%] right-5 flex items-center space-x-3">
-                <a id="special-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
+                <!-- <a id="special-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
                     View all (0+)
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                </a>
+                </a> -->
                 <!-- Tombol Prev -->
                 <button id="prev-button-product-special" class="bg-[#E8E8E8] p-2 rounded-full shadow-custom ">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +92,9 @@
         #special-view-all-link,
         .special-description {
             display: none;
+        }
+        #subsessionproductspecial{
+            width: 80%;
         }
     }
 </style>
