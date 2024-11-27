@@ -17,6 +17,7 @@ class ProductController extends Controller
         try {
             // Ambil parameter dari request
             $product_type_id = $request->input('product_type_id');
+            $filterByPencaarian = $request->input('filter_by_pencarian');
             $filter = $request->input('filter');
 
             // Mulai membangun query dasar
@@ -49,6 +50,10 @@ class ProductController extends Controller
             if (!is_null($product_type_id)) {
                 $query .= " AND pt.id = :product_type_id";
                 $bindings['product_type_id'] = $product_type_id;
+            }
+            if (!is_null($filterByPencaarian)) {
+                $query .= " AND CONCAT(pt.name, ' ', pv.name) LIKE :fill";
+                $bindings['fill'] = '%' . $filterByPencaarian . '%';
             }
 
             // Tambahkan kondisi untuk filter explore atau special

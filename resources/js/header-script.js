@@ -178,3 +178,184 @@ document.addEventListener("DOMContentLoaded", function() {
     // Perbarui nilai elemen dengan id="keranjang"
     document.getElementById('keranjang').textContent = productCount;
 });
+
+import { fetchPencarianProduct } from './api/fetchPencarainProduct';
+
+const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), delay);
+    };
+};
+
+async function renderfilterProducts(searchQuery) {
+    try {
+        const products = await fetchPencarianProduct(searchQuery);
+        const productList = document.getElementById('filter-product-list');
+
+        // Clear existing products
+        productList.innerHTML = '';
+
+        // Create and append new product cards
+        products.forEach((product) => {
+            const productCard = createProductCard(product);
+            productList.appendChild(productCard);
+        });
+
+        // Update "View All" link
+        updateViewAllLink(
+            products.length,
+            productList.clientWidth,
+            document.getElementById('filter-view-all-link')
+        );
+    } catch (error) {
+        console.error('Error rendering products:', error);
+    }
+}
+
+function createProductCard(product) {
+    const productCard = document.createElement('div');
+    productCard.setAttribute('data-product-id', product.product_id);
+    productCard.setAttribute('product-type-id', product.product_type_id);
+    productCard.setAttribute('product-variant-id', product.product_variant_id);
+    
+    const form = document.createElement('form');
+    form.method = 'GET';
+    form.action = `/view-product`;
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = csrfToken;
+
+    const productVariantInput = document.createElement('input');
+    productVariantInput.type = 'hidden';
+    productVariantInput.name = 'product_variant_id';
+    productVariantInput.value = product.product_variant_id;
+
+    const productTypeInput = document.createElement('input');
+    productTypeInput.type = 'hidden';
+    productTypeInput.name = 'product_type_id';
+    productTypeInput.value = product.product_type_id;
+
+    form.appendChild(csrfInput);
+    form.appendChild(productVariantInput);
+    form.appendChild(productTypeInput);
+
+    productCard.classList.add(
+        'product-card',
+        'shadow-custom',
+        'h-[186.83px]',
+        'bg-white',
+        'rounded-md',
+        'flex',
+        'flex-col',
+        'justify-between',
+        'overflow-hidden'
+    );
+    productCard.style.width = '149.74px';
+    productCard.style.flexShrink = '0';
+    productCard.style.position = 'relative';
+
+    // Product Image
+    const productImageContainer = document.createElement('div');
+    productImageContainer.classList.add(
+        'relative',
+        'w-full',
+        'h-[100px]',
+        'mb-2',
+        'rounded-t-md',
+        'overflow-hidden'
+    );
+
+    const productImage = document.createElement('img');
+    productImage.src = `${window.location.origin}/storage/${product.variant_image}`;
+    productImage.alt = product.variant_name;
+    productImage.classList.add('object-cover', 'w-full', 'h-full');
+    productImageContainer.appendChild(productImage);
+
+    // Preorder Label
+    if (product.preorder) {
+        const preorderLabel = document.createElement('span');
+        preorderLabel.textContent = 'Preorder';
+        preorderLabel.classList.add(
+            'bg-black',
+            'text-white',
+            'font-poppins',
+            'text-[10px]',
+            'font-normal',
+            'px-2',
+            'py-1',
+            'rounded',
+            'absolute',
+            'bottom-2',
+            'left-2'
+        );
+        preorderLabel.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        productImageContainer.appendChild(preorderLabel);
+    }
+
+    // Product Name
+    const productName = document.createElement('p');
+    productName.textContent = product.variant_name;
+    productName.classList.add('font-normal', 'text-[#747474]', 'text-left', 'truncate', 'text-[10px]', 'mx-2');
+    productName.style.width = '100%';
+    productName.style.whiteSpace = 'nowrap';
+    productName.style.overflow = 'hidden';
+    productName.style.textOverflow = 'ellipsis';
+
+    // Product Price
+    const productPrice = document.createElement('p');
+    productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(product.variant_price)}`;
+    productPrice.classList.add('text-[14px]', 'text-left', 'font-semibold', 'text-[#292929]', 'm-2');
+    productPrice.style.width = '100%';
+    productPrice.style.whiteSpace = 'nowrap';
+    productPrice.style.overflow = 'hidden';
+    productPrice.style.textOverflow = 'ellipsis';
+
+    // Assemble Card
+    productCard.appendChild(productImageContainer);
+    productCard.appendChild(productName);
+    productCard.appendChild(productPrice);
+
+    form.appendChild(productCard);
+
+    document.body.appendChild(form);
+
+    // Event listener for product card click
+    productCard.addEventListener('click', async () => {
+        try {
+            form.submit();
+
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
+    });
+
+    return form;
+    // Tambahkan delay animasi untuk setiap produk
+}
+
+function updateViewAllLink(totalProducts, listWidth, viewAllLink) {
+    const productCardWidth = 149.74;
+    const visibleProductCount = Math.floor(listWidth / productCardWidth);
+    const hiddenProductCount = totalProducts - visibleProductCount;
+
+    if (hiddenProductCount > 0) {
+        viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    } else {
+        viewAllLink.textContent = 'View all';
+    }
+}
+
+// Attach event listener to the search input field with debounce
+const searchInput = document.getElementById('searchproduct');
+searchInput.addEventListener(
+    'input',
+    debounce((event) => {
+        const searchQuery = event.target.value.trim();
+        renderfilterProducts(searchQuery);
+    }, 300) // Debounce delay in milliseconds
+);

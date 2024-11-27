@@ -174,13 +174,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 productCard.appendChild(productImageContainer);
                 productCard.appendChild(productName);
                 productCard.appendChild(productPrice);
-
+                
+                
+                const totalProducts = document.getElementsByClassName('product-card').length;
+                productCard.style.animationDelay = `${totalProducts * 0.1}s`;
+                
                 // Append productCard to the form
                 form.appendChild(productCard);
 
                 // Tambahkan form ke dalam DOM
                 document.body.appendChild(form);
-
+                
                 // Event listener for product card click
                 productCard.addEventListener('click', async () => {
                     try {
@@ -218,11 +222,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     productList.appendChild(productCard);
                 });
             };
-
+           
             // Add products to the lists
-            appendProductsToList(products, productList, true);
-            appendProductsToList(specialProducts, specialProductList, false);
             appendProductsToList(exploreProducts, exploreProductList, false);
+            appendProductsToList(specialProducts, specialProductList, false);
+            appendProductsToList(products, productList, true);
 
             console.log('Adding products:', products);
 

@@ -30,6 +30,7 @@
                     </svg>
                 </a>
             </div>
+            
         </div>
     </div>
 </section>
@@ -44,14 +45,56 @@
     }
 
     #product-list {
-        padding-bottom: 10px;  /* Adjust as needed */
-        margin-bottom: 10px;  /* Adjust as needed */
-        overflow-x: auto;  /* Still allows scrolling if necessary */
-        -ms-overflow-style: none;  /* IE 10+ */
-        scrollbar-width: none;  /* Firefox */
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        overflow-x: auto;
+        -ms-overflow-style: none; /* Hapus scrollbar default untuk Internet r */
+        scrollbar-width: thin; /* Scrollbar yang lebih tipis */
+        scrollbar-color: #E01535 #f0f0f0; /* Warna scrollbar */
     }
 
+    /* Scrollbar untuk Webkit (Chrome, Safari, Edge) */
     #product-list::-webkit-scrollbar {
-        display: none;  /* Safari and Chrome */
+        height: 8px; /* Tinggi scrollbar horizontal */
+        z-index: -100;
+    }
+
+    #product-list::-webkit-scrollbar-track {
+        background: #f0f0f0; /* Warna latar track scrollbar */
+        border-radius: 4px; /* Membuat track melengkung */
+        z-index: -100;
+    }
+
+    #product-list::-webkit-scrollbar-thumb {
+        background-color: #E01535; /* Warna scrollbar */
+        border-radius: 4px; /* Membuat scrollbar melengkung */
+        border: 2px solid #f0f0f0; /* Menambahkan margin di sekitar scrollbar */
+    }
+
+    #product-list::-webkit-scrollbar-thumb:hover {
+        background-color: #b3122a; /* Warna saat scrollbar di-hover */
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    #view-all-link,
+    .description {
+        display: flex;
+    }
+
+    button#prev-button-product:hover,
+    button#next-button-product:hover {
+        background-color: #b3122a; /* Warna saat di-hover */
+        transform: scale(1.1); /* Sedikit pembesaran */
+        transition: all 0.3s ease-in-out; /* Transisi yang halus */
+    }
+
+    @media (max-width: 450px) {
+        #view-all-link,
+        .description {
+            display: none;
+        }
     }
 </style>

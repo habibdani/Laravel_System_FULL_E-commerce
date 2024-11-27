@@ -19,6 +19,10 @@ Make sure your environment meets the following requirements:
 git clone <repository_url>
 cd <project_directory>
 
+## add plugin
+- npm install --save-dev vite laravel-vite-plugin
+- npm run build
+
 ### 2. DB setup
 - create mysql DB name : andal_prima
 - inport andal_prima.sql

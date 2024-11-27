@@ -210,7 +210,11 @@
 
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
-                                <p class="font-semibold">Nomor Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer">📋</span></p>
+                                <p class="font-semibold">Nomor Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
+<path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
+</svg>
+</span></p>
                                 <p>a/n <span class="font-bold">BUDIONO NUGROHO</span></p>
                             </div>
 
