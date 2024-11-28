@@ -169,38 +169,21 @@
                 </div>
 
                 <!-- Slide 3: Payment -->
-                <div id="slide-3" class="hidden">
+                <div id="slide-3" class="hidden scroll-containe">
                     <h2 class="text-lg font-semibold mb-4">Payment</h2>
-                    <form class="space-y-2 max-h-[330px] overflow-y-auto scrollbar-hide">
+                    <form class="space-y-2 max-h-[350px] overflow-y-auto">
                        
-
                         <!-- Kota -->
                         <div hidden>
                             <label for="kota" class="block text-[12px] font-normal text-[#292929]">Kota</label>
                             <input type="text" disabled id="kota" name="kota" class="mt-1 block w-full h-[31.36px] px-3 py-2 border border-[#DADCE0] rounded-md shadow-sm focus:outline-none focus:ring-[#E01535] focus:border-[#E01535] sm:text-[12px]" placeholder="Jakarta Selatan">
                         </div>
-
-                    
-                        <!-- Catatan -->
-                       
-                    </form>
-                </div>
-
-                <!-- Slide 4: detail pembayaran -->
-                <div id="slide-4" class="hidden">
-                    <div class=" max-h-[370px] overflow-y-auto scrollbar-hide">
-                        <h2 class="text-lg font-semibold text-center mb-4">Detail Pembayaran</h2>
-
-                        <!-- Detail Pembayaran Button -->
-                        <!-- <button class="bg-red-600 text-white w-full px-4 py-2 rounded-md font-semibold mb-4">Detail Pembayaran</button> -->
-
-                        <!-- Informasi Pembayaran -->
                         <div class="border rounded-lg p-4 mb-6">
                             <div class="flex items-center space-x-2 mb-4">
                                 <!-- <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m-4 4h8v-1a3 3 0 00-3-3h-1a3 3 0 00-3 3v1z" />
                                 </svg> -->
-                                <span class="text-sm text-gray-700">Kami mengirimkan detail pemesanan dan pembayaran Anda ke email yang sudah Anda daftarkan.</span>
+                                <span class="text-sm text-gray-700">Setelah anda konfirmasi kami akan mengirimkan detail pemesanan dan pembayaran Anda ke email yang sudah Anda daftarkan.</span>
                             </div>
 
                             <!-- Total Bayar -->
@@ -211,7 +194,7 @@
 
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
-                                <p class="font-semibold">Nomor Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <p class="font-semibold">No Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
                                     <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
                                     </svg>
@@ -238,54 +221,84 @@
                                 <!-- <p class="text-sm"><span class="font-bold">Jumlah Item:</span> 60 Item</p> -->
                             </div>
 
-                            <!-- Item Pesanan -->
-                            <!-- <div class="border rounded-lg p-4 mb-4">
-                                <div class="flex space-x-4 mb-2">
-                                    {{-- <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md"> --}}
-                                    <div>
-                                        <p class="font-bold">Spandek - Spandek Zincalume</p>
-                                        <p class="text-sm">Tipe Gelombang: Tipe 1040</p>
-                                        <p class="text-sm">Tebal: 0.25 mm</p>
-                                        <p class="text-sm">Jumlah Item: 50</p>
-                                    </div>
-                                </div>
-                            </div> -->
-
-                            <!-- <div class="border rounded-lg p-4 mb-4">
-                                <div class="flex space-x-4 mb-2">
-                                    {{-- <img src="spandek.jpg" alt="Spandek" class="w-20 h-20 rounded-md"> --}}
-                                    <div>
-                                        <p class="font-bold">Spandek - Spandek Zincalume</p>
-                                        <p class="text-sm">Tipe Gelombang: Tipe 950</p>
-                                        <p class="text-sm">Tebal: 0.25 mm</p>
-                                        <p class="text-sm">Jumlah Item: 10</p>
-                                        <p class="font-bold text-right">Total Harga: Rp. 50.700</p>
-                                    </div>
-                                </div>
-                            </div> -->
-
                             <!-- Total Item -->
                             <div class="bg-green-100 rounded-md p-2 text-center font-semibold text-green-600">
-                                <span id="infocounttotalproduct"></span> Item Dibeli - <span id="infototalbayar">Rp.</span>
+                                <span id="infocounttotalproduct"></span> Item Dibeli
+                            </div>
+
+                            <div class="border rounded-lg p-1" id="rekapproductpemesanan">
+
                             </div>
 
                             <!-- Detail Pengiriman -->
                             <div class="mt-6">
                                 <h3 class="text-sm font-semibold mb-2">Dikirim ke:</h3>
                                 <div class="border rounded-lg p-4">
-                                    <p class="text-sm"><span class="font-bold">Nama Depan:</span> Budi</p>
-                                    <p class="text-sm"><span class="font-bold">Nama Belakang:</span> Setiawan</p>
-                                    <p class="text-sm"><span class="font-bold">Alamat Lengkap:</span> Jl. Kesehatan, No.25, Karang Ranji</p>
-                                    <p class="text-sm"><span class="font-bold">Kota:</span> Jakarta Selatan</p>
-                                    <p class="text-sm"><span class="font-bold">Kode Pos:</span> 44327</p>
-                                    <p class="text-sm"><span class="font-bold">Nomor Telp:</span> 0867321773</p>
-                                    <p class="text-sm"><span class="font-bold">Alamat Email:</span> budisetiawan@gmail.com</p>
+                                    <p class="text-sm"><span class="font-bold">Nama Penerima</span><span id="rekapnamaclient"></span></p>
+                                    <p class="text-sm"><span class="font-bold">Alamat Lengkap:</span><span id="rekapalamatlengkapclient"></span></p>
+                                    <p class="text-sm"><span class="font-bold">Kota:</span><span id="rekapkoltaclient"></span></p>
+                                    <p class="text-sm"><span class="font-bold">Kode Pos:</span><span id="rekapkodeposclient"></span></p>
+                                    <p class="text-sm"><span class="font-bold">Nomor Telp:</span><span id="rekapnomortelpclient"></span></p>
+                                    <p class="text-sm"><span class="font-bold">Alamat Email:</span><span id="rekapemailclient"></span></p>
                                 </div>
                             </div>
+                        </div>
+                    
+                        <!-- Catatan -->
+                       
+                    </form>
+                </div>
+
+                <!-- Slide 4: detail pembayaran -->
+                <div id="slide-4" class="hidden">
+                    <div class=" max-h-[370px] overflow-y-auto scrollbar-hide">
+                        <h2 class="text-lg font-semibold text-center mb-4"></h2>
+
+                        <!-- Detail Pembayaran Button -->
+                        <!-- <button class="bg-red-600 text-white w-full px-4 py-2 rounded-md font-semibold mb-4">Detail Pembayaran</button> -->
+
+                        <!-- Informasi Pembayaran -->
+                        <div class="border rounded-lg p-4 mb-6">
+                            <div class="flex items-center space-x-2 mb-4">
+                                <!-- <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m-4 4h8v-1a3 3 0 00-3-3h-1a3 3 0 00-3 3v1z" />
+                                </svg> -->
+                                <span class="text-sm text-gray-700">Kami mengirimkan detail pemesanan dan pembayaran Anda ke email yang sudah Anda daftarkan.</span>
+                            </div>
+
+                            <!-- Total Bayar -->
+
+                            <!-- Rekening Info -->
+                            <div class="text-center mb-4">
+                                <p class="font-semibold">Nomor Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
+                                    <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
+                                    </svg>
+                                    </span>
+                                </p>
+                                <p>a/n <span class="font-bold">BUDIONO NUGROHO</span></p>
+                            </div>
+
+                            <!-- Note Pembayaran -->
+                            <div class="bg-gray-100 rounded-lg p-4 text-sm text-gray-700 mb-6">
+                                <p>Note: kirim bukti pembayaran ke nomor WA kami, kami akan melakukan pelayanan setelah Anda mengirimkan bukti. Terima kasih.</p>
+                                <p class="font-bold text-green-600 mt-2 flex items-center">
+                                    <svg class="w-5 h-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v4m0 4h.01m-.01-4h0V9h0m0 6h.01m-.01-6V5l-1-1m1-1V4m0 6h0V5h-2m0 6h0v2l1 1m-1 1h0m0-6h1l1-1v4h0M3 8v4h8V8H3z" />
+                                    </svg>
+                                    08257742883
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
+            </div>
+
+            <div class="divtotalbayar mb-2">
+                <button id="totalbayar" value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
+                </button>
             </div>
 
             <div id="buttom-sidebar" class="mt-auto">
@@ -326,11 +339,6 @@
                 <div id="bingkaibuttonpyment" class="divpayment bg-[#E01535] h-[40.56px] border border-[#E01535] rounded-b-md shadow-md flex justify-between items-center">
                     <button id="payment" value="" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
                     Payment</button>
-                </div>
-
-                <div class="divtotalbayar mt-2">
-                    <button id="totalbayar" value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
-                    </button>
                 </div>
                 
             </div>

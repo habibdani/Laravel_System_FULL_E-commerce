@@ -17,6 +17,7 @@
     @component('components.consultation') @endcomponent
     @component('components.partners') @endcomponent
     @component('components.footer') @endcomponent
+    @component('components.chatwa')@endcomponent    
 
     @vite('resources/js/shop-script.js')
 

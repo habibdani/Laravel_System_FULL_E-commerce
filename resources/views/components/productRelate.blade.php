@@ -1,6 +1,6 @@
 <section name="relate-product" class="py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div id="subsessionproductrelate" class="relative w-[994px] flex items-center justify-between">
+        <div id="subsessionproductrelate" class="relative w-[1200px] flex items-center justify-between">
             <!-- Bagian Kiri (Produk Spesial) -->
             <div id="relate-product" class="relative z-0 shadow-custom w-full h-[285.14px] bg-white rounded-md overflow-hidden">
                 <div class="p-5">

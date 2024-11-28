@@ -34,6 +34,9 @@
                 <li>
                     <a href="{{route('dashboard.orders')}}" class="text-sm font-roboto text-[#999999]">Orders</a>
                 </li>
+                <li>
+                    <a href="{{route('dashboard.setting')}}" class="text-sm font-roboto text-[#999999]">Setting</a>
+                </li>
             </ul>
         </li>
     </ul>

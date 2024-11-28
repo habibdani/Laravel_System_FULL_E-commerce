@@ -76,5 +76,25 @@ class ViewPageController extends Controller
 
         return view('orders-detail-page');
     }
+    public function dashboardSetting()
+    {
+        return view('setting-page');
+    }
+    public function dashboardSettingbannerbesar()
+    {
+        return view('setting-banner-besar');
+    }
+    public function dashboardSettingbannerkecil()
+    {
+        return view('setting-banner-kecil');
+    }
+    public function dashboardSettingrekening()
+    {
+        return view('setting-rekening');
+    }
+    public function dashboardSettingwa()
+    {
 
+        return view('setting-wa');
+    }
 }

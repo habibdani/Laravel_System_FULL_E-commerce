@@ -496,7 +496,177 @@ class ProductController extends Controller
         }
     }
 
+    // Get All Banner Besar
+    public function getBannerBesar()
+    {
+        try {
+            $results = DB::select("SELECT * FROM banner_besar WHERE deleted_at IS NULL");
+            return ApiResponseHelper::success($results, 'Banner besar retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
 
+    // Get Single Banner Besar by ID
+    public function getBannerBesarById($id)
+    {
+        try {
+            $results = DB::select("SELECT * FROM banner_besar WHERE id = ? AND deleted_at IS NULL", [$id]);
+            if (empty($results)) {
+                return ApiResponseHelper::error('Banner besar not found', 404);
+            }
+            return ApiResponseHelper::success($results[0], 'Banner besar retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Create Banner Besar
+    public function createBannerBesar(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'image_url' => 'required|string',
+        ]);
+
+        try {
+            DB::insert("INSERT INTO banner_besar (name, image_url) VALUES (?, ?)", [
+                $request->name,
+                $request->image_url,
+            ]);
+            return ApiResponseHelper::success(null, 'Banner besar created successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Update Banner Besar
+    public function updateBannerBesar(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'image_url' => 'required|string',
+        ]);
+
+        try {
+            $updated = DB::update("UPDATE banner_besar SET name = ?, image_url = ? WHERE id = ?", [
+                $request->name,
+                $request->image_url,
+                $id,
+            ]);
+
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Banner besar updated successfully');
+            } else {
+                return ApiResponseHelper::error('Banner besar not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Delete Banner Besar
+    public function deleteBannerBesar($id)
+    {
+        try {
+            $deleted = DB::update("UPDATE banner_besar SET deleted_at = NOW() WHERE id = ?", [$id]);
+
+            if ($deleted) {
+                return ApiResponseHelper::success(null, 'Banner besar deleted successfully');
+            } else {
+                return ApiResponseHelper::error('Banner besar not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Get All Banner Kecil
+    public function getBannerKecil()
+    {
+        try {
+            $results = DB::select("SELECT * FROM banner_kecil WHERE deleted_at IS NULL");
+            return ApiResponseHelper::success($results, 'Banner kecil retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Get Single Banner Kecil by ID
+    public function getBannerKecilById($id)
+    {
+        try {
+            $results = DB::select("SELECT * FROM banner_kecil WHERE id = ? AND deleted_at IS NULL", [$id]);
+            if (empty($results)) {
+                return ApiResponseHelper::error('Banner kecil not found', 404);
+            }
+            return ApiResponseHelper::success($results[0], 'Banner kecil retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Create Banner Kecil
+    public function createBannerKecil(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'image_url' => 'required|string',
+        ]);
+
+        try {
+            DB::insert("INSERT INTO banner_kecil (name, image_url) VALUES (?, ?)", [
+                $request->name,
+                $request->image_url,
+            ]);
+            return ApiResponseHelper::success(null, 'Banner kecil created successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Update Banner Kecil
+    public function updateBannerKecil(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'image_url' => 'required|string',
+        ]);
+
+        try {
+            $updated = DB::update("UPDATE banner_kecil SET name = ?, image_url = ? WHERE id = ?", [
+                $request->name,
+                $request->image_url,
+                $id,
+            ]);
+
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Banner kecil updated successfully');
+            } else {
+                return ApiResponseHelper::error('Banner kecil not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Delete Banner Kecil
+    public function deleteBannerKecil($id)
+    {
+        try {
+            $deleted = DB::update("UPDATE banner_kecil SET deleted_at = NOW() WHERE id = ?", [$id]);
+
+            if ($deleted) {
+                return ApiResponseHelper::success(null, 'Banner kecil deleted successfully');
+            } else {
+                return ApiResponseHelper::error('Banner kecil not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    
     public function createVariantType(Request $request)
     {
         try {
@@ -764,6 +934,149 @@ class ProductController extends Controller
             }
         } catch (\Exception $e) {
             Log::error('Error in deleteImage: ' . $e->getMessage());
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Get All Info Rekening
+    public function getInfoRekening()
+    {
+        try {
+            $results = DB::select("SELECT * FROM info_rekening WHERE deleted_at IS NULL");
+            return ApiResponseHelper::success($results, 'Info rekening retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Get Single Info Rekening by ID
+    public function getInfoRekeningById($id)
+    {
+        try {
+            $results = DB::select("SELECT * FROM info_rekening WHERE id = ? AND deleted_at IS NULL", [$id]);
+            if (empty($results)) {
+                return ApiResponseHelper::error('Info rekening not found', 404);
+            }
+            return ApiResponseHelper::success($results[0], 'Info rekening retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Create Info Rekening
+    public function createInfoRekening(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string',
+            'nomor_rekening' => 'required|string',
+            'nama_bank' => 'required|string',
+        ]);
+
+        try {
+            DB::insert("INSERT INTO info_rekening (nama, nomor_rekening, nama_bank) VALUES (?, ?, ?)", [
+                $request->nama,
+                $request->nomor_rekening,
+                $request->nama_bank,
+            ]);
+            return ApiResponseHelper::success(null, 'Info rekening created successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Update Info Rekening
+    public function updateInfoRekening(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|string',
+            'nomor_rekening' => 'required|string',
+            'nama_bank' => 'required|string',
+        ]);
+
+        try {
+            $updated = DB::update("UPDATE info_rekening SET nama = ?, nomor_rekening = ?, nama_bank = ? WHERE id = ?", [
+                $request->nama,
+                $request->nomor_rekening,
+                $request->nama_bank,
+                $id,
+            ]);
+
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Info rekening updated successfully');
+            } else {
+                return ApiResponseHelper::error('Info rekening not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Delete Info Rekening
+    public function deleteInfoRekening($id)
+    {
+        try {
+            $deleted = DB::update("UPDATE info_rekening SET deleted_at = NOW() WHERE id = ?", [$id]);
+
+            if ($deleted) {
+                return ApiResponseHelper::success(null, 'Info rekening deleted successfully');
+            } else {
+                return ApiResponseHelper::error('Info rekening not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Get Info WA
+    public function getInfoWa()
+    {
+        try {
+            $results = DB::select("SELECT * FROM info_wa LIMIT 1");
+            if (empty($results)) {
+                return ApiResponseHelper::error('Info WA not found', 404);
+            }
+            return ApiResponseHelper::success($results[0], 'Info WA retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Update Info WA
+    public function updateInfoWa(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string',
+            'nomorwa' => 'required|string',
+        ]);
+
+        try {
+            $updated = DB::update("UPDATE info_wa SET nama = ?, nomorwa = ? WHERE id = 1", [
+                $request->nama,
+                $request->nomorwa,
+            ]);
+
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Info WA updated successfully');
+            } else {
+                return ApiResponseHelper::error('Info WA not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Delete Info WA
+    public function deleteInfoWa()
+    {
+        try {
+            $deleted = DB::delete("DELETE FROM info_wa WHERE id = 1");
+
+            if ($deleted) {
+                return ApiResponseHelper::success(null, 'Info WA deleted successfully');
+            } else {
+                return ApiResponseHelper::error('Info WA not found', 404);
+            }
+        } catch (\Exception $e) {
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }

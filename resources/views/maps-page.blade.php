@@ -8,6 +8,7 @@
     @component('components.header-default') @endcomponent
     @component('components.sidebar',['clientTypeId' => $clientTypeId]) @endcomponent
     @component('components.maps') @endcomponent
+    @component('components.chatwa')@endcomponent    
 
     <!-- Load jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

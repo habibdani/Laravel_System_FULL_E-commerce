@@ -17,6 +17,31 @@ Route::post('/send-email', [EmailController::class, 'sendEmail']);
 Route::get('/list-products', [ProductController::class, 'listproduct']);
 Route::get('/product/details', [ProductController::class, 'productdetails']);
 
+// Banner Besar Routes
+Route::get('/banner-besar', [ProductController::class, 'getBannerBesar']); // Read All
+Route::get('/banner-besar/{id}', [ProductController::class, 'getBannerBesarById']); // Read Single
+Route::post('/banner-besar', [ProductController::class, 'createBannerBesar']); // Create
+Route::put('/banner-besar/{id}', [ProductController::class, 'updateBannerBesar']); // Update
+Route::delete('/banner-besar/{id}', [ProductController::class, 'deleteBannerBesar']); // Delete
+
+// Banner Kecil Routes
+Route::get('/banner-kecil', [ProductController::class, 'getBannerKecil']); // Read All
+Route::get('/banner-kecil/{id}', [ProductController::class, 'getBannerKecilById']); // Read Single
+Route::post('/banner-kecil', [ProductController::class, 'createBannerKecil']); // Create
+Route::put('/banner-kecil/{id}', [ProductController::class, 'updateBannerKecil']); // Update
+Route::delete('/banner-kecil/{id}', [ProductController::class, 'deleteBannerKecil']); // Delete
+
+Route::get('/info-rekening', [ProductController::class, 'getInfoRekening']); // Read All
+Route::get('/info-rekening/{id}', [ProductController::class, 'getInfoRekeningById']); // Read Single
+Route::post('/info-rekening', [ProductController::class, 'createInfoRekening']); // Create
+Route::put('/info-rekening/{id}', [ProductController::class, 'updateInfoRekening']); // Update
+Route::delete('/info-rekening/{id}', [ProductController::class, 'deleteInfoRekening']); // Delete
+
+// RUD untuk info_wa
+Route::get('/info-wa', [ProductController::class, 'getInfoWa']); // Read
+Route::put('/info-wa', [ProductController::class, 'updateInfoWa']); // Update
+Route::delete('/info-wa', [ProductController::class, 'deleteInfoWa']); // Delete
+
 Route::get('/list-product-type',[ProductController::class, 'getListProductType']);
 Route::get('/list-variant-type', [ProductController::class, 'getListVariantType']);
 Route::get('/list-dropdown', [ProductController::class, 'getListDropdown']);

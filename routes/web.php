@@ -17,6 +17,11 @@ Route::get('/dashboard/product/add', [ViewPageController::class, 'dashboardProdu
 Route::get('/dashboard/product/edit/{product_variant_id}', [ViewPageController::class, 'dashboardProductEdit'])->name('dashboard.product.edit');
 Route::get('/dashboard/orders', [ViewPageController::class, 'dashboardOrders'])->name('dashboard.orders');
 Route::get('/dashboard/orders/detail/{booking_id}', [ViewPageController::class, 'dashboardOrdersDetail'])->name('dashboard.orders.detail');
+Route::get('/dashboard/setting', [ViewPageController::class, 'dashboardSetting'])->name('dashboard.setting');
+Route::get('/dashboard/setting/list-banner-besar', [ViewPageController::class, 'dashboardSettingbannerbesar'])->name('dashboard.setting.bannerbesar');
+Route::get('/dashboard/setting/list-banner-kecil', [ViewPageController::class, 'dashboardSettingbannerkecil'])->name('dashboard.setting.bannerkecil');
+Route::get('/dashboard/setting/list-rekening', [ViewPageController::class, 'dashboardSettingrekening'])->name('dashboard.setting.rekening');
+Route::get('/dashboard/setting/list-wa', [ViewPageController::class, 'dashboardSettingwa'])->name('dashboard.setting.wa');
 
 // Halaman utama (shop page)
 Route::get('/', function () {

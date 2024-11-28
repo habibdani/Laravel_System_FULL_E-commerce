@@ -6,10 +6,12 @@
     @component('components.header') @endcomponent
     @component('components.sidebar') @endcomponent
     @component('components.productDetails')@endcomponent
+    @component('components.productFilter')@endcomponent
     @component('components.productRelate')@endcomponent
     @component('components.consultation') @endcomponent
     @component('components.partners') @endcomponent
     @component('components.footer') @endcomponent
+    @component('components.chatwa')@endcomponent    
 
     <script>
         window.productVariantId = @json($productVariantId);
