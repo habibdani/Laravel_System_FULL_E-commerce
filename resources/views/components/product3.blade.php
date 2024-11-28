@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="-mt-2">
-                    <img id="special-product-image" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}" alt="Hollow Besi" style="rotate: y -180deg;" class="rounded-b-md object-cover w-[213.27px] h-[160px]">
+                    <img id="special-product-image" src="{{ secure_asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}" alt="Hollow Besi" style="rotate: y -180deg;" class="rounded-b-md object-cover w-[213.27px] h-[160px]">
                 </div>
             </div>
 
@@ -30,14 +30,14 @@
                     </svg>
                 </a>
             </div> -->
-            
+
         </div>
     </div>
 </section>
 
 <style>
     .special-product-background {
-        background-image: url('{{ asset('storage/design/bingkaisulit.svg') }}');
+        background-image: url('{{ secure_asset('storage/design/bingkaisulit.svg') }}');
         background-repeat: no-repeat;
     }
     .shadow-custom {

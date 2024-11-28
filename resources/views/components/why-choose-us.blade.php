@@ -7,7 +7,7 @@
                     <h2 class="text-[22px] font-semibold mb-6 text-center lg:text-left">Why should you choose Andal Prima?</h2>
                     <div class="space-y-2">
                         <div class="flex items-start space-x-4 mb-2">
-                            <img src="{{ asset('storage/icons/docs.svg') }}" alt="docs" class="w-auto h-[18.7px] mt-1">
+                            <img src="{{ secure_asset('storage/icons/docs.svg') }}" alt="docs" class="w-auto h-[18.7px] mt-1">
                             <div>
                                 <p class="font-semibold text-[16px] mb-1">Complete and accurate product information</p>
                                 <p class="text-gray-600 text-[12px] leading-relaxed">
@@ -16,7 +16,7 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-4 mb-2">
-                            <img src="{{ asset('storage/icons/stopwatch.svg') }}" alt="stopwatch" class="w-auto h-[20px] mt-1">
+                            <img src="{{ secure_asset('storage/icons/stopwatch.svg') }}" alt="stopwatch" class="w-auto h-[20px] mt-1">
                             <div>
                                 <p class="font-semibold text-[16px] mb-1">Delivery on time, according to schedule</p>
                                 <p class="text-gray-600 text-[12px] leading-relaxed">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-4">
-                            <img src="{{ asset('storage/icons/money.svg') }}" alt="money" class="w-auto h-[20px] mt-1">
+                            <img src="{{ secure_asset('storage/icons/money.svg') }}" alt="money" class="w-auto h-[20px] mt-1">
                             <div>
                                 <p class="font-semibold text-[16px] mb-1">Competitive prices and quality</p>
                                 <p class="text-gray-600 text-[12px] leading-relaxed">
@@ -40,14 +40,14 @@
             <!-- Right Section -->
             <div class="shadow-custom w-full lg:max-w-[245px] h-full p-8 flex flex-col items-center justify-between rounded-md bg-white relative overflow-visible">
                 <div id="whyright" class="absolute left-[-135px] z-10 lg:block">
-                    <img src="{{ asset('storage/design/person.svg') }}" alt="person" class="z-1">
+                    <img src="{{ secure_asset('storage/design/person.svg') }}" alt="person" class="z-1">
                 </div>
                 <div class="flex flex-col justify-center items-start h-full space-y-4">
                     <p class="text-[18px] font-semibold mb-2 w-[106px] text-start">We’re <br> the solution for exclusive products</p>
 
                     <!-- Customer Reviews Section -->
                     <div class="flex items-start space-x-4">
-                        <img src="{{ asset('storage/icons/star.svg') }}" alt="star">
+                        <img src="{{ secure_asset('storage/icons/star.svg') }}" alt="star">
                         <div>
                             <p class="font-semibold text-[16px]">4.8/5</p>
                             <p class="text-gray-600 text-[12px] leading-relaxed">
@@ -58,7 +58,7 @@
 
                     <!-- Total Products Sold Section -->
                     <div class="flex items-start space-x-4">
-                        <img src="{{ asset('storage/icons/box.svg') }}" alt="box">
+                        <img src="{{ secure_asset('storage/icons/box.svg') }}" alt="box">
                         <div>
                             <p class="font-semibold text-[16px]">512,046 +</p>
                             <p class="text-gray-600 text-[12px] leading-relaxed">
@@ -78,7 +78,7 @@
     }
 
     /* Responsive styling */
-    
+
     @media (max-width: 450px) {
         #subsessionwhy{
             width: 80%;
@@ -87,7 +87,7 @@
         #sessionwhy {
             display: none;
         }
-        
-       
+
+
     }
 </style>

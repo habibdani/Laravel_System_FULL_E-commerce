@@ -1,6 +1,6 @@
 <section name="banner" class="py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div id="subbanner" class="relative w-[1200px] h-[256px] mt-20 shadow-custom bg-cover rounded-md bg-center overflow-hidden" style="background-image: linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url('{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}');">
+        <div id="subbanner" class="relative w-[1200px] h-[256px] mt-20 shadow-custom bg-cover rounded-md bg-center overflow-hidden" style="background-image: linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url('{{ secure_asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}');">
             <!-- Tombol kiri -->
             <button class="absolute -left-10 top-1/2 transform -translate-y-1/2 bg-[#E8E8E8] hover:bg-opacity-50 text-white w-[26px] h-[26px] rounded-full flex items-center justify-center focus:outline-none" id="prev-button">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

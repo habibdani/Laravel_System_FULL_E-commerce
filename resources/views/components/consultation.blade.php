@@ -9,18 +9,18 @@
                     <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Get the best offer from us, contact us and we will immediately serve what you need.</p>
                     <a href="mailto:team@andalprima.co.id" class="flex items-center justify-center w-[95px] h-[28.5px] inline-block bg-[#E01535] font-roboto text-[14px] font-normal text-white rounded">Contact Us</a>
                 </div>
-                <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
+                <img src="{{ secure_asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
             </div>
             <!-- Right Section -->
-            <div id="right-section-consule" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover z-[-10] rounded-md bg-center p-4 text-center" 
-            style="background-image: url('{{ asset('storage/images/istockphoto-870572906-612x612.jpg') }}');">
+            <div id="right-section-consule" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover z-[-10] rounded-md bg-center p-4 text-center"
+            style="background-image: url('{{ secure_asset('storage/images/istockphoto-870572906-612x612.jpg') }}');">
                 <!-- Left rectangle -->
                 <!-- <div id="left-tangle" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
-                    <img src="{{ asset('storage/icons/left.svg') }}" alt="icon-left" class="w-[6px] h-[11px]">
+                    <img src="{{ secure_asset('storage/icons/left.svg') }}" alt="icon-left" class="w-[6px] h-[11px]">
                 </div> -->
                 <!-- Right rectangle -->
                 <!-- <div id="right-tangle" class="absolute right-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
-                    <img src="{{ asset('storage/icons/right.svg') }}" alt="icon-right" class="w-[6px] h-[11px]">
+                    <img src="{{ secure_asset('storage/icons/right.svg') }}" alt="icon-right" class="w-[6px] h-[11px]">
                 </div> -->
                 <h2 id="right-section-title" class="text-left lg:text-left text-[18px] font-poppins font-bold mb-2 text-[#292929] font-semibold">Dapatkan Penawaran Baru Dari Kami!</h2>
                 <a id="right-section-button" class="inline-block font-poppins bg-white text-[16px] text-[#E01535] flex items-center justify-center h-auto w-auto rounded font-semibold">Total 75% Discount!</a>

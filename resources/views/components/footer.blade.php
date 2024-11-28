@@ -3,25 +3,25 @@
     {{-- <div class="mx-auto p-2 bg-[#00AA5B] w-[994px] text-white h-[121.86px] rounded-lg flex items-center justify-between"> --}}
         <!-- Left Section: Logo and Social Media Icons -->
         <div class="flex flex-col items-center lg:w-1/4 h-full justify-center">
-            <img src="{{ asset('storage/icons/andal-white.svg') }}" alt="Logo" class="max-h-full w-auto h-[40px] mb-2">
+            <img src="{{ secure_asset('storage/icons/andal-white.svg') }}" alt="Logo" class="max-h-full w-auto h-[40px] mb-2">
             <div class="flex space-x-3 mt-2">
-                <img src="{{ asset('storage/icons/twitter.svg') }}" alt="twitter" class="max-h-full w-auto h-[15px]">
-                <img src="{{ asset('storage/icons/facebook.svg') }}" alt="facebook" class="max-h-full w-auto h-[15px]">
-                <img src="{{ asset('storage/icons/linkedin.svg') }}" alt="linkedin" class="max-h-full w-auto h-[15px]">
-                <img src="{{ asset('storage/icons/instagram.svg') }}" alt="instagram" class="max-h-full w-auto h-[15px]">
-                <img src="{{ asset('storage/icons/youtube.svg') }}" alt="youtube" class="max-h-full w-auto h-[15px]">
+                <img src="{{ secure_asset('storage/icons/twitter.svg') }}" alt="twitter" class="max-h-full w-auto h-[15px]">
+                <img src="{{ secure_asset('storage/icons/facebook.svg') }}" alt="facebook" class="max-h-full w-auto h-[15px]">
+                <img src="{{ secure_asset('storage/icons/linkedin.svg') }}" alt="linkedin" class="max-h-full w-auto h-[15px]">
+                <img src="{{ secure_asset('storage/icons/instagram.svg') }}" alt="instagram" class="max-h-full w-auto h-[15px]">
+                <img src="{{ secure_asset('storage/icons/youtube.svg') }}" alt="youtube" class="max-h-full w-auto h-[15px]">
             </div>
         </div>
 
         <!-- Middle Section: Contact Information -->
         <div class="flex flex-col lg:items-start lg:w-1/3 h-full justify-center">
             <div class="flex items-center space-x-2 mb-2">
-                <img src="{{ asset('storage/icons/place.svg') }}" alt="place" class="max-h-full w-auto h-[30px]">
+                <img src="{{ secure_asset('storage/icons/place.svg') }}" alt="place" class="max-h-full w-auto h-[30px]">
                 <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-justify">
                     Jl. Jombang Raya No.26, Pd. Aren, Kec. Pd. Aren, Kota Tangerang Selatan, Banten 15224</span>
             </div>
             <div class="flex items-center space-x-2 mb-2">
-                <img src="{{ asset('storage/icons/wa.svg') }}" alt="wa" class="max-h-full w-auto h-[20px]">
+                <img src="{{ secure_asset('storage/icons/wa.svg') }}" alt="wa" class="max-h-full w-auto h-[20px]">
                 <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-left">+62 878 8211 2000</span>
             </div>
         </div>
@@ -29,11 +29,11 @@
         <!-- Right Section: Additional Information -->
         <div class="flex flex-col lg:items-start lg:w-1/4 h-full justify-center">
             <div class="flex items-center space-x-2 mb-2">
-                <img src="{{ asset('storage/icons/clock.svg') }}" alt="clock" class="max-h-full w-auto h-[20px]">
+                <img src="{{ secure_asset('storage/icons/clock.svg') }}" alt="clock" class="max-h-full w-auto h-[20px]">
                 <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-left">Monday – Saturday <br class="responsive-br"> 07:30 – 16:30</span>
             </div>
             <div class="flex items-center space-x-2">
-                <img src="{{ asset('storage/icons/email.svg') }}" alt="email" class="max-h-full w-auto h-[16px]">
+                <img src="{{ secure_asset('storage/icons/email.svg') }}" alt="email" class="max-h-full w-auto h-[16px]">
                 <span class="font-roboto text-[14px] font-normal leading-4.5 tracking-wide text-left">team@andalprima.co.id</span>
             </div>
         </div>

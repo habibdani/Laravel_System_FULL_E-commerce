@@ -172,7 +172,7 @@
                 <div id="slide-3" class="hidden scroll-containe">
                     <h2 class="text-lg font-semibold mb-4">Payment</h2>
                     <form class="space-y-2 max-h-[350px] overflow-y-auto">
-                       
+
                         <!-- Kota -->
                         <div hidden>
                             <label for="kota" class="block text-[12px] font-normal text-[#292929]">Kota</label>
@@ -188,7 +188,7 @@
 
                             <!-- Total Bayar -->
                             <div class="text-center mb-4">
-                                <img src="{{ asset('storage/design/bca.svg') }}" alt="BCA Logo" class="mx-auto mb-2 w-20">
+                                <img src="{{ secure_asset('storage/design/bca.svg') }}" alt="BCA Logo" class="mx-auto mb-2 w-20">
                                 <p id="infototalbayar" class="font-semibold text-lg text-red-600">Total Bayar: Rp. 420.700</p>
                             </div>
 
@@ -243,9 +243,9 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <!-- Catatan -->
-                       
+
                     </form>
                 </div>
 
@@ -340,14 +340,14 @@
                     <button id="payment" value="" class="w-full h-full flex items-center justify-center text-white font-semibold text-[14px] rounded-md hover:bg-red-700 transition duration-300">
                     Payment</button>
                 </div>
-                
+
             </div>
         </div>
 
         <button id="toggle" style="height: 80px !important;" name="tt" class="p-3 sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
-                data-visible-icon="{{ asset('storage/icons/vector.svg') }}"
-                data-hidden-icon="{{ asset('storage/icons/vector-hidden.svg') }}">
-            <img id="toggleimg" src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
+                data-visible-icon="{{ secure_asset('storage/icons/vector.svg') }}"
+                data-hidden-icon="{{ secure_asset('storage/icons/vector-hidden.svg') }}">
+            <img id="toggleimg" src="{{ secure_asset('storage/icons/vector.svg') }}" alt="toggle">
         </button>
         {{-- @vite('resources/js/app.js') --}}
     </div>
@@ -454,29 +454,29 @@
     }
 
     /* Scrollbar untuk Webkit (Chrome, Safari, Edge) */
-    #slide-1::-webkit-scrollbar, 
-    #slide-2::-webkit-scrollbar, 
+    #slide-1::-webkit-scrollbar,
+    #slide-2::-webkit-scrollbar,
     #slide-3::-webkit-scrollbar {
         width: 8px; /* Lebar scrollbar vertikal */
     }
 
-    #slide-1::-webkit-scrollbar-track, 
-    #slide-2::-webkit-scrollbar-track, 
+    #slide-1::-webkit-scrollbar-track,
+    #slide-2::-webkit-scrollbar-track,
     #slide-3::-webkit-scrollbar-track {
         background: #f0f0f0; /* Warna latar track scrollbar */
         border-radius: 4px; /* Membuat track melengkung */
     }
 
-    #slide-1::-webkit-scrollbar-thumb, 
-    #slide-2::-webkit-scrollbar-thumb, 
+    #slide-1::-webkit-scrollbar-thumb,
+    #slide-2::-webkit-scrollbar-thumb,
     #slide-3::-webkit-scrollbar-thumb {
         background-color: #E01535; /* Warna scrollbar */
         border-radius: 4px; /* Membuat scrollbar melengkung */
         border: 2px solid #f0f0f0; /* Margin di sekitar scrollbar */
     }
 
-    #slide-1::-webkit-scrollbar-thumb:hover, 
-    #slide-2::-webkit-scrollbar-thumb:hover, 
+    #slide-1::-webkit-scrollbar-thumb:hover,
+    #slide-2::-webkit-scrollbar-thumb:hover,
     #slide-3::-webkit-scrollbar-thumb:hover {
         background-color: #b3122a; /* Warna saat scrollbar di-hover */
     }

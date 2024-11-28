@@ -6,14 +6,14 @@
             <!-- Left Section: Logo -->
             <div class="flex items-center logo-section">
                 <a href="https://andalprima.hansmade.online/">
-                    <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
+                    <img class="max-h-full w-auto h-8" src="{{ secure_asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
                 </a>
             </div>
 
             <!-- Right Section: Contact Information -->
             <div class="flex items-center contact-section">
                 <a href="#" class="inline-flex items-center">
-                    <img src="{{ asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4 mr-1.5">
+                    <img src="{{ secure_asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4 mr-1.5">
                     <span class="font-roboto text-sm font-medium leading-4.5 tracking-wide text-left">(042) 883219</span>
                 </a>
             </div>
@@ -34,7 +34,7 @@
             <!-- Cart Icon -->
             <div class="flex items-center" id="headerkeranjang" style="width: 5%">
                 <a href="https://andalprima.hansmade.online/" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
-                    <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
+                    <img src="{{ secure_asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
                     <span id="keranjang" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center">0</span>
                 </a>
             </div>
@@ -42,11 +42,11 @@
             <!-- Search and Category -->
             <div class="relative flex items-center" id="headerpencarian" style="width: 60%">
                 <button id="category" class="bg-[#FFFFFF] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center" style="width: 25%">
-                    <img src="{{ asset('storage/icons/category.svg') }}" alt="category" class="h-4 w-4 mr-1.5">
+                    <img src="{{ secure_asset('storage/icons/category.svg') }}" alt="category" class="h-4 w-4 mr-1.5">
                     <span class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-left">Category</span>
                 </button>
                 <div class="relative w-full">
-                    <img src="{{ asset('storage/icons/pencarian.svg') }}" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" alt="Search Icon">
+                    <img src="{{ secure_asset('storage/icons/pencarian.svg') }}" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" alt="Search Icon">
                     <input
                         type="text"
                         id="searchproduct"
@@ -59,7 +59,7 @@
             <!-- Contact Info -->
             <div class="flex items-center" id="firstrownomor">
                 <a href="#" class="inline-flex items-center w-full">
-                    <img src="{{ asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4 mr-1.5">
+                    <img src="{{ secure_asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4 mr-1.5">
                     <span class="font-roboto text-md font-medium leading-4.5 tracking-wide text-left">(042) 883219</span>
                 </a>
             </div>

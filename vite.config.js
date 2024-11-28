@@ -2,35 +2,23 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
+    server: {
+        https: true, // Aktifkan HTTPS
+        host: '0.0.0.0', // Terima semua permintaan, termasuk dari subdomain
+        hmr: {
+            host: 'andalprima.hansmade.online', // Host subdomain Anda
+            protocol: 'wss', // Gunakan WebSocket Secure
+        },
+    },
     plugins: [
         laravel({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/maps-script.js'
-                // 'resources/js/shop-script.js',
-                // 'resources/js/product-script.js',
             ],
-            // input: [
-            //     'resources/css/app.css',
-            //     'resources/js/app.js',
-            //     'resources/js/maps-script.js'
-            //     // 'resources/js/shop-script.js',
-            //     // 'resources/js/product-script.js',
-            // ],
             refresh: true,
         }),
     ],
-    // server: {
-    //     host: '0.0.0.0', // Dengarkan semua alamat IP
-    //     // port: 5173,      // Gunakan port default
-    //     http: true,
-    //     hmr: {
-    //         // host: '127.0.0.1:8001', // IP atau domain publik Anda
-    //         host: 'vite.hansmade.online', // IP atau domain publik Anda
-    //         protocol: 'wss',
-    //     },
-    // },
-    // Menambahkan rule agar folder fonts termasuk dalam build
-    publicDir: 'public',
+    publicDir: 'public', // Menambahkan rule agar folder fonts termasuk dalam build
 });
