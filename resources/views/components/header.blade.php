@@ -5,7 +5,7 @@
         <div class="flex justify-between h-10 mx-auto">
             <!-- Left Section: Logo -->
             <div class="flex items-center logo-section">
-                <a href="http://127.0.0.1:8001/">
+                <a href="https://andalprima.hansmade.online/">
                     <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
                 </a>
             </div>
@@ -26,14 +26,14 @@
         <div class="flex space-x-2.5 justify-center h-10 mx-auto" id="subfrstrowheader">
             <!-- Left Side (Logo and Company Name) -->
             <div class="flex items-center" id="firstrowlogo" >
-                <a href="http://127.0.0.1:8001/" class="ml-auto">
-                    <img class="max-h-full w-auto h-10" src="http://127.0.0.1:8001/storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png" alt="Logo">
+                <a href="https://andalprima.hansmade.online/" class="ml-auto">
+                    <img class="max-h-full w-auto h-10" src="https://andalprima.hansmade.online/storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png" alt="Logo">
                 </a>
             </div>
 
             <!-- Cart Icon -->
             <div class="flex items-center" id="headerkeranjang" style="width: 5%">
-                <a href="http://127.0.0.1:8001/" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
+                <a href="https://andalprima.hansmade.online/" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
                     <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
                     <span id="keranjang" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center">0</span>
                 </a>
@@ -52,7 +52,7 @@
                         id="searchproduct"
                         class="bg-[#FFFFFF] w-full h-8 pl-10 pr-5 rounded-r-md text-sm border border-[#DADCE0] focus:outline-none"
                         placeholder="Search for products, types, and brands"
-                    />                
+                    />
                 </div>
             </div>
 
@@ -170,21 +170,21 @@
             display: none;
         }
         #headerkeranjang {
-            width: 10% !important; 
+            width: 10% !important;
         }
         #headerpencarian{
             width: 80% !important;
         }
         #nanonanolist {
             display: flex;
-            overflow-x: auto; 
-            white-space: nowrap; 
+            overflow-x: auto;
+            white-space: nowrap;
             -ms-overflow-style: none;
-            scrollbar-width: none; 
+            scrollbar-width: none;
             width: 80%;
         }
     }
-    
+
     /* Responsive styling */
     /* @media (max-width: 1440px) {
         .nanonano {
@@ -246,7 +246,7 @@
         /* } */
 
          /* Container for horizontal scrolling */
-        
+
 
         /* Hides scrollbar in WebKit browsers */
         /* .nanonanolist::-webkit-scrollbar { */
