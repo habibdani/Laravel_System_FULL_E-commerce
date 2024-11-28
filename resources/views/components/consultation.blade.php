@@ -23,7 +23,7 @@
                     <img src="{{ asset('storage/icons/right.svg') }}" alt="icon-right" class="w-[6px] h-[11px]">
                 </div> -->
                 <h2 id="right-section-title" class="text-left lg:text-left text-[18px] font-poppins font-bold mb-2 text-[#292929] font-semibold">Dapatkan Penawaran Baru Dari Kami!</h2>
-                <a id="right-section-button" class="inline-block font-poppins bg-white text-[16px] text-[#E01535] flex items-center justify-center h-[30px] w-auto rounded font-semibold">Total 75% Discount!</a>
+                <a id="right-section-button" class="inline-block font-poppins bg-white text-[16px] text-[#E01535] flex items-center justify-center h-auto w-auto rounded font-semibold">Total 75% Discount!</a>
             </div>
         </div>
     </div>
@@ -128,39 +128,70 @@
 
 </style>
 
+
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const rightSection = document.getElementById('right-section-consule');
-    const images = [
-        '{{ asset("storage/images/istockphoto-870572906-612x612.jpg") }}',
-        '{{ asset("storage/images/istockphoto-2159958745-612x612.jpg") }}',
-        '{{ asset("storage/images/istockphoto-870572802-612x612.jpg") }}'
-    ];
+    document.addEventListener('DOMContentLoaded', async () => {
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const rightSection = document.getElementById('right-section-consule');
+        const rightSectionButton = document.getElementById('right-section-button');
+        let banners = []; // Array untuk menyimpan data banner kecil
+        let currentIndex = 0;
 
-    let currentIndex = 0;
+        // Fungsi untuk mengambil data dari API
+        async function fetchBannerKecil() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/banner-kecil`);
+                const data = await response.json();
 
-    function changeBackground() {
-        // Tambahkan animasi fade-out
-        rightSection.classList.add('fade-out');
+                if (data.success) {
+                    banners = data.data.map(banner => ({
+                        image: banner.image.replace('http://127.0.0.1:8001', '').trim(),
+                        text: banner.text,
+                    }));
+                    changeBackground(); // Set gambar dan teks pertama kali
+                } else {
+                    console.error('Gagal memuat banner kecil:', data.message);
+                    alert('Gagal memuat data banner kecil.');
+                }
+            } catch (error) {
+                console.error('Error fetching banner kecil:', error);
+                alert('Terjadi kesalahan saat memuat banner kecil.');
+            }
+        }
 
-        // Ganti gambar setelah animasi selesai
-        setTimeout(() => {
-            currentIndex = (currentIndex + 1) % images.length; // Update index
-            rightSection.style.backgroundImage = `url('${images[currentIndex]}')`;
+        // Fungsi untuk mengubah background dan teks
+        function changeBackground() {
+            if (!banners.length) return;
 
-            // Tambahkan animasi fade-in setelah mengganti gambar
-            rightSection.classList.remove('fade-out');
-            rightSection.classList.add('fade-in');
+            // Tambahkan animasi fade-out
+            rightSection.classList.add('fade-out');
 
-            // Hapus kelas fade-in setelah selesai
+            // Ganti gambar dan teks setelah animasi selesai
             setTimeout(() => {
-                rightSection.classList.remove('fade-in');
-            }, 1000); // Durasi animasi fade-in
-        }, 1000); // Durasi animasi fade-out
-    }
+                currentIndex = (currentIndex + 1) % banners.length; // Update index
+                const currentBanner = banners[currentIndex];
 
-    // Ubah gambar setiap 5 detik
-    setInterval(changeBackground, 5000);
-});
+                // Update background image
+                rightSection.style.backgroundImage = `url('${currentBanner.image}')`;
 
+                // Update teks tombol
+                rightSectionButton.textContent = currentBanner.text || 'No Text';
+
+                // Tambahkan animasi fade-in setelah mengganti gambar
+                rightSection.classList.remove('fade-out');
+                rightSection.classList.add('fade-in');
+
+                // Hapus kelas fade-in setelah selesai
+                setTimeout(() => {
+                    rightSection.classList.remove('fade-in');
+                }, 1000); // Durasi animasi fade-in
+            }, 1000); // Durasi animasi fade-out
+        }
+
+        // Mulai carousel untuk mengganti banner kecil
+        setInterval(changeBackground, 5000); // Ubah setiap 5 detik
+
+        // Panggil fungsi untuk memuat data banner kecil
+        await fetchBannerKecil();
+    });
 </script>

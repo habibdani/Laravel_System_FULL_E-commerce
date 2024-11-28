@@ -32,3 +32,4 @@ Route::get('/', function () {
 Route::get('/view-maps', [ViewPageController::class, 'maps']);
 Route::get('/view-shop', [ViewPageController::class, 'shop']);
 Route::get('/view-product', [ViewPageController::class, 'product'])->name('view.product.details');
+Route::get('/view-productid', [ViewPageController::class, 'productbyid']);

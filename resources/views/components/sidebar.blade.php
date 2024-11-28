@@ -194,13 +194,13 @@
 
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
-                                <p class="font-semibold">No Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <p class="font-semibold">No Rekening: <span class="font-bold" id="norekening">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
                                     <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
                                     </svg>
                                     </span>
                                 </p>
-                                <p>a/n <span class="font-bold">BUDIONO NUGROHO</span></p>
+                                <p>a/n <span class="font-bold" id="namarekeneing">BUDIONO NUGROHO</span></p>
                             </div>
 
                             <!-- Note Pembayaran -->
@@ -210,7 +210,7 @@
                                     <svg class="w-5 h-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v4m0 4h.01m-.01-4h0V9h0m0 6h.01m-.01-6V5l-1-1m1-1V4m0 6h0V5h-2m0 6h0v2l1 1m-1 1h0m0-6h1l1-1v4h0M3 8v4h8V8H3z" />
                                     </svg>
-                                    08257742883
+                                    <span id="nomorwa">08257742883</span>
                                 </p>
                             </div>
 
@@ -270,13 +270,13 @@
 
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
-                                <p class="font-semibold">Nomor Rekening: <span class="font-bold">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <p class="font-semibold">Nomor Rekening: <span class="font-bold" id="norekening2">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
                                     <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
                                     </svg>
                                     </span>
                                 </p>
-                                <p>a/n <span class="font-bold">BUDIONO NUGROHO</span></p>
+                                <p>a/n <span class="font-bold" id="namarekeneing2">BUDIONO NUGROHO</span></p>
                             </div>
 
                             <!-- Note Pembayaran -->
@@ -286,7 +286,7 @@
                                     <svg class="w-5 h-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v4m0 4h.01m-.01-4h0V9h0m0 6h.01m-.01-6V5l-1-1m1-1V4m0 6h0V5h-2m0 6h0v2l1 1m-1 1h0m0-6h1l1-1v4h0M3 8v4h8V8H3z" />
                                     </svg>
-                                    08257742883
+                                    <span id="nomorwa2">08257742883</span>
                                 </p>
                             </div>
 
@@ -369,6 +369,76 @@
     @vite('resources/js/sidebar-script.js')
 
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const norekeningElement = document.getElementById('norekening');
+        const namarekeneingElement = document.getElementById('namarekeneing');
+        const norekeningElement2 = document.getElementById('norekening2');
+        const namarekeneingElement2 = document.getElementById('namarekeneing2');
+        // Fungsi untuk mengambil data rekening dari API
+        async function fetchInfoRekening() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/info-rekening`);
+                const data = await response.json();
+
+                if (data.success && data.data.length > 0) {
+                    const rekeningInfo = data.data[0]; // Ambil rekening pertama dari data
+
+                    // Update teks nomor rekening dan nama rekening
+                    norekeningElement.textContent = rekeningInfo.nomor_rekening;
+                    namarekeneingElement.textContent = rekeningInfo.nama;
+                    norekeningElement2.textContent = rekeningInfo.nomor_rekening;
+                    namarekeneingElement2.textContent = rekeningInfo.nama;
+                } else {
+                    console.error('Gagal memuat data rekening:', data.message);
+                    alert('Tidak ada data rekening yang tersedia.');
+                }
+            } catch (error) {
+                console.error('Error fetching rekening info:', error);
+                alert('Terjadi kesalahan saat memuat data rekening.');
+            }
+        }
+
+        // Panggil fungsi untuk memuat data rekening
+        await fetchInfoRekening();
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const nomorwaElement = document.getElementById('nomorwa');
+        const nomorwa2Element = document.getElementById('nomorwa2');
+
+        // Fungsi untuk mengambil data nomor WA dari API
+        async function fetchInfoWA() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/info-wa`);
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    const waInfo = data.data; // Ambil data WA dari respons
+
+                    // Update teks pada elemen
+                    nomorwaElement.textContent = waInfo.nomorwa;
+                    nomorwa2Element.textContent = waInfo.nomorwa;
+
+                    // Update link WhatsApp
+                } else {
+                    console.error('Gagal memuat data WA:', data.message);
+                    alert('Tidak ada data WA yang tersedia.');
+                }
+            } catch (error) {
+                console.error('Error fetching WA info:', error);
+                alert('Terjadi kesalahan saat memuat data WA.');
+            }
+        }
+
+        // Panggil fungsi untuk memuat data WA
+        await fetchInfoWA();
+    });
+
+</script>
 
 <style>
     #slide-1, #slide-2, #slide-3 {

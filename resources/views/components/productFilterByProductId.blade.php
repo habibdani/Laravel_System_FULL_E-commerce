@@ -1,6 +1,6 @@
 <section name="filproductid-product" id="sessionproductfilproductid" class="py-0 mt-8">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div id="subsessionproductfilproductid" class="relative w-[1200px] flex items-center justify-between">
+        <div id="subsessionproductfilproductid" class="relative w-[1200px] mt-[100px] flex items-center justify-between">
             <!-- Bagian Kiri (Produk filproductid) -->
             <div id="filproductid-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
                 <div class="p-5">
@@ -39,9 +39,6 @@
         box-shadow: 0px 4px 4px 0px #00000026;
     }
 
-    #sessionproductfilproductid{
-        display: none;
-    }
     #filproductid-product-list {
         padding-bottom: 10px;
         margin-bottom: 10px;
@@ -98,41 +95,282 @@
     }
 </style>
 <script>
+
+    function showSlide(slideNumber) {
+        document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
+        document.getElementById('slide-' + slideNumber).classList.remove('hidden');
+
+        document.querySelectorAll('[id^="btn-slide-"]').forEach(btn => {
+            btn.classList.remove('text-white', 'bg-[#E01535]');
+            btn.classList.add('text-[#9D9D9D]', 'bg-transparent');
+        });
+
+        document.getElementById('btn-slide-' + slideNumber).classList.add('text-white', 'bg-[#E01535]');
+        document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
+    }
+
+    window.addEventListener('load', function() {
+        showSlide(2);
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.add('sidebar-hidden');
+        sidebar.classList.remove('sidebar-visible');
+
+        const toggleBtn = document.getElementById('toggle');
+        toggleBtn.classList.add('toggle-hidden');
+        toggleBtn.classList.remove('toggle-visible');
+
+        const toggleIcon = toggleBtn.querySelector('img');
+        const hiddenIcon = toggleBtn.getAttribute('data-hidden-icon');
+        toggleIcon.src = hiddenIcon; // Mengganti src dengan gambar tersembunyi
+
+        const btnSlide2 = document.getElementById('btn-slide-2');
+        btnSlide2.classList.add('text-white', 'bg-[#E01535]');
+        btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
+
+        const considebar = document.getElementById('container-sidebar')
+        considebar.classList.add('z-0');
+        considebar.classList.remove('z-20');
+
+        const button2 = document.getElementById('btn-slide-2');
+        button2.removeAttribute('disabled');
+
+        const jumlahitem = document.getElementById('jumlahitem');
+        jumlahitem.classList.remove('hidden');
+
+        const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+        toslide2andshop.classList.add('hidden');
+
+        const totalbayar = document.getElementById('totalbayar');
+        totalbayar.classList.remove('hidden');
+
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         const filproductidProductList = document.getElementById('filproductid-product-list');
         const prevButton = document.getElementById('prev-button-product-filproductid');
         const nextButton = document.getElementById('next-button-product-filproductid');
 
+        // Event Listener Tombol Navigasi
+        function addNavigationListeners() {
+            const cardWidth = getCardWidth();
+
+            if (prevButton) {
+                prevButton.addEventListener('click', () => {
+                    if (cardWidth > 0) {
+                        filproductidProductList.scrollBy({
+                            left: -(cardWidth * 6),
+                            behavior: 'smooth',
+                        });
+                    }
+                });
+            }
+
+            if (nextButton) {
+                nextButton.addEventListener('click', () => {
+                    if (cardWidth > 0) {
+                        filproductidProductList.scrollBy({
+                            left: cardWidth * 6,
+                            behavior: 'smooth',
+                        });
+                    }
+                });
+            }
+        }
+
+        // Ambil lebar kartu
         function getCardWidth() {
-            // Ambil elemen kartu produk pertama untuk menghitung lebar satu kartu, termasuk margin
-            const firstCard = filproductidProductList.querySelector('div');
+            const firstCard = filproductidProductList.querySelector('.product-card');
             if (firstCard) {
                 const cardStyle = getComputedStyle(firstCard);
-                const cardWidth = firstCard.offsetWidth + parseFloat(cardStyle.marginRight);
-                return cardWidth;
+                return firstCard.offsetWidth + parseFloat(cardStyle.marginRight);
             }
-            console.log('No card found');
             return 0;
         }
 
-        prevButton.addEventListener('click', () => {
-            const cardWidth = getCardWidth();
-            if (cardWidth > 0) {
-                filproductidProductList.scrollBy({
-                    left: -(cardWidth * 6),
-                    behavior: 'smooth'
-                });
+        // Fetch Data Produk dari API
+        async function fetchfillterbyproductid(productId) {
+            try {
+                const response = await fetch(`/api/list-products?Product_id=${encodeURIComponent(productId)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                return result.data.original;
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                throw error;
             }
-        });
+        }
 
-        nextButton.addEventListener('click', () => {
-            const cardWidth = getCardWidth();
-            if (cardWidth > 0) {
-                filproductidProductList.scrollBy({
-                    left: cardWidth * 6,
-                    behavior: 'smooth'
+        // Render Produk ke Halaman
+        async function renderFilterProducts(productId) {
+            try {
+                const products = await fetchfillterbyproductid(productId);
+
+                if (!products || products.length === 0) {
+                    console.warn('No products found for the specified Product ID.');
+                    return;
+                }
+
+                const productList = filproductidProductList;
+                productList.innerHTML = ''; // Bersihkan daftar produk sebelumnya
+
+                products.forEach((product) => {
+                    const productCard = createProductCard(product);
+                    productList.appendChild(productCard);
                 });
+
+                console.log('Products rendered successfully:', products);
+            } catch (error) {
+                console.error('Error rendering products:', error);
             }
-        });
+        }
+
+        // Membuat Kartu Produk
+        function createProductCard(product) {
+            const productCard = document.createElement('div');
+
+            productCard.setAttribute('data-product-id', product.product_id);
+            productCard.setAttribute('product-type-id', product.product_type_id);
+            productCard.setAttribute('product-variant-id', product.product_variant_id);
+
+            const form = document.createElement('form');
+            form.method = 'GET';
+            form.action = `/view-product`;
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = csrfToken;
+
+            const productVariantInput = document.createElement('input');
+            productVariantInput.type = 'hidden';
+            productVariantInput.name = 'product_variant_id';
+            productVariantInput.value = product.product_variant_id;
+
+            const productTypeInput = document.createElement('input');
+            productTypeInput.type = 'hidden';
+            productTypeInput.name = 'product_type_id';
+            productTypeInput.value = product.product_type_id;
+
+            form.appendChild(csrfInput);
+            form.appendChild(productVariantInput);
+            form.appendChild(productTypeInput);
+
+            productCard.classList.add(
+                'product-card',
+                'shadow-custom',
+                'h-[186.83px]',
+                'bg-white',
+                'rounded-md',
+                'flex',
+                'flex-col',
+                'justify-between',
+                'overflow-hidden'
+            );
+            productCard.style.width = '149.74px';
+            productCard.style.flexShrink = '0';
+            productCard.style.position = 'relative';
+
+            // Gambar Produk
+            const productImageContainer = document.createElement('div');
+            productImageContainer.classList.add(
+                'relative', 
+                'w-full', 
+                'h-[100px]', 
+                'mb-2', 
+                'rounded-t-md', 
+                'overflow-hidden'
+            );
+
+            const productImage = document.createElement('img');
+            productImage.src = `${window.location.origin}/storage/${product.variant_image}`;
+            productImage.alt = product.variant_name;
+            productImage.classList.add('object-cover', 'w-full', 'h-full');
+            productImageContainer.appendChild(productImage);
+
+            if (product.preorder) {
+                const preorderLabel = document.createElement('span');
+                preorderLabel.textContent = 'Preorder';
+                preorderLabel.classList.add(
+                    'bg-black',
+                    'text-white',
+                    'font-poppins',
+                    'text-[10px]',
+                    'font-normal',
+                    'px-2',
+                    'py-1',
+                    'rounded',
+                    'absolute',
+                    'bottom-2',
+                    'left-2'
+                );
+                preorderLabel.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+                productImageContainer.appendChild(preorderLabel);
+            }
+
+            // Nama Produk
+            const productName = document.createElement('p');
+            productName.textContent = product.variant_name;
+            productName.classList.add('font-normal', 'text-[#747474]', 'text-left', 'truncate', 'text-[10px]', 'mx-2');
+            productName.style.width = '100%';
+            productName.style.whiteSpace = 'nowrap';
+            productName.style.overflow = 'hidden';
+            productName.style.textOverflow = 'ellipsis';
+
+            // Harga Produk
+            const productPrice = document.createElement('p');
+            productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(product.variant_price)}`;
+            productPrice.classList.add('text-[14px]', 'text-left', 'font-semibold', 'text-[#292929]', 'm-2');
+            productPrice.style.width = '100%';
+            productPrice.style.whiteSpace = 'nowrap';
+            productPrice.style.overflow = 'hidden';
+            productPrice.style.textOverflow = 'ellipsis';
+
+            // Rangkai Card
+            productCard.appendChild(productImageContainer);
+            productCard.appendChild(productName);
+            productCard.appendChild(productPrice);
+
+            form.appendChild(productCard);
+
+            document.body.appendChild(form);
+
+            // Event listener for product card click
+            productCard.addEventListener('click', async () => {
+                try {
+                    form.submit();
+
+                } catch (error) {
+                    console.error('Error fetching product details:', error);
+                }
+            });
+
+            return form;
+        }
+
+        // Render Produk Berdasarkan Product ID
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Ambil parameter product_id dari URL
+        const productId = getQueryParam('product_id');
+
+        // Panggil fungsi renderFilterProducts jika product_id tersedia
+        if (productId) {
+            renderFilterProducts(productId);
+        } else {
+            console.error("Parameter 'product_id' tidak ditemukan di URL.");
+        }
+
+        // Fungsi renderFilterProducts (placeholder, pastikan fungsi ini didefinisikan)
+        renderFilterProducts(productId);
+
+        // Tambahkan Navigasi
+        addNavigationListeners();
     });
+
 </script>

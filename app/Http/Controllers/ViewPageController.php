@@ -97,4 +97,10 @@ class ViewPageController extends Controller
 
         return view('setting-wa');
     }
+    public function productbyid(Request $request)
+    {
+        $productId = $request->query('product_id');
+
+        return view('productbyid-page', compact('productId'));
+    }
 }
