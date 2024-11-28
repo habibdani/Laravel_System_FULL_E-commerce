@@ -42,8 +42,10 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async function () {
+    
+@endsection
+<script>
+       document.addEventListener('DOMContentLoaded', async function () {
             try {
                 // Ambil ID produk dari URL
                 const urlParams = new URL(window.location.href);
@@ -60,9 +62,9 @@
                 const response = await fetch(`https://andalprima.hansmade.online/api/product/details?id=${productVariantId}`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`, // Sesuaikan token Anda
-                        'Accept': 'application/json'
-                    }
+                        'Authorization': `Bearer ${token}`, // Sesuaikan dengan token Anda
+                        'Accept': 'application/json',
+                    },
                 });
 
                 // Periksa apakah respons berhasil
@@ -78,6 +80,11 @@
 
                     // Temukan elemen target
                     const mainEditContainer = document.getElementById('mainedit');
+                    if (!mainEditContainer) {
+                        console.error('Container #mainedit not found');
+                        return;
+                    }
+
                     mainEditContainer.innerHTML = ''; // Bersihkan kontainer sebelum menambahkan HTML baru
 
                     // Isi informasi dasar produk
@@ -150,10 +157,54 @@
                 } else {
                     console.error('Failed to retrieve product details:', result.message || 'Unknown error');
                 }
+
+                // Tambahkan event listener untuk save_button
+                document.getElementById('save_button').addEventListener('click', async function () {
+                    try {
+                        // Buat payload dari data di form
+                        const payload = {
+                            product_name: document.getElementById('product_name').value,
+                            product_variant: [
+                                {
+                                    id: productVariantId,
+                                    product_variant_name: document.getElementById('product_variant_name').value,
+                                    price: parseFloat(document.getElementById('price').value),
+                                    stock: parseInt(document.getElementById('stock').value),
+                                    descriptions: document.getElementById('product_variant_description').value,
+                                    product_variant_item: [], // Tambahkan item varian jika ada
+                                },
+                            ],
+                        };
+
+                        // Kirim data ke API
+                        const updateResponse = await fetch(`http://127.0.0.1:8001/api/update-product/${productVariantId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${token}`, // Sesuaikan dengan token Anda
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(payload),
+                        });
+
+                        if (!updateResponse.ok) {
+                            console.error(`Failed to update product. Status: ${updateResponse.status}`);
+                            return;
+                        }
+
+                        const updateResult = await updateResponse.json();
+                        if (updateResult.success) {
+                            alert('Produk berhasil diperbarui!');
+                        } else {
+                            console.error('Update failed:', updateResult.message || 'Unknown error');
+                        }
+                    } catch (error) {
+                        console.error('An error occurred while updating the product:', error.message);
+                    }
+                });
             } catch (error) {
                 console.error('An error occurred:', error.message);
             }
         });
 
-    </script>
-@endsection
+
+</script>
