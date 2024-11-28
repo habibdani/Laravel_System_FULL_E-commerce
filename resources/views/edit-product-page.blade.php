@@ -122,11 +122,11 @@
                                             <input
                                                 type="file"
                                                 class="form-control"
-                                                onchange="uploadImage(event, 'editImagePreview-${data.product.product_variant_id}')"
+                                                onchange="uploadImage(event, 'editImagePreview')"
                                             />
                                             <img
                                                 src="https://andalprima.hansmade.online/storage/${data.product.variant_image}"
-                                                id="editImagePreview-${data.product.product_variant_id}"
+                                                id="editImagePreview"
                                                 class="h-32 w-32 object-cover rounded-lg mt-2"
                                                 alt="Preview Image"
                                             />
@@ -220,6 +220,7 @@
                 const productVariantName = document.getElementById('product_variant_name').value;
                 const price = parseFloat(document.getElementById('price').value);
                 const stock = parseInt(document.getElementById('stock').value);
+                const image = document.getElementById('editImagePreview').src;
                 const descriptions = document.getElementById('product_variant_description').value;
 
                 // Ambil variant items dari container
@@ -237,6 +238,8 @@
                         product_variant_name: productVariantName,
                         price: price,
                         stock: stock,
+                        image_url: image,
+                        po_status: false,
                         descriptions: descriptions,
                         product_variant_item: variantItems,
                     },
