@@ -8,7 +8,7 @@
                     <img src="{{ asset('storage/icons/end-user.svg') }}" alt="end-user" class="h-[46px] w-[50px] mb-3">
                     <span class="font-roboto text-[18px] font-normal mb-3 border-b border-[#E01535]">Exclusive Products for Personal Use</span>
                     <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Discover premium products tailored for your personal needs. Shop now to enjoy exceptional quality and realible service.</p>
-                    <form action="{{ url('/view-maps') }}" method="GET" class="inline">
+                    <form action="{{ url('/view-shop') }}" method="GET" class="inline">
                         @csrf
                         <input type="hidden" name="client_type_id" value="1">
                         <button type="submit" class="flex items-center justify-center w-[83px] h-[28.5px] inline-block bg-[#E01535] font-roboto text-[14px] font-semibold text-white rounded">Shop Now</button>
@@ -21,7 +21,7 @@
                     <img src="{{ asset('storage/icons/drop-ship.svg') }}" alt="drop-ship" class="h-[33px] w-[40px] mt-1 mb-3">
                     <span class="font-roboto text-[18px] font-normal mb-3 border-b border-[#E01535]">Streamlined Solutions for Drop Shippers</span>
                     <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Boost your sales with our high-quality products at wholesale prices. Enjoy easy ordering and fast delivery direcytly to your customer</p>
-                    <form action="{{ url('/view-maps') }}" method="GET" class="inline">
+                    <form action="{{ url('/view-shop') }}" method="GET" class="inline">
                         @csrf
                         <input type="hidden" name="client_type_id" value="2">
                         <button type="submit" class="flex items-center justify-center w-[83px] h-[28.5px] inline-block bg-[#E01535] font-roboto text-[14px] font-semibold text-white rounded">Shop Now</button>

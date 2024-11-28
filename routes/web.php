@@ -25,7 +25,7 @@ Route::get('/dashboard/setting/list-wa', [ViewPageController::class, 'dashboardS
 
 // Halaman utama (shop page)
 Route::get('/', function () {
-    return view('shop-page');
+    return view('welcome-page');
 });
 
 // Rute untuk halaman peta, toko, dan produk
