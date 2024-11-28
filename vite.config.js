@@ -19,7 +19,8 @@ export default defineConfig({
         port: 5173,      // Gunakan port default
         https: true,
         hmr: {
-            host: 'andalprima.hansmade.online', // IP atau domain publik Anda
+            // host: 'andalprima.hansmade.online', // IP atau domain publik Anda
+            host: '127.0.0.1', // IP atau domain publik Anda
             protocol: 'wss',
         },
     },
