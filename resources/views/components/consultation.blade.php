@@ -131,7 +131,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const rightSection = document.getElementById('right-section-consule');
         const rightSectionButton = document.getElementById('right-section-button');
         let banners = []; // Array untuk menyimpan data banner kecil
@@ -145,7 +145,7 @@
 
                 if (data.success) {
                     banners = data.data.map(banner => ({
-                        image: banner.image.replace('http://127.0.0.1:8001', '').trim(),
+                        image: banner.image.replace('https://andalprima.hansmade.online', '').trim(),
                         text: banner.text,
                     }));
                     changeBackground(); // Set gambar dan teks pertama kali

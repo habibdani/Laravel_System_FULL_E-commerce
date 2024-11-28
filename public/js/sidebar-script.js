@@ -174,15 +174,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // kirim email
     async function sendEmail() {
         const clientEmail = sessionStorage.getItem('client_email');
-        const orderData = sessionStorage.getItem('order_data');
+        const orderData = sessionStorage.getItem('order_data'); // Data harus berupa JSON string
+        const nomorwa = sessionStorage.getItem('waNomor');
+        const linkwa = sessionStorage.getItem('waLink');
+        const namaRekening = sessionStorage.getItem('namaRekening');
+        const nomorRekening = sessionStorage.getItem('nomorRekening');
 
         if (!clientEmail || !orderData) {
             console.error("Email atau data pesanan tidak ditemukan di sessionStorage.");
             return;
         }
-
+    
         try {
             const response = await fetch('https://andalprima.hansmade.online/api/send-email', {
                 method: 'POST',
@@ -190,12 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    to: clientEmail,
-                    subject: "Informasi Pesanan Anda",
-                    body: orderData,
+                    to: clientEmail, // Email tujuan
+                    subject: "Informasi Pesanan Anda", // Subjek email
+                    data: orderData, // Pastikan data JSON
+                    nomorwa: nomorwa,
+                    linkwa: linkwa,
+                    namaRekening: namaRekening,
+                    nomorRekening: nomorRekening
                 }),
             });
-
+    
             if (response.ok) {
                 console.log("Email berhasil dikirim.");
             } else {
@@ -205,8 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Terjadi kesalahan saat mengirim email:", error);
         }
     }
-
-
+    
 // payment
     function handleSlideAndPaymentActions() {
         showSlide(3); // Menampilkan slide 3

@@ -40,7 +40,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
       
         const nomorwa3Element = document.getElementById('nomorwa3');
 
@@ -54,10 +54,12 @@
                     const waInfo = data.data; // Ambil data WA dari respons
 
                     // Update teks pada elemen
-
+                
                     // Update link WhatsApp
                     const waLink = `https://web.whatsapp.com/send?phone=62${waInfo.nomorwa.replace(/^0/, '')}`;
                     nomorwa3Element.href = waLink;
+                    sessionStorage.setItem('waLink', waLink);
+                    sessionStorage.setItem('waNomor', waInfo.nomorwa);
                 } else {
                     console.error('Gagal memuat data WA:', data.message);
                     alert('Tidak ada data WA yang tersedia.');

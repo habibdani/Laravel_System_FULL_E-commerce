@@ -32,7 +32,7 @@
     </div>
 
     <script>
-        const API_BASE_URL = 'http://127.0.0.1:8001';
+        const API_BASE_URL = 'https://andalprima.hansmade.online';
         let banners = []; // Data banners
 
         // Fungsi untuk mengambil data banner kecil
@@ -247,7 +247,7 @@
                 const data = await response.json();
                 if (data.success) {
                     const preview = document.getElementById(previewId);
-                    preview.src = data.data.image_url.replace('http://127.0.0.1:8001', '').trim();
+                    preview.src = data.data.image_url.replace('https://andalprima.hansmade.online', '').trim();
                     preview.classList.remove('hidden');
                 } else {
                     alert(data.message || 'Failed to upload image');

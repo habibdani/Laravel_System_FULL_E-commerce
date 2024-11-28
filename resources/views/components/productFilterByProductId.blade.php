@@ -4,7 +4,7 @@
             <!-- Bagian Kiri (Produk filproductid) -->
             <div id="filproductid-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
                 <div class="p-5">
-                    <h2 id="filproductidProductName" class="text-[22px] font-bold text-black">Hasil Pencarian Product</h2>
+                    <h2 id="filproductidProductName" class="text-[22px] font-bold text-black"></h2>
                     <span class="text-[12px] filproductid-description font-normal text-[#747474]">Bestproduct products for u</span>
                 </div>
             </div>
@@ -355,12 +355,14 @@
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
-
+        
         // Ambil parameter product_id dari URL
         const productId = getQueryParam('product_id');
 
         // Panggil fungsi renderFilterProducts jika product_id tersedia
         if (productId) {
+            const filltittleproduct = document.getElementById('filproductidProductName');
+            
             renderFilterProducts(productId);
         } else {
             console.error("Parameter 'product_id' tidak ditemukan di URL.");

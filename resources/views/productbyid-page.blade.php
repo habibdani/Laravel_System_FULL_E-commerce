@@ -8,6 +8,7 @@
     @component('components.header') @endcomponent
     @component('components.sidebar') @endcomponent
     @component('components.productFilterByProductId')@endcomponent
+    @component('components.productFilter')@endcomponent
     @component('components.why-choose-us') @endcomponent
     @component('components.consultation') @endcomponent
     @component('components.partners') @endcomponent

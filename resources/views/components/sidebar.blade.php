@@ -372,7 +372,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const norekeningElement = document.getElementById('norekening');
         const namarekeneingElement = document.getElementById('namarekeneing');
         const norekeningElement2 = document.getElementById('norekening2');
@@ -391,6 +391,9 @@
                     namarekeneingElement.textContent = rekeningInfo.nama;
                     norekeningElement2.textContent = rekeningInfo.nomor_rekening;
                     namarekeneingElement2.textContent = rekeningInfo.nama;
+
+                    sessionStorage.setItem('namaRekening', rekeningInfo.nama);
+                    sessionStorage.setItem('nomorRekening', rekeningInfo.nomor_rekening);
                 } else {
                     console.error('Gagal memuat data rekening:', data.message);
                     alert('Tidak ada data rekening yang tersedia.');
@@ -406,7 +409,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const nomorwaElement = document.getElementById('nomorwa');
         const nomorwa2Element = document.getElementById('nomorwa2');
 

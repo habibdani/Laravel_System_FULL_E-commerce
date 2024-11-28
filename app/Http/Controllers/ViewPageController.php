@@ -55,7 +55,7 @@ class ViewPageController extends Controller
 
     public function dashboardProduct(Request $request)
     {
-        return view('Product-dashboard-page');
+        return view('product-dashboard-page');
     }
     public function dashboardProductAdd(Request $request)
     {
