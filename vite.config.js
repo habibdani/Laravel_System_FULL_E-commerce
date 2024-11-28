@@ -16,11 +16,11 @@ export default defineConfig({
     ],
     server: {
         host: '0.0.0.0', // Dengarkan semua alamat IP
-        port: 5173,      // Gunakan port default
+        // port: 5173,      // Gunakan port default
         https: true,
         hmr: {
             // host: 'andalprima.hansmade.online', // IP atau domain publik Anda
-            host: '127.0.0.1', // IP atau domain publik Anda
+            host: 'vite.hansmade.online', // IP atau domain publik Anda
             protocol: 'wss',
         },
     },
