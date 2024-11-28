@@ -20,16 +20,20 @@
 
                 <div class="flex space-x-2">
                     <button id="unsave_button" class="bg-white text-red-600 border border-red-600 px-4 py-2 rounded">Batal</button>
-                    <button id="save_button" class="bg-red-600 text-white px-4 py-2 rounded">+ Seimpan Perubahan</button>
+                    <button id="save_button" class="bg-red-600 text-white px-4 py-2 rounded">+ Simpan Perubahan</button>
                 </div>
             </div>
 
             <!-- Main Form Section -->
             <div id="mainedit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-             
+                <!-- Basic Info Section and Variant Details will be populated dynamically -->
+            </div>
+            <div id="variant_items_container" class="lg:col-span-1 space-y-6 mt-4">
+                <!-- Variant Items will be populated dynamically -->
             </div>
         </div>
     </div>
+
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
             <h2 class="text-lg font-semibold mb-4">Konfirmasi Penambahan Produk</h2>
@@ -42,15 +46,16 @@
         </div>
     </div>
 
-    
-@endsection
-<script>
-       document.addEventListener('DOMContentLoaded', async function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
             try {
+                console.log("Script loaded successfully!");
+
                 // Ambil ID produk dari URL
                 const urlParams = new URL(window.location.href);
                 const pathSegments = urlParams.pathname.split('/');
                 const productVariantId = pathSegments[pathSegments.length - 1];
+                console.log("Extracted productVariantId:", productVariantId);
 
                 // Validasi ID sebelum melanjutkan
                 if (isNaN(productVariantId)) {
@@ -59,13 +64,15 @@
                 }
 
                 // Fetch data dari API
+                console.log("Fetching product details...");
                 const response = await fetch(`https://andalprima.hansmade.online/api/product/details?id=${productVariantId}`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`, // Sesuaikan dengan token Anda
                         'Accept': 'application/json',
                     },
                 });
+
+                console.log("API Response Status:", response.status);
 
                 // Periksa apakah respons berhasil
                 if (!response.ok) {
@@ -74,20 +81,26 @@
                 }
 
                 const result = await response.json();
+                console.log("API Response Data:", result);
 
                 if (result.success) {
                     const data = result.data.original;
 
                     // Temukan elemen target
                     const mainEditContainer = document.getElementById('mainedit');
-                    if (!mainEditContainer) {
-                        console.error('Container #mainedit not found');
+                    const variantItemsContainer = document.getElementById('variant_items_container');
+                    if (!mainEditContainer || !variantItemsContainer) {
+                        console.error('Containers not found');
                         return;
                     }
 
-                    mainEditContainer.innerHTML = ''; // Bersihkan kontainer sebelum menambahkan HTML baru
+                    console.log("Populating product details...");
 
-                    // Isi informasi dasar produk
+                    // Bersihkan kontainer sebelum menambahkan HTML baru
+                    mainEditContainer.innerHTML = '';
+                    variantItemsContainer.innerHTML = '';
+
+                    // Generate HTML untuk informasi dasar produk
                     const basicInfoHTML = `
                         <div class="lg:col-span-2 space-y-6">
                             <div class="bg-white shadow rounded-lg p-4">
@@ -95,23 +108,6 @@
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Nama Produk</label>
-                                        <input id="product_name" type="text" value="${data.headers.product_utama.product_name}" class="px-3 py-2 border-[1px] border-[#DADCE0] mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                        <input hidden id="id_product" type="text" value="${data.headers.product_utama.id}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    mainEditContainer.insertAdjacentHTML('beforeend', basicInfoHTML);
-
-                    // Isi detail varian produk
-                    const productVariantHTML = `
-                        <div class="lg:col-span-2 space-y-6">
-                            <div class="bg-white shadow rounded-lg p-4">
-                                <h2 class="font-bold text-gray-700 text-lg mb-4">Variant Details</h2>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Variant Name</label>
                                         <input type="text" id="product_variant_name" value="${data.product.full_name_product}" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     </div>
                                     <div>
@@ -124,87 +120,118 @@
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Description</label>
-                                        <textarea id="product_variant_description" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">${data.product.descriptions.replace(/<br>/g, '\n')}</textarea>
+                                        <textarea id="product_variant_description" class="border-[1px] h-[100px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">${data.product.descriptions.replace(/<br>/g, '\n')}</textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
-                    mainEditContainer.insertAdjacentHTML('beforeend', productVariantHTML);
+                    mainEditContainer.insertAdjacentHTML('beforeend', basicInfoHTML);
 
-                    // Isi variant types
+                    console.log("Basic Information section populated.");
+
+                    // Generate HTML untuk variant items
                     data.variant_types.forEach((variantType) => {
-                        const variantTypeHTML = `
-                            <div class="bg-white shadow rounded-lg p-4">
-                                <h3 class="font-bold text-gray-700 text-lg mb-4">${variantType.variant_item_type_name}</h3>
-                                <div id="item_variant_list_container_${variantType.variant_item_type_id}" class="space-y-2">
-                                    ${variantType.items
-                                        .map(
-                                            (item) => `
-                                        <div class="flex items-center space-x-2 mb-2">
-                                            <span>${variantType.variant_item_type_name}</span>
-                                            <input type="text" value="${item.variant_item_name}" class="border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled>
-                                            <input type="number" value="${item.add_price}" class="border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled>
-                                        </div>
-                                    `
-                                        )
-                                        .join('')}
+                        console.log("Processing variant type:", variantType);
+
+                        variantType.items.forEach((item) => {
+                            const variantItemHTML = `
+                                <div class="variant-item flex space-x-2 mb-4">
+                                    <input type="hidden" class="variant-item-id" value="${item.variant_item_id}">
+                                    <input type="text" class="variant-item-name border-[1px] border-[#DADCE0] px-3 py-2 w-1/2 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Variant Item Name" value="${item.variant_item_name}">
+                                    <input type="number" class="variant-item-price border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Price Variant" value="${item.add_price}">
                                 </div>
-                            </div>
-                        `;
-                        mainEditContainer.insertAdjacentHTML('beforeend', variantTypeHTML);
+                            `;
+                            variantItemsContainer.insertAdjacentHTML('beforeend', variantItemHTML);
+                        });
                     });
+
+                    console.log("Variant Items section populated.");
                 } else {
                     console.error('Failed to retrieve product details:', result.message || 'Unknown error');
                 }
-
-                // Tambahkan event listener untuk save_button
-                document.getElementById('save_button').addEventListener('click', async function () {
-                    try {
-                        // Buat payload dari data di form
-                        const payload = {
-                            product_name: document.getElementById('product_name').value,
-                            product_variant: [
-                                {
-                                    id: productVariantId,
-                                    product_variant_name: document.getElementById('product_variant_name').value,
-                                    price: parseFloat(document.getElementById('price').value),
-                                    stock: parseInt(document.getElementById('stock').value),
-                                    descriptions: document.getElementById('product_variant_description').value,
-                                    product_variant_item: [], // Tambahkan item varian jika ada
-                                },
-                            ],
-                        };
-
-                        // Kirim data ke API
-                        const updateResponse = await fetch(`http://127.0.0.1:8001/api/update-product/${productVariantId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Authorization': `Bearer ${token}`, // Sesuaikan dengan token Anda
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(payload),
-                        });
-
-                        if (!updateResponse.ok) {
-                            console.error(`Failed to update product. Status: ${updateResponse.status}`);
-                            return;
-                        }
-
-                        const updateResult = await updateResponse.json();
-                        if (updateResult.success) {
-                            alert('Produk berhasil diperbarui!');
-                        } else {
-                            console.error('Update failed:', updateResult.message || 'Unknown error');
-                        }
-                    } catch (error) {
-                        console.error('An error occurred while updating the product:', error.message);
-                    }
-                });
             } catch (error) {
                 console.error('An error occurred:', error.message);
             }
         });
 
+        // Event listener untuk save_button
+        document.getElementById('save_button').addEventListener('click', async function () {
+            try {
+                console.log("Saving product details...");
 
-</script>
+                // Ambil ID produk dari URL
+                const urlParams = new URL(window.location.href);
+                const pathSegments = urlParams.pathname.split('/');
+                const productVariantId = pathSegments[pathSegments.length - 1];
+                console.log("Product Variant ID for update:", productVariantId);
+
+                // Ambil data dari form
+                const productVariantName = document.getElementById('product_variant_name').value;
+                const price = parseFloat(document.getElementById('price').value);
+                const stock = parseInt(document.getElementById('stock').value);
+                const descriptions = document.getElementById('product_variant_description').value;
+
+                // Ambil variant items dari container
+                const variantItemsContainer = document.getElementById('variant_items_container');
+                const variantItems = Array.from(variantItemsContainer.querySelectorAll('.variant-item')).map((item) => ({
+                    id: parseInt(item.querySelector('.variant-item-id').value),
+                    product_variant_item_name: item.querySelector('.variant-item-name').value,
+                    price_variant: parseFloat(item.querySelector('.variant-item-price').value),
+                }));
+
+                // Buat payload
+                const payload = {
+                    product_variant: {
+                        id: parseInt(productVariantId),
+                        product_variant_name: productVariantName,
+                        price: price,
+                        stock: stock,
+                        descriptions: descriptions,
+                        product_variant_item: variantItems,
+                    },
+                };
+
+                console.log("Payload to send:", payload);
+
+                // Kirim data ke API
+                const authToken = sessionStorage.getItem('authToken'); // Ambil token dari sessionStorage
+                if (!authToken) {
+                    console.error("Auth token is missing in sessionStorage");
+                    alert("Autentikasi tidak valid. Silakan login kembali.");
+                    return;
+                }
+
+                const response = await fetch(`https://andalprima.hansmade.online/api/update-product/${productVariantId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`, // Tambahkan Bearer Token di header
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                console.log("API Response Status:", response.status);
+
+                if (!response.ok) {
+                    console.error("Failed to update product. Response:", await response.json());
+                    alert("Gagal memperbarui produk. Silakan cek konsol untuk detail.");
+                    return;
+                }
+
+                const result = await response.json();
+                console.log("API Response Data:", result);
+
+                if (result.success) {
+                    alert("Produk berhasil diperbarui!");
+                } else {
+                    alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
+                }
+            } catch (error) {
+                console.error("Error while saving product details:", error.message);
+                alert("Terjadi kesalahan saat menyimpan produk.");
+            }
+        });
+    </script>
+@endsection

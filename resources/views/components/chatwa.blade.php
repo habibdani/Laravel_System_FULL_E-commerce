@@ -1,7 +1,7 @@
 <section name="chatwa">
     <div id="whatsapp-icon">
-        <a href="https://web.whatsapp.com/send?phone=6281234567890" id="nomorwa3" target="_blank" rel="noopener noreferrer">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+        <a href="http://web.whatsapp.com/send?phone=6281234567890" id="nomorwa3" target="_blank" rel="noopener noreferrer">
+            <img src="http://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
         </a>
     </div>
 </section>
@@ -56,7 +56,7 @@
                     // Update teks pada elemen
                 
                     // Update link WhatsApp
-                    const waLink = `https://web.whatsapp.com/send?phone=62${waInfo.nomorwa.replace(/^0/, '')}`;
+                    const waLink = `http://web.whatsapp.com/send?phone=62${waInfo.nomorwa.replace(/^0/, '')}`;
                     nomorwa3Element.href = waLink;
                     sessionStorage.setItem('waLink', waLink);
                     sessionStorage.setItem('waNomor', waInfo.nomorwa);

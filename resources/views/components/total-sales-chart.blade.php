@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="http://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     var ctx = document.getElementById('totalSalesChart').getContext('2d');
     var totalSalesChart = new Chart(ctx, {

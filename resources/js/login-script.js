@@ -7,6 +7,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     const loginButton = document.getElementById('loginButton');
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    console.log(token);
     // Clear previous error messages
     errorAlert.classList.add('hidden');
     errorAlert.innerHTML = '';

@@ -2,9 +2,9 @@
 	"info": {
 		"_postman_id": "f36a3648-7ab8-46d1-b267-abda472fbcb1",
 		"name": "Project",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "http://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15863177",
-		"_collection_link": "https://grey-moon-302193.postman.co/workspace/New-Team-Workspace~d8824132-bb6d-4834-9ca0-3e8e598390a7/collection/15863177-f36a3648-7ab8-46d1-b267-abda472fbcb1?action=share&source=collection_link&creator=15863177"
+		"_collection_link": "http://grey-moon-302193.postman.co/workspace/New-Team-Workspace~d8824132-bb6d-4834-9ca0-3e8e598390a7/collection/15863177-f36a3648-7ab8-46d1-b267-abda472fbcb1?action=share&source=collection_link&creator=15863177"
 	},
 	"item": [
 		{
@@ -729,7 +729,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"url_gambar\": \"https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg\",\r\n  \"persentase_kompresi\": 60\r\n}",
+							"raw": "{\r\n  \"url_gambar\": \"http://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg\",\r\n  \"persentase_kompresi\": 60\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -769,7 +769,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"url_gambar\": \"https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg\",\r\n  \"persentase_kompresi\": 60\r\n}",
+									"raw": "{\r\n  \"url_gambar\": \"http://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg\",\r\n  \"persentase_kompresi\": 60\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"

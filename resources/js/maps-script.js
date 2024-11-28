@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var map = L.map('map-container').setView([-6.2657501, 106.7012177], 13);
 
     // Load and display OpenStreetMap tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="http://carto.com/attributions">CARTO</a>'
     }).addTo(map);
 
     // Toggle map and sidebar
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to geocode city name to coordinates
     function geocodeCity(cityName) {
-        const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1`;
+        const nominatimUrl = `http://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1`;
 
         return fetch(nominatimUrl)
             .then(response => response.json())
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sessionStorage.setItem('ongkir_value_attribute', price);
                 // sessionStorage.setItem('total_price_value', newTotalPrice);
 
-                const url = `https://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+                const url = `http://maps.google.com/maps?q=${encodeURIComponent(city)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
                 iframe.src = url;
             });
 
