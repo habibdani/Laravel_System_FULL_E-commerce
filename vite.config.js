@@ -5,9 +5,9 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'https://andalprima.handmade.online/css/app.css',
-                'https://andalprima.handmade.online/js/app.js',
-                'https://andalprima.handmade.online/js/maps-script.js'
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/js/maps-script.js'
                 // 'resources/js/shop-script.js',
                 // 'resources/js/product-script.js',
             ],
