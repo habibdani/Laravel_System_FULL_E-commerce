@@ -524,46 +524,88 @@ class ProductController extends Controller
     // Create Banner Besar
     public function createBannerBesar(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'image_url' => 'required|string',
-        ]);
-
         try {
-            DB::insert("INSERT INTO banner_besar (name, image_url) VALUES (?, ?)", [
-                $request->name,
-                $request->image_url,
+            // Validasi payload
+            $validatedData = $request->validate([
+                'tittle' => 'required|string|max:255', // Tittle wajib diisi, maksimal 255 karakter
+                'description' => 'required|string|max:500', // Description wajib diisi, maksimal 500 karakter
+                'image' => 'required|string|url', // Image wajib diisi dan harus berupa URL yang valid
             ]);
-            return ApiResponseHelper::success(null, 'Banner besar created successfully');
+
+            // Insert data ke database
+            DB::insert("INSERT INTO banner_besar (tittle, description, image) VALUES (?, ?, ?)", [
+                $validatedData['tittle'],
+                $validatedData['description'],
+                $validatedData['image'],
+            ]);
+
+            // Response sukses
+            return response()->json([
+                'success' => true,
+                'message' => 'Banner besar created successfully',
+                'data' => $validatedData,
+            ], 201); // Status 201 untuk Created
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 400); // Status 400 untuk Bad Request
         } catch (\Exception $e) {
-            return ApiResponseHelper::error('Something went wrong', 500);
+            // Log error untuk debugging
+            \Log::error('Error creating banner besar: ' . $e->getMessage());
+
+            // Jika terjadi error lain
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage(), // Tambahkan detail error untuk debugging
+            ], 500); // Status 500 untuk Internal Server Error
         }
     }
+
 
     // Update Banner Besar
     public function updateBannerBesar(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'image_url' => 'required|string',
-        ]);
-
         try {
-            $updated = DB::update("UPDATE banner_besar SET name = ?, image_url = ? WHERE id = ?", [
-                $request->name,
-                $request->image_url,
+            // Validasi payload
+            $validatedData = $request->validate([
+                'tittle' => 'required|string|max:255', // Title wajib diisi, berupa string dengan maksimal 255 karakter
+                'description' => 'required|string|max:500', // Description wajib diisi, maksimal 500 karakter
+                'image' => 'required|string|url', // Image wajib diisi dan harus berupa URL yang valid
+            ]);
+
+            // Update data di database
+            $updated = DB::update("UPDATE banner_besar SET tittle = ?, image = ?, description = ? WHERE id = ?", [
+                $validatedData['tittle'],
+                $validatedData['image'],
+                $validatedData['description'],
                 $id,
             ]);
 
             if ($updated) {
+                // Jika data berhasil diupdate
                 return ApiResponseHelper::success(null, 'Banner besar updated successfully');
             } else {
+                // Jika ID tidak ditemukan
                 return ApiResponseHelper::error('Banner besar not found', 404);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 400); // Status 400 untuk validasi error
         } catch (\Exception $e) {
+            // Jika terjadi error lainnya
+            \Log::error('Error updating banner besar: ' . $e->getMessage());
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }
+
 
     // Delete Banner Besar
     public function deleteBannerBesar($id)
@@ -609,46 +651,96 @@ class ProductController extends Controller
     // Create Banner Kecil
     public function createBannerKecil(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'image_url' => 'required|string',
-        ]);
-
         try {
-            DB::insert("INSERT INTO banner_kecil (name, image_url) VALUES (?, ?)", [
-                $request->name,
-                $request->image_url,
+            // Validasi payload
+            $validatedData = $request->validate([
+                'text' => 'required|string|max:255', // Text wajib diisi, berupa string, maksimal 255 karakter
+                'image' => 'required|string|url', // Image wajib diisi, berupa URL yang valid
             ]);
-            return ApiResponseHelper::success(null, 'Banner kecil created successfully');
+
+            // Insert data ke database
+            DB::insert("INSERT INTO banner_kecil (text, image) VALUES (?, ?)", [
+                $validatedData['text'],
+                $validatedData['image'],
+            ]);
+
+            // Return response sukses
+            return response()->json([
+                'success' => true,
+                'message' => 'Banner kecil created successfully',
+                'data' => $validatedData, // Kembalikan data yang berhasil dibuat
+            ], 201); // Status 201 untuk Created
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return error jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(), // Detail kesalahan validasi
+            ], 400); // Status 400 untuk Bad Request
         } catch (\Exception $e) {
-            return ApiResponseHelper::error('Something went wrong', 500);
+            // Log error untuk debugging
+            \Log::error('Error creating banner kecil: ' . $e->getMessage());
+
+            // Return error response
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage(), // Tambahkan detail error untuk debugging
+            ], 500); // Status 500 untuk Internal Server Error
         }
     }
+
 
     // Update Banner Kecil
     public function updateBannerKecil(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'image_url' => 'required|string',
-        ]);
-
         try {
-            $updated = DB::update("UPDATE banner_kecil SET name = ?, image_url = ? WHERE id = ?", [
-                $request->name,
-                $request->image_url,
+            // Validasi payload
+            $validatedData = $request->validate([
+                'text' => 'required|string|max:255', // Text wajib diisi, maksimal 255 karakter
+                'image' => 'required|string|url', // Image wajib diisi, harus berupa URL yang valid
+            ]);
+    
+            // Update data di database
+            $updated = DB::update("UPDATE banner_kecil SET text = ?, image = ? WHERE id = ?", [
+                $validatedData['text'],
+                $validatedData['image'],
                 $id,
             ]);
-
+    
             if ($updated) {
-                return ApiResponseHelper::success(null, 'Banner kecil updated successfully');
+                // Jika data berhasil diperbarui
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Banner kecil updated successfully',
+                    'data' => $validatedData, // Kembalikan data yang diupdate
+                ], 200); // Status 200 untuk OK
             } else {
-                return ApiResponseHelper::error('Banner kecil not found', 404);
+                // Jika ID tidak ditemukan
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Banner kecil not found',
+                ], 404); // Status 404 untuk Not Found
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(), // Detail kesalahan validasi
+            ], 400); // Status 400 untuk Bad Request
         } catch (\Exception $e) {
-            return ApiResponseHelper::error('Something went wrong', 500);
+            // Log error untuk debugging
+            \Log::error('Error updating banner kecil: ' . $e->getMessage());
+    
+            // Jika terjadi error lainnya
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage(), // Tambahkan detail error untuk debugging
+            ], 500); // Status 500 untuk Internal Server Error
         }
-    }
+    }    
 
     // Delete Banner Kecil
     public function deleteBannerKecil($id)
@@ -966,50 +1058,83 @@ class ProductController extends Controller
     // Create Info Rekening
     public function createInfoRekening(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string',
-            'nomor_rekening' => 'required|string',
-            'nama_bank' => 'required|string',
-        ]);
-
         try {
-            DB::insert("INSERT INTO info_rekening (nama, nomor_rekening, nama_bank) VALUES (?, ?, ?)", [
-                $request->nama,
-                $request->nomor_rekening,
-                $request->nama_bank,
+            // Validasi payload
+            $validatedData = $request->validate([
+                'nama' => 'required|string|max:100', // Nama harus berupa string dengan maksimal 100 karakter
+                'nomor_rekening' => 'required|string|regex:/^\d+$/|min:10|max:20', // Nomor rekening hanya angka, minimal 10, maksimal 20 karakter
+                'nama_bank' => 'required|string|max:50', // Nama bank harus berupa string dengan maksimal 50 karakter
             ]);
+
+            // Insert data ke database
+            DB::insert("INSERT INTO info_rekening (nama, nomor_rekening, nama_bank) VALUES (?, ?, ?)", [
+                $validatedData['nama'],
+                $validatedData['nomor_rekening'],
+                $validatedData['nama_bank'],
+            ]);
+
+            // Return response sukses
             return ApiResponseHelper::success(null, 'Info rekening created successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal, tangkap pesan error
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 400); // Status code 400 untuk bad request
         } catch (\Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Error creating info rekening: ' . $e->getMessage());
+
+            // Return error response
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }
+
+    
 
     // Update Info Rekening
     public function updateInfoRekening(Request $request, $id)
     {
-        $request->validate([
-            'nama' => 'required|string',
-            'nomor_rekening' => 'required|string',
-            'nama_bank' => 'required|string',
-        ]);
-
         try {
+            // Validasi payload
+            $validatedData = $request->validate([
+                'nama' => 'required|string|max:100', // Nama harus berupa string dengan maksimal 100 karakter
+                'nomor_rekening' => 'required|string|regex:/^\d+$/|min:10|max:20', // Nomor rekening hanya angka, minimal 10, maksimal 20 karakter
+                'nama_bank' => 'required|string|max:50', // Nama bank harus berupa string dengan maksimal 50 karakter
+            ]);
+
+            // Update data di database
             $updated = DB::update("UPDATE info_rekening SET nama = ?, nomor_rekening = ?, nama_bank = ? WHERE id = ?", [
-                $request->nama,
-                $request->nomor_rekening,
-                $request->nama_bank,
+                $validatedData['nama'],
+                $validatedData['nomor_rekening'],
+                $validatedData['nama_bank'],
                 $id,
             ]);
 
             if ($updated) {
+                // Return response sukses jika data berhasil diupdate
                 return ApiResponseHelper::success(null, 'Info rekening updated successfully');
             } else {
+                // Return error jika ID tidak ditemukan
                 return ApiResponseHelper::error('Info rekening not found', 404);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return error jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 400); // Status code 400 untuk bad request
         } catch (\Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Error updating info rekening: ' . $e->getMessage());
+
+            // Return error response
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }
+
 
     // Delete Info Rekening
     public function deleteInfoRekening($id)

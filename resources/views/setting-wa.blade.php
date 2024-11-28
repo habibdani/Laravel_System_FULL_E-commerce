@@ -31,6 +31,8 @@
     </div>
 
     <script>
+        let waInfoData = {}; // Menyimpan data Info WA untuk edit dan save
+
         // Fungsi untuk mengambil data WA dari API
         async function fetchInfoWA() {
             try {
@@ -38,6 +40,7 @@
                 const data = await response.json();
 
                 if (data.success) {
+                    waInfoData = data.data; // Simpan data untuk pengeditan
                     renderTable(data.data); // Panggil fungsi renderTable dengan data dari API
                 } else {
                     alert(data.message || 'Failed to fetch WA info');
@@ -49,14 +52,19 @@
         }
 
         // Fungsi untuk memperbarui data WA
-        async function updateInfoWA(id, payload) {
+        async function updateInfoWA() {
             try {
+                const payload = {
+                    nama: document.getElementById('editNama').value,
+                    nomorwa: document.getElementById('editNomorWA').value,
+                };
+
                 const response = await fetch(`/api/info-wa`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(payload), // Kirim data sebagai JSON
+                    body: JSON.stringify(payload),
                 });
                 const data = await response.json();
 
@@ -91,10 +99,14 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td class="text-center">1</td>
-                <td>${waInfo.nama || 'No Name'}</td>
-                <td>${waInfo.nomorwa || 'No WA'}</td>
+                <td>
+                    <input type="text" id="editNama" value="${waInfo.nama}" class="form-control">
+                </td>
+                <td>
+                    <input type="text" id="editNomorWA" value="${waInfo.nomorwa}" class="form-control">
+                </td>
                 <td class="text-center">
-                    <a href="/form-info-wa?id=${waInfo.id}" class="btn btn-warning btn-sm">Edit</a>
+                    <button class="btn btn-success btn-sm" onclick="updateInfoWA()">Save</button>
                 </td>
             `;
 
@@ -107,11 +119,11 @@
     </script>
 
 <style>
-    /* Style untuk Tombol Edit */
-    .btn-warning {
-        background-color: #ffc107; /* Warna kuning */
+    /* Style untuk Tombol Save */
+    .btn-success {
+        background-color: #28a745; /* Warna hijau */
         border: none;
-        color: #212529; /* Teks gelap */
+        color: #fff;
         padding: 6px 12px;
         font-size: 14px;
         font-weight: bold;
@@ -119,14 +131,21 @@
         transition: all 0.3s ease-in-out;
     }
 
-    .btn-warning:hover {
-        background-color: #e0a800; /* Warna hover kuning gelap */
-        color: #fff; /* Teks putih */
+    .btn-success:hover {
+        background-color: #218838; /* Warna hover hijau gelap */
         transform: scale(1.05); /* Efek zoom */
     }
 
     td {
         padding: 8px 12px; /* Padding vertikal dan horizontal */
+    }
+
+    input.form-control {
+        width: 100%;
+        padding: 6px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 14px;
     }
 </style>
 @endsection

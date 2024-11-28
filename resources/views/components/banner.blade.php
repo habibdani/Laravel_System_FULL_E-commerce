@@ -31,6 +31,8 @@
     #subbanner {
         position: relative;
         overflow: hidden;
+        transition: background-image 1s ease-in-out;
+
     }
 
     /* Kontainer Teks dan Gambar */
@@ -46,15 +48,14 @@
         opacity: 1;
     }
 
-    /* Saat Pergantian */
-    .fade-out {
-        transform: translateX(-100%);
-        opacity: 0;
+    .fade-in {
+        opacity: 1;
+        transition: opacity 1s ease-in-out;
     }
 
-    .fade-in {
-        transform: translateX(0);
-        opacity: 1;
+    .fade-out {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
     }
 
     /* Responsif */
@@ -75,70 +76,93 @@
     }
 </style>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const banner = document.getElementById('subbanner');
-        const title = document.querySelector('.banner-title');
-        const description = document.querySelector('.banner-description');
-        const images = [
-            "{{ asset('storage/images/I5jwMQectdlYcOFz3EqJqhNzgcPzBWAnJHCW4FHn.jpg') }}",
-            "{{ asset('storage/images/em9YuIaleCIngKzyqiVgvpJWiT514QZoKh1Xzxzr.jpg') }}",
-            "{{ asset('storage/images/istockphoto-1288462556-612x612.jpg') }}"
-        ];
-        const titles = [
-            "TOKO BESI TERLENGKAP",
-            "PROMO BULANAN HEBAT",
-            "HARGA TERBAIK UNTUK ANDA"
-        ];
-        const descriptions = [
-            "We offer competitive prices with the best quality, so you get maximum value for every purchase.",
-            "Enjoy great deals every month, only at our store.",
-            "Quality products at the most affordable prices."
-        ];
-        let currentIndex = 0;
+   document.addEventListener('DOMContentLoaded', function () {
+    const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
+    const banner = document.getElementById('subbanner');
+    const title = document.querySelector('.banner-title');
+    const description = document.querySelector('.banner-description');
+    const nextButton = document.getElementById('next-button');
+    const prevButton = document.getElementById('prev-button');
+    let banners = []; // Untuk menyimpan data dari API
+    let currentIndex = 0;
 
-        function setBackground(index) {
-            // Fade out
-            banner.classList.add('fade-out');
-            title.classList.add('fade-out');
-            description.classList.add('fade-out');
+    // Fungsi untuk memuat data dari API
+    async function fetchBanners() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/banner-besar`);
+            const data = await response.json();
 
-            setTimeout(() => {
-                // Ganti gambar dan teks
-                banner.style.backgroundImage = `linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url(${images[index]})`;
-                title.textContent = titles[index];
-                description.textContent = descriptions[index];
+            if (data.success) {
+                banners = data.data.map(banner => ({
+                    image: banner.image.replace('https://andalprima.hansmade.online', '').trim(),
+                    tittle: banner.tittle,
+                    description: banner.description
+                }));
 
-                // Fade in
-                banner.classList.remove('fade-out');
-                title.classList.remove('fade-out');
-                description.classList.remove('fade-out');
-                banner.classList.add('fade-in');
-                title.classList.add('fade-in');
-                description.classList.add('fade-in');
-            }, 1000); // Durasi animasi keluar
+                if (banners.length > 0) {
+                    setBackground(currentIndex); // Set background pertama kali
+                    startAutoSlide(); // Mulai carousel otomatis
+                } else {
+                    console.warn('Tidak ada data banner untuk ditampilkan.');
+                }
+            } else {
+                console.error('Failed to fetch banners:', data.message);
+                alert('Gagal memuat banner.');
+            }
+        } catch (error) {
+            console.error('Error fetching banners:', error);
+            alert('Terjadi kesalahan saat memuat data banner.');
         }
+    }
 
-        function startAutoSlide() {
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % images.length;
-                setBackground(currentIndex);
-            }, 7000); // Ganti setiap 7 detik
-        }
+    // Fungsi untuk mengubah background, title, dan description
+    function setBackground(index) {
+        if (!banners.length) return;
 
-        // Tombol navigasi
-        document.getElementById('next-button').addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % images.length;
+        // Fade out
+        banner.classList.add('fade-out');
+        title.classList.add('fade-out');
+        description.classList.add('fade-out');
+
+        setTimeout(() => {
+            // Ganti gambar dan teks
+            const currentBanner = banners[index];
+            banner.style.backgroundImage = `linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url(${currentBanner.image})`;
+            title.textContent = currentBanner.tittle || 'No Title';
+            description.textContent = currentBanner.description || 'No Description';
+
+            // Fade in
+            banner.classList.remove('fade-out');
+            title.classList.remove('fade-out');
+            description.classList.remove('fade-out');
+            banner.classList.add('fade-in');
+            title.classList.add('fade-in');
+            description.classList.add('fade-in');
+        }, 1000); // Durasi animasi keluar
+    }
+
+    // Fungsi untuk menjalankan carousel otomatis
+    function startAutoSlide() {
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % banners.length;
             setBackground(currentIndex);
-        });
+        }, 7000); // Ganti setiap 7 detik
+    }
 
-        document.getElementById('prev-button').addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            setBackground(currentIndex);
-        });
-
-        // Initialize
+    // Fungsi untuk tombol navigasi berikutnya
+    nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % banners.length;
         setBackground(currentIndex);
-        startAutoSlide();
     });
+
+    // Fungsi untuk tombol navigasi sebelumnya
+    prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + banners.length) % banners.length;
+        setBackground(currentIndex);
+    });
+
+    // Initialize
+    fetchBanners(); // Memuat data dari API
+});
 
 </script>

@@ -806,10 +806,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-
-
 // Simpan nilai ongkir, jarak, durasi, tipe pembelian, alamat, ongkir-value, location-value, dan produk sidebar ke Session Storage
-
 function saveDataToSessionStorage() {
     // Ambil elemen-elemen yang diperlukan
 
@@ -1339,16 +1336,6 @@ const updatePaymentButtonState = () => {
     }
 };
 
-
-// // Tambahkan event listener untuk tombol pilih alamat
-// const buttonpilihalamat = document.getElementById('pilihAlamatok');
-// buttonpilihalamat.addEventListener('click', (e) => {
-//     e.preventDefault(); // Mencegah default submit form jika diperlukan
-//     sessionStorage.setItem('district_id', '1'); // Simulasikan pemilihan alamat
-//     updatePaymentButtonState(); // Perbarui status tombol setelah klik
-// });
-
-
 setInterval(() => {
     updatePaymentButtonState();
 }, 1000);
@@ -1504,6 +1491,9 @@ function updateInfoFromSessionStorage() {
         rekapProdukContainer.innerHTML = listProductSidebarHTML;
     }
 }
+
+
+
 
 
 // Jalankan fungsi untuk memperbarui informasi

@@ -55,7 +55,7 @@ class ViewPageController extends Controller
 
     public function dashboardProduct(Request $request)
     {
-        return view('Product-dashboard-page');
+        return view('product-dashboard-page');
     }
     public function dashboardProductAdd(Request $request)
     {
@@ -96,5 +96,11 @@ class ViewPageController extends Controller
     {
 
         return view('setting-wa');
+    }
+    public function productbyid(Request $request)
+    {
+        $productId = $request->query('product_id');
+
+        return view('productbyid-page', compact('productId'));
     }
 }

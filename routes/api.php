@@ -20,9 +20,7 @@ Route::get('/product/details', [ProductController::class, 'productdetails']);
 // Banner Besar Routes
 Route::get('/banner-besar', [ProductController::class, 'getBannerBesar']); // Read All
 Route::get('/banner-besar/{id}', [ProductController::class, 'getBannerBesarById']); // Read Single
-Route::post('/banner-besar', [ProductController::class, 'createBannerBesar']); // Create
-Route::put('/banner-besar/{id}', [ProductController::class, 'updateBannerBesar']); // Update
-Route::delete('/banner-besar/{id}', [ProductController::class, 'deleteBannerBesar']); // Delete
+
 
 // Banner Kecil Routes
 Route::get('/banner-kecil', [ProductController::class, 'getBannerKecil']); // Read All
@@ -46,7 +44,7 @@ Route::get('/list-product-type',[ProductController::class, 'getListProductType']
 Route::get('/list-variant-type', [ProductController::class, 'getListVariantType']);
 Route::get('/list-dropdown', [ProductController::class, 'getListDropdown']);
 
-Route::post('/admin/register', [AuthController::class, 'register'])->middleware(\App\Http\Middleware\PasswordAuthMiddleware::class);;
+Route::post('/admin/register', [AuthController::class, 'register'])->middleware(\App\Http\Middleware\PasswordAuthMiddleware::class);
 Route::post('/admin/login', [AuthController::class, 'login']);
 
 Route::post('/create-orders', [BookingController::class, 'createOrder']);
@@ -65,6 +63,9 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::post('/admin/logout', [AuthController::class, 'logout']);
     Route::get('/list-products-data', [ProductController::class, 'listproductData']);
     // Route::post('/create-order')
+    Route::post('/banner-besar', [ProductController::class, 'createBannerBesar']); // Create
+    Route::put('/banner-besar/{id}', [ProductController::class, 'updateBannerBesar']); // Update
+    Route::delete('/banner-besar/{id}', [ProductController::class, 'deleteBannerBesar']); // Delete
 });
 
 Route::get('/test-middleware', function() {

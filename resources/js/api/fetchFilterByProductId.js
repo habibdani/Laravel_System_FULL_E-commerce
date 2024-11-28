@@ -1,6 +1,6 @@
 // resources/js/api/fetchfillterbyproductid.js
 
-export async function fetchfillterbyproductid(query) {
+export async function fetchFilterByProductId(query) {
     try {
         const response = await fetch(`/api/list-products?Product_id=${encodeURIComponent(query)}`);
         if (!response.ok) {

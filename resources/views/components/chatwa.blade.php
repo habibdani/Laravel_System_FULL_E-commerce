@@ -1,6 +1,6 @@
 <section name="chatwa">
     <div id="whatsapp-icon">
-        <a href="https://web.whatsapp.com/send?phone=6281234567890" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.whatsapp.com/send?phone=6281234567890" id="nomorwa3" target="_blank" rel="noopener noreferrer">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
         </a>
     </div>
@@ -39,4 +39,38 @@
         console.log('WhatsApp Icon Clicked!');
     });
 
+    document.addEventListener('DOMContentLoaded', async function () {
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
+      
+        const nomorwa3Element = document.getElementById('nomorwa3');
+
+        // Fungsi untuk mengambil data nomor WA dari API
+        async function fetchInfoWA() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/info-wa`);
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    const waInfo = data.data; // Ambil data WA dari respons
+
+                    // Update teks pada elemen
+                
+                    // Update link WhatsApp
+                    const waLink = `https://web.whatsapp.com/send?phone=62${waInfo.nomorwa.replace(/^0/, '')}`;
+                    nomorwa3Element.href = waLink;
+                    sessionStorage.setItem('waLink', waLink);
+                    sessionStorage.setItem('waNomor', waInfo.nomorwa);
+                } else {
+                    console.error('Gagal memuat data WA:', data.message);
+                    alert('Tidak ada data WA yang tersedia.');
+                }
+            } catch (error) {
+                console.error('Error fetching WA info:', error);
+                alert('Terjadi kesalahan saat memuat data WA.');
+            }
+        }
+
+        // Panggil fungsi untuk memuat data WA
+        await fetchInfoWA();
+    });
 </script>
