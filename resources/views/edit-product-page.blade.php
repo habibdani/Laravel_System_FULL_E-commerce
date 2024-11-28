@@ -125,7 +125,7 @@
                                                 onchange="uploadImage(event, 'editImagePreview-${data.product.product_variant_id}')"
                                             />
                                             <img
-                                                src="https://andalprima.hansmade.online/${data.product.variant_image}"
+                                                src="https://andalprima.hansmade.online/storage/${data.product.variant_image}"
                                                 id="editImagePreview-${data.product.product_variant_id}"
                                                 class="h-32 w-32 object-cover rounded-lg mt-2"
                                                 alt="Preview Image"
