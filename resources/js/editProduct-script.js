@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const response = await fetch(`https://andalprima.hansmade.online/api/product/details?id=${productVariantId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`, // Sesuaikan token Anda
                 'Accept': 'application/json'
             }
         });
@@ -31,51 +31,77 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (result.success) {
             const data = result.data.original;
 
-            // Isi informasi dasar produk
-            document.getElementById('id_product').value = data.headers.product_utama.id;
-            document.getElementById('product_name').value = data.headers.product_utama.product_name;
+            // Temukan elemen target
+            const mainEditContainer = document.getElementById('mainedit');
+            mainEditContainer.innerHTML = ''; // Bersihkan kontainer sebelum menambahkan HTML baru
 
-            // Pilih kategori produk yang sesuai di dropdown
-            const productCategorySelect = document.getElementById('dropdownproduct-category');
-            const productTypeId = data.headers.product_utama.product_type_id;
-            for (let option of productCategorySelect.options) {
-                if (option.value == productTypeId) {
-                    option.selected = true;
-                    break;
-                }
-            }
+            // Isi informasi dasar produk
+            const basicInfoHTML = `
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white shadow rounded-lg p-4">
+                        <h2 class="font-bold text-gray-700 text-lg mb-4">Basic Information</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nama Produk</label>
+                                <input id="product_name" type="text" value="${data.headers.product_utama.product_name}" class="px-3 py-2 border-[1px] border-[#DADCE0] mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <input hidden id="id_product" type="text" value="${data.headers.product_utama.id}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            mainEditContainer.insertAdjacentHTML('beforeend', basicInfoHTML);
 
             // Isi detail varian produk
-            const variantNameInput = document.getElementById(`product_variant_name_${productVariantId}`);
-            const uploadedImageName = document.getElementById(`uploaded_image_name_${productVariantId}`);
-            const descriptionInput = document.getElementById(`product_variant_description_${productVariantId}`);
-            const stockInput = document.getElementById(`stock_${productVariantId}`);
-            const priceInput = document.getElementById(`price_${productVariantId}`);
+            const productVariantHTML = `
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white shadow rounded-lg p-4">
+                        <h2 class="font-bold text-gray-700 text-lg mb-4">Variant Details</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Variant Name</label>
+                                <input type="text" id="product_variant_name" value="${data.product.full_name_product}" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Base Price</label>
+                                <input type="number" id="price" value="${data.product.price}" min="0" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Stock</label>
+                                <input type="number" id="stock" value="${data.product.stock}" min="0" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea id="product_variant_description" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">${data.product.descriptions.replace(/<br>/g, '\n')}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            mainEditContainer.insertAdjacentHTML('beforeend', productVariantHTML);
 
-            if (variantNameInput) variantNameInput.value = data.product.full_name_product;
-            if (uploadedImageName) uploadedImageName.textContent = data.product.variant_image;
-            if (descriptionInput) descriptionInput.value = data.product.descriptions;
-            if (stockInput) stockInput.value = data.product.stock;
-            if (priceInput) priceInput.value = data.product.price;
-
-            // Tangani item varian (jika ada)
-            if (data.variant_types && Array.isArray(data.variant_types)) {
-                data.variant_types.forEach((variantType) => {
-                    const variantItemListContainer = document.getElementById(`item_variant_list_container_${productVariantId}`);
-                    if (variantItemListContainer) {
-                        variantType.items.forEach((item) => {
-                            const variantItemElement = document.createElement('div');
-                            variantItemElement.classList.add('flex', 'items-center', 'space-x-2', 'mb-2');
-                            variantItemElement.innerHTML = `
-                                <span>${variantType.variant_item_type_name}</span>
-                                <input type="text" value="${item.variant_item_name}" class="border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled>
-                                <input type="number" value="${item.add_price}" class="border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled>
-                            `;
-                            variantItemListContainer.appendChild(variantItemElement);
-                        });
-                    }
-                });
-            }
+            // Isi variant types
+            data.variant_types.forEach((variantType) => {
+                const variantTypeHTML = `
+                    <div class="bg-white shadow rounded-lg p-4">
+                        <h3 class="font-bold text-gray-700 text-lg mb-4">${variantType.variant_item_type_name}</h3>
+                        <div id="item_variant_list_container_${variantType.variant_item_type_id}" class="space-y-2">
+                            ${variantType.items
+                                .map(
+                                    (item) => `
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span>${variantType.variant_item_type_name}</span>
+                                    <input type="text" value="${item.variant_item_name}" class="border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled>
+                                    <input type="number" value="${item.add_price}" class="border-[1px] border-[#DADCE0] px-3 py-2 w-1/4 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled>
+                                </div>
+                            `
+                                )
+                                .join('')}
+                        </div>
+                    </div>
+                `;
+                mainEditContainer.insertAdjacentHTML('beforeend', variantTypeHTML);
+            });
         } else {
             console.error('Failed to retrieve product details:', result.message || 'Unknown error');
         }
