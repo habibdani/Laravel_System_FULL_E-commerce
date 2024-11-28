@@ -14,7 +14,7 @@
             <!-- Product Header -->
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
-                    <img src="{{ asset('storage/icons/Keranjang-black.svg') }}" alt="Product" class="h-5 w-5 mr-2">
+                    <img src="{{ asset('storage/icons/keranjang-black.svg') }}" alt="Product" class="h-5 w-5 mr-2">
                     <span class="font-roboto text-[20px] font-semibold leading-4.5 tracking-wide text-left text-black">Product</span>
                 </div>
                 <a href="{{ route('dashboard.product.add') }}" class="bg-red-600 text-white px-4 py-2 rounded">+ Tambah Produk</a>
