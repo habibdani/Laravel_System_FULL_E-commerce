@@ -17,8 +17,10 @@ export default defineConfig({
     server: {
         host: '0.0.0.0', // Dengarkan semua alamat IP
         port: 5173,      // Gunakan port default
+        https: true,
         hmr: {
-            host: 'https://andalprima.hansmade.online', // IP atau domain publik Anda
+            host: 'andalprima.hansmade.online', // IP atau domain publik Anda
+            protocol: 'wss',
         },
     },
     // Menambahkan rule agar folder fonts termasuk dalam build
