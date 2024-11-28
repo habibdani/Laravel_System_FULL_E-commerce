@@ -126,7 +126,7 @@
             }
 
             banners.forEach((banner, index) => {
-                const imagePath = banner.image.replace('http://127.0.0.1:8000', '').trim();
+                const imagePath = banner.image.replace('https://andalprima.hansmade.online', '').trim();
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="text-center">${index + 1}</td>

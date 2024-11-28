@@ -118,6 +118,19 @@
                                         <label class="block text-sm font-medium text-gray-700">Stock</label>
                                         <input type="number" id="stock" value="${data.product.stock}" min="0" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     </div>
+                                        <td>
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                onchange="uploadImage(event, 'editImagePreview-${data.product.product_variant_id}')"
+                                            />
+                                            <img
+                                                src="${data.product.variant_image}"
+                                                id="editImagePreview-${data.product.product_variant_id}"
+                                                class="h-32 w-32 object-cover rounded-lg mt-2"
+                                                alt="Preview Image"
+                                            />
+                                        </td>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Description</label>
                                         <textarea id="product_variant_description" class="border-[1px] h-[100px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">${data.product.descriptions.replace(/<br>/g, '\n')}</textarea>
@@ -154,6 +167,43 @@
                 console.error('An error occurred:', error.message);
             }
         });
+
+        async function uploadImage(event, previewId) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const token = sessionStorage.getItem('authToken');
+            if (!token) {
+                alert('Token is missing, please log in again.');
+                window.location.href = '/login';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('https://andalprima.hansmade.online/api/upload-image', {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${token}` }, // Tambahkan Bearer Token
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    // Update src atribut untuk pratinjau gambar
+                    const preview = document.getElementById(previewId);
+                    preview.src = data.data.image_url; // Pastikan field ini sesuai dengan respons API
+                    preview.classList.remove('hidden'); // Tampilkan jika sebelumnya tersembunyi
+                    alert('Gambar berhasil diunggah!');
+                } else {
+                    alert(data.message || 'Failed to upload image');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Terjadi kesalahan saat mengupload gambar.');
+            }
+        }
 
         // Event listener untuk save_button
         document.getElementById('save_button').addEventListener('click', async function () {
