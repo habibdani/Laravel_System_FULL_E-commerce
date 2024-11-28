@@ -7,7 +7,7 @@
     <title>@yield('title', 'Andal Prima Adhitama Perkasa')</title>
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('storage/icons/andal.svg') }}" type="image/png">
-    @vite('resources/css/app.css')
+    @vite('https://andalprima.hansmade.online/css/app.css')
     @stack('head')
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.0.6"></script>
@@ -17,7 +17,7 @@
         @yield('content')
         @component('components.loading') @endcomponent
     </main>
-    @vite('resources/js/app.js')
+    @vite('https://andalprima.hansmade.online/js/app.js')
     @stack('scripts')
 </body>
 </html>
