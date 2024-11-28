@@ -62,42 +62,42 @@ document.addEventListener('DOMContentLoaded', function() {
             const ongkir = sessionStorage.getItem('ongkir_value_attribute');
             const shipping_id = sessionStorage.getItem('tipe_pembelian');
             const additionalPricePercentage = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
-    
+
             // Hardcoded fields
             const commissionPercentage = null; // Placeholder for commission
             const ktpImage = "path/to/ktp_image.jpg"; // Placeholder
             const bankName = "Bank ABC"; // Placeholder
             const bankAccountNumber = "1234567890"; // Placeholder
             const bankAccountHolderName = "John Doe"; // Placeholder
-    
+
             // Validate mandatory fields
             if (!clientName || !clientPhoneNumber || !clientEmail || !clientAlamat || !kodePos || !shippingAreaId || !shippingDistrictId) {
                 alert('Please fill in all required fields.');
                 return;
             }
-    
+
             // Generate booking_items array dynamically from SessionStorage
             const bookingItems = [];
             const productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;
-    
+
             for (let i = 0; i < productCardCount; i++) {
                 const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
                 const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
                 const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
-    
+
                 if (!productVariantId || qty <= 0 || price <= 0) {
                     console.warn(`Skipping invalid booking item: ${i}`);
                     continue; // Skip invalid items
                 }
-    
+
                 const productVariantItemCount = parseInt(sessionStorage.getItem(`product_variant_item_count_${i}`)) || 0;
-    
+
                 if (productVariantItemCount > 0) {
                     for (let j = 0; j < productVariantItemCount; j++) {
                         const productVariantItemIdRaw = sessionStorage.getItem(`variant_item_id_${i}_${j}`);
-                        const productVariantItemId = productVariantItemIdRaw ? parseInt(productVariantItemIdRaw, 10) : null; 
+                        const productVariantItemId = productVariantItemIdRaw ? parseInt(productVariantItemIdRaw, 10) : null;
                         const note = sessionStorage.getItem(`variant_item_name_${i}_${j}`);
-    
+
                         bookingItems.push({
                             product_variant_id: productVariantId,
                             price,
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             // Log the booking items for debugging
             console.log("Booking Items:", bookingItems);
-    
+
             // Prepare the payload
             const payload = {
                 client_type_id: 1, // Placeholder
@@ -140,12 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 bank_account_number: bankAccountNumber,
                 bank_account_holder_name: bankAccountHolderName
             };
-    
+
             console.log("Payload:", payload);
             sessionStorage.setItem('order_data',JSON.stringify({payload}));
 
             // Send the API request
-            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
+            const response = await fetch('https://andalprima.hansmade.online/api/create-orders', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -153,14 +153,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify(payload)
             });
-    
+
             if (!response.ok) {
                 throw new Error('Failed to create order. Please try again.');
             }
-    
+
             const result = await response.json();
             console.log('Order created successfully:', result);
-    
+
             // Additional actions after successful order creation
             alert('Order created successfully!');
             showSlide(4); // Display slide 4
@@ -173,18 +173,18 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Error creating order. Please try again.');
         }
     });
- 
+
     async function sendEmail() {
         const clientEmail = sessionStorage.getItem('client_email');
         const orderData = sessionStorage.getItem('order_data');
-    
+
         if (!clientEmail || !orderData) {
             console.error("Email atau data pesanan tidak ditemukan di sessionStorage.");
             return;
         }
-    
+
         try {
-            const response = await fetch('http://127.0.0.1:8001/api/send-email', {
+            const response = await fetch('https://andalprima.hansmade.online/api/send-email', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     body: orderData,
                 }),
             });
-    
+
             if (response.ok) {
                 console.log("Email berhasil dikirim.");
             } else {
@@ -205,8 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Terjadi kesalahan saat mengirim email:", error);
         }
     }
-    
-    
+
+
 // payment
     function handleSlideAndPaymentActions() {
         showSlide(3); // Menampilkan slide 3
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateTotalBayarText() {
 
-       
+
         const totalBayarElement = document.getElementById('totalbayar');
         if (totalBayarElement) {
             // Update teks pada tombol total bayar
@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         totalBayarElement.setAttribute('value', totalBayar);
         const check = sessionStorage.getItem('product_card_count');
-        const check1 = sessionStorage.getItem('district_id'); 
+        const check1 = sessionStorage.getItem('district_id');
         // Tampilkan atau sembunyikan div jumlah item
         if (check > 0 && check1 > 0) {
             pyment.removeAttribute('disabled', 'disabled'); // Tambahkan atribut disabled
@@ -926,7 +926,7 @@ function saveDataToSessionStorage() {
 
         if (variantLabels.length > 0) {
             // const variantTypeId = label.getAttribute('sidebar_variant_item_type_id');
-            
+
             sessionStorage.setItem(`product_variant_item_count_${index}`, variantLabels.length);
 
             variantLabels.forEach((label, variantIndex) => {
@@ -1188,7 +1188,7 @@ function addProductToSidebar(productVariantId, productImage, productVariantName,
     `;
 
     listOrderContainer.appendChild(newProductCard);
-    
+
     console.log('Produk baru ditambahkan ke sidebar');
 
 }
@@ -1253,7 +1253,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// function form data client 
+// function form data client
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = [
         { id: 'nama-user', key: 'client_name' },
@@ -1329,11 +1329,11 @@ const updatePaymentButtonState = () => {
     }
 
     // Periksa posisi route halaman
-    if (currentUrl === "http://127.0.0.1:8001/") {
+    if (currentUrl === "https://andalprima.hansmade.online/") {
         // Sembunyikan bingkaibuttonpayment
         bingkaibuttonalamt.classList.remove('hidden');
         bingkaibuttonpayment.classList.add('hidden');
-    } else if (currentUrl.startsWith("http://127.0.0.1:8001/view-maps?client_type_id=1")) {
+    } else if (currentUrl.startsWith("https://andalprima.hansmade.online/view-maps?client_type_id=1")) {
         // Sembunyikan bingkaibuttonalamt
         bingkaibuttonalamt.classList.add('hidden');
     }
