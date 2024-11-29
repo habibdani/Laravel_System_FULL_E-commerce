@@ -28,8 +28,10 @@ class EmailController extends Controller
             return response()->json(['error' => 'Data payload tidak valid.'], 400);
         }
 
+        
         // Template HTML untuk email
         $htmlContent = "
+
         <!DOCTYPE html>
         <html lang='en'>
         <head>
@@ -88,38 +90,38 @@ class EmailController extends Controller
                     <h1>Laporan Pembelian</h1>
                 </div>
                 <div class='content'>
-                    <p>Halo, <strong>{$data['client_name']}</strong>!</p>
+                    <p>Halo, <strong>John Doe</strong>!</p>
                     <p>Berikut adalah detail pembelian Anda:</p>
                     
                     <h3>Informasi Pembeli</h3>
                     <table>
                         <tr>
                             <th>Nama</th>
-                            <td>{$data['client_name']}</td>
+                            <td>John Doe</td>
                         </tr>
                         <tr>
                             <th>Email</th>
-                            <td>{$data['client_email']}</td>
+                            <td>john.doe@example.com</td>
                         </tr>
                         <tr>
                             <th>Telepon</th>
-                            <td>{$data['client_phone_number']}</td>
+                            <td>081234567890</td>
                         </tr>
                         <tr>
                             <th>Alamat</th>
-                            <td>{$data['address']}</td>
+                            <td>Jl. Contoh Alamat No. 123, Jakarta</td>
                         </tr>
                         <tr>
                             <th>Kode Pos</th>
-                            <td>{$data['code_pos']}</td>
+                            <td>12345</td>
                         </tr>
                         <tr>
                             <th>Nomor WhatsApp</th>
-                            <td>{$validated['nomorwa']}</td>
+                            <td>081234567890</td>
                         </tr>
                         <tr>
                             <th>Link WhatsApp</th>
-                            <td><a href='{$validated['linkwa']}' target='_blank'>Klik di sini</a></td>
+                            <td><a href='https://wa.me/081234567890' target='_blank'>Klik di sini</a></td>
                         </tr>
                     </table>
 
@@ -130,26 +132,22 @@ class EmailController extends Controller
                             <th>Harga</th>
                             <th>Jumlah</th>
                             <th>Subtotal</th>
-                        </tr>";
-
-        $totalPrice = 0;
-
-        foreach ($data['booking_items'] as $item) {
-            $subtotal = $item['price'] * $item['qty'];
-            $totalPrice += $subtotal;
-            $htmlContent .= "
+                        </tr>
                         <tr>
-                            <td>Varian ID: {$item['product_variant_id']}</td>
-                            <td>Rp " . number_format($item['price'], 0, ',', '.') . "</td>
-                            <td>{$item['qty']}</td>
-                            <td>Rp " . number_format($subtotal, 0, ',', '.') . "</td>
-                        </tr>";
-        }
-
-        $htmlContent .= "
+                            <td>Varian ID: 101</td>
+                            <td>Rp 50,000</td>
+                            <td>2</td>
+                            <td>Rp 100,000</td>
+                        </tr>
+                        <tr>
+                            <td>Varian ID: 202</td>
+                            <td>Rp 75,000</td>
+                            <td>1</td>
+                            <td>Rp 75,000</td>
+                        </tr>
                         <tr>
                             <th colspan='3' style='text-align: right;'>Total</th>
-                            <td>Rp " . number_format($totalPrice, 0, ',', '.') . "</td>
+                            <td>Rp 175,000</td>
                         </tr>
                     </table>
 
@@ -157,7 +155,7 @@ class EmailController extends Controller
                     <table>
                         <tr>
                             <th>Ongkir</th>
-                            <td>Rp " . number_format($data['ongkir'], 0, ',', '.') . "</td>
+                            <td>Rp 20,000</td>
                         </tr>
                     </table>
 
@@ -165,22 +163,24 @@ class EmailController extends Controller
                     <table>
                         <tr>
                             <th>Nama Rekening</th>
-                            <td>{$validated['namaRekening']}</td>
+                            <td>John Doe</td>
                         </tr>
                         <tr>
                             <th>Nomor Rekening</th>
-                            <td>{$validated['nomorRekening']}</td>
+                            <td>1234567890</td>
                         </tr>
                     </table>
 
                     <p>Terima kasih telah berbelanja bersama kami!</p>
                 </div>
                 <div class='footer'>
-                    &copy; " . date('Y') . " PT. Andal Prima. Semua Hak Dilindungi.
+                    &copy; 2024 PT. Andal Prima. Semua Hak Dilindungi.
                 </div>
             </div>
         </body>
         </html>
+
+            
         ";
 
         // Kirim email dengan konten HTML

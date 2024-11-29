@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 page: currentPage
             });
 
-            const response = await fetch(`https://andalprima.hansmade.online/api/list-order?${params.toString()}`, {
+            const response = await fetch(`http://127.0.0.1:8001/api/list-order?${params.toString()}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 throw new Error('Token is missing, please log in again.');
             }
 
-            const response = await fetch('https://andalprima.hansmade.online/api/update-status-order', {
+            const response = await fetch('http://127.0.0.1:8001/api/update-status-order', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

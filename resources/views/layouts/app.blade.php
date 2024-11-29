@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Andal Prima Adhitama Perkasa')</title>
     <!-- Favicon -->
-    <link rel="icon" href="{{ secure_asset('storage/icons/andal.svg') }}" type="image/png">
+    <link rel="icon" href="{{ asset('storage/icons/andal.svg') }}" type="image/png">
     @vite('resources/css/app.css')
     @stack('head')
 

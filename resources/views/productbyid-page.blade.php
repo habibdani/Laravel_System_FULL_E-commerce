@@ -17,6 +17,27 @@
 
     <!-- @vite('resources/js/shop-script.js') -->
 
+    <script>
+         document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1, // Elemen terlihat 10% di viewport
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('parallax-visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Pilih semua elemen dengan kelas 'parallax-appear'
+            const parallaxElements = document.querySelectorAll('.parallax-appear');
+            parallaxElements.forEach((el) => observer.observe(el));
+        });
+    </script>
     <style>
         #buttom-sidebar{
             margin-bottom: 25%;
@@ -35,6 +56,20 @@
 
         .product-card {
             animation: fadeInScale 0.5s ease-in-out;
+        }
+        #buttom-sidebar{
+            margin-bottom: 25%;
+        }
+
+        .parallax-appear {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .parallax-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
     </style>

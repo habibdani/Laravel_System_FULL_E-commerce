@@ -263,3 +263,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+// resources/js/shop-script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1, // Elemen terlihat 10% di viewport
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('parallax-visible');
+            }
+        });
+    }, observerOptions);
+
+    // Pilih semua elemen dengan kelas 'parallax-appear'
+    const parallaxElements = document.querySelectorAll('.parallax-appear');
+    parallaxElements.forEach((el) => observer.observe(el));
+});
+

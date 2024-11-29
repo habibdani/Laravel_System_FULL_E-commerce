@@ -188,16 +188,13 @@
 
                             <!-- Total Bayar -->
                             <div class="text-center mb-4">
-                                <img src="{{ secure_asset('storage/design/bca.svg') }}" alt="BCA Logo" class="mx-auto mb-2 w-20">
-                                <p id="infototalbayar" class="font-semibold text-lg text-red-600">Total Bayar: Rp. 420.700</p>
+                                <img src="{{ asset('storage/design/bca.svg') }}" alt="BCA Logo" class="mx-auto mb-2 w-20">
+                                <p id="infototalbayar" class="font-semibold text-lg text-green-600">Total Bayar: Rp. 420.700</p>
                             </div>
 
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
-                                <p class="font-semibold">No Rekening: <span class="font-bold" id="norekening">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
-                                    <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
-                                    </svg>
+                                <p class="font-semibold">No Rekening: <span class="font-bold text-blue-600" id="norekening">32990329944</span> <span class="cursor-pointer">
                                     </span>
                                 </p>
                                 <p>a/n <span class="font-bold" id="namarekeneing">BUDIONO NUGROHO</span></p>
@@ -206,11 +203,9 @@
                             <!-- Note Pembayaran -->
                             <div class="bg-gray-100 rounded-lg p-4 text-sm text-gray-700 mb-6">
                                 <p>Note: kirim bukti pembayaran ke nomor WA kami, kami akan melakukan pelayanan setelah Anda mengirimkan bukti. Terima kasih.</p>
-                                <p class="font-bold text-green-600 mt-2 flex items-center">
-                                    <svg class="w-5 h-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v4m0 4h.01m-.01-4h0V9h0m0 6h.01m-.01-6V5l-1-1m1-1V4m0 6h0V5h-2m0 6h0v2l1 1m-1 1h0m0-6h1l1-1v4h0M3 8v4h8V8H3z" />
-                                    </svg>
-                                    <span id="nomorwa">08257742883</span>
+                                <p class="font-bold  mt-2 flex items-center">
+                                    WA:&nbsp;
+                                    <span class="text-green-600" id="nomorwa"> 08257742883</span>
                                 </p>
                             </div>
 
@@ -270,7 +265,7 @@
 
                             <!-- Rekening Info -->
                             <div class="text-center mb-4">
-                                <p class="font-semibold">Nomor Rekening: <span class="font-bold" id="norekening2">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <p class="font-semibold">Nomor Rekening: <span class="font-bold text-blue-600" id="norekening2">32990329944</span> <span class="cursor-pointer"><svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="0.955078" y="3.65234" width="8.9043" height="10.2949" rx="1" stroke="#292929"/>
                                     <path d="M3 1.39062H10.9961C11.5484 1.39062 11.9961 1.83834 11.9961 2.39062V11.6855" stroke="#292929" stroke-linecap="round"/>
                                     </svg>
@@ -303,7 +298,7 @@
 
             <div id="buttom-sidebar" class="mt-auto">
                 <hr>
-                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#DA9818] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-left">
+                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#ADADAD] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-center">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalallprice" value="">0</span>
                 </div>
                 <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] shadow-md flex justify-between items-center">
@@ -345,9 +340,9 @@
         </div>
 
         <button id="toggle" style="height: 80px !important;" name="tt" class="p-3 sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
-                data-visible-icon="{{ secure_asset('storage/icons/vector.svg') }}"
-                data-hidden-icon="{{ secure_asset('storage/icons/vector-hidden.svg') }}">
-            <img id="toggleimg" src="{{ secure_asset('storage/icons/vector.svg') }}" alt="toggle">
+                data-visible-icon="{{ asset('storage/icons/vector.svg') }}"
+                data-hidden-icon="{{ asset('storage/icons/vector-hidden.svg') }}">
+            <img id="toggleimg" src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
         </button>
         {{-- @vite('resources/js/app.js') --}}
     </div>
@@ -372,7 +367,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
         const norekeningElement = document.getElementById('norekening');
         const namarekeneingElement = document.getElementById('namarekeneing');
         const norekeningElement2 = document.getElementById('norekening2');
@@ -409,7 +404,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
         const nomorwaElement = document.getElementById('nomorwa');
         const nomorwa2Element = document.getElementById('nomorwa2');
 

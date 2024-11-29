@@ -40,5 +40,18 @@
             animation: fadeInScale 0.5s ease-in-out;
         }
 
+        /* resources/css/shop-page.css */
+        .parallax-appear {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .parallax-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
     </style>
 @endsection
