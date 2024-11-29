@@ -700,14 +700,14 @@ class ProductController extends Controller
                 'text' => 'required|string|max:255', // Text wajib diisi, maksimal 255 karakter
                 'image' => 'required|string|url', // Image wajib diisi, harus berupa URL yang valid
             ]);
-    
+
             // Update data di database
             $updated = DB::update("UPDATE banner_kecil SET text = ?, image = ? WHERE id = ?", [
                 $validatedData['text'],
                 $validatedData['image'],
                 $id,
             ]);
-    
+
             if ($updated) {
                 // Jika data berhasil diperbarui
                 return response()->json([
@@ -732,7 +732,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             // Log error untuk debugging
             \Log::error('Error updating banner kecil: ' . $e->getMessage());
-    
+
             // Jika terjadi error lainnya
             return response()->json([
                 'success' => false,
@@ -740,7 +740,7 @@ class ProductController extends Controller
                 'error' => $e->getMessage(), // Tambahkan detail error untuk debugging
             ], 500); // Status 500 untuk Internal Server Error
         }
-    }    
+    }
 
     // Delete Banner Kecil
     public function deleteBannerKecil($id)
@@ -758,7 +758,7 @@ class ProductController extends Controller
         }
     }
 
-    
+
     public function createVariantType(Request $request)
     {
         try {
@@ -986,7 +986,7 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('images', 'public');
 
             // Mengembalikan path gambar
-            return ApiResponseHelper::success(['image_url' => asset('storage/' . $imagePath)], 'Image uploaded successfully');
+            return ApiResponseHelper::success(['image_url' => secure_asset('storage/' . $imagePath)], 'Image uploaded successfully');
         } catch (\Exception $e) {
             Log::error('Error in uploadImage: ' . $e->getMessage());
             return ApiResponseHelper::error('Something went wrong', 500);
@@ -1084,7 +1084,7 @@ class ProductController extends Controller
         }
     }
 
-    
+
 
     // Update Info Rekening
     public function updateInfoRekening(Request $request, $id)

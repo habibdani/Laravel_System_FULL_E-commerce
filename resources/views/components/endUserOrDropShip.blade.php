@@ -5,7 +5,7 @@
             <!-- Left Section -->
             <div class="shadow-custom border-[1px] border-[#D9D9D9] w-[365px] h-[228px] p-4 flex items-center rounded-md space-x-[70px]">
                 <div class="ml-[10px]">
-                    <img src="{{ asset('storage/icons/end-user.svg') }}" alt="end-user" class="h-[46px] w-[50px] mb-3">
+                    <img src="{{ secure_asset('storage/icons/end-user.svg') }}" alt="end-user" class="h-[46px] w-[50px] mb-3">
                     <span class="font-roboto text-[18px] font-normal mb-3 border-b border-[#E01535]">Exclusive Products for Personal Use</span>
                     <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Discover premium products tailored for your personal needs. Shop now to enjoy exceptional quality and realible service.</p>
                     <form action="{{ url('/view-maps') }}" method="GET" class="inline">
@@ -18,7 +18,7 @@
             <!-- Right Section -->
             <div class="shadow-custom border-[1px] border-[#D9D9D9] w-[365px] h-[228px] p-4 flex items-center rounded-md space-x-[70px]">
                 <div class="ml-[10px]">
-                    <img src="{{ asset('storage/icons/drop-ship.svg') }}" alt="drop-ship" class="h-[33px] w-[40px] mt-1 mb-3">
+                    <img src="{{ secure_asset('storage/icons/drop-ship.svg') }}" alt="drop-ship" class="h-[33px] w-[40px] mt-1 mb-3">
                     <span class="font-roboto text-[18px] font-normal mb-3 border-b border-[#E01535]">Streamlined Solutions for Drop Shippers</span>
                     <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Boost your sales with our high-quality products at wholesale prices. Enjoy easy ordering and fast delivery direcytly to your customer</p>
                     <form action="{{ url('/view-maps') }}" method="GET" class="inline">

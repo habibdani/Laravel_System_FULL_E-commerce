@@ -4,7 +4,7 @@
              <!-- Left Section (Image and Thumbnails) -->
              <div class="lg:w-3/4 w-full flex image-and-thumbnails flex-col lg:flex-row items-start space-x-3">
                 <div class="w-full lg:w-1/3 flex flex-col z-10 responsive-main-image">
-                    <img id="mainImage" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}"
+                    <img id="mainImage" src="{{ secure_asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}"
 
                     alt="Main Product Image" class="w-full h-[241.5px] object-cover mb-2 rounded-lg shadow-lg">
                     <div id="list-image-product" class="flex space-x-2 mb-3 z-10 ">
@@ -37,7 +37,7 @@
                 <div class="py-4 bg-white rounded-lg submain-detail-product shadow-lg">
                     <h3 class="px-4 text-gray-800 text-[14px] font-semibold mb-2">Atur jumlah produk</h3>
                     <div class="px-4 flex items-center space-x-4 mb-4">
-                        <img id="rightImage" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}" alt="Product Thumbnail" class="border-2 border-gray-300 w-[75px] h-[75px] object-cover rounded-lg">
+                        <img id="rightImage" src="{{ secure_asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}" alt="Product Thumbnail" class="border-2 border-gray-300 w-[75px] h-[75px] object-cover rounded-lg">
 
                         <div id="variantSideContainer">
 
@@ -59,7 +59,7 @@
                             </button>
                         </div>
                         <button id="add" class="px-4 inline-flex items-center bg-[#E01535] text-white px-4 py-1 rounded focus:outline-none">
-                            <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4 mr-1.5">
+                            <img src="{{ secure_asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4 mr-1.5">
                             <span class="font-roboto text-[16px] font-semibold leading-4.5 tracking-wide text-left">Add</span>
                         </button>
                     </div>

@@ -3,7 +3,7 @@
         <!-- Dashboard Section -->
         <li class="mb-6">
             <a href="#" class="flex items-center px-3 py-2">
-                <img src="{{ asset('storage/icons/diagram.svg') }}" alt="diagram" class="h-5 w-5 mr-3">
+                <img src="{{ secure_asset('storage/icons/diagram.svg') }}" alt="diagram" class="h-5 w-5 mr-3">
                 <span class="font-roboto text-sm font-bold leading-5 tracking-wide text-left text-[#E01535]">Dashboard</span>
             </a>
         </li>
@@ -18,7 +18,7 @@
         <li class="mb-4">
             <a href="javascript:void(0)" class="flex items-center px-3 py-2 justify-between" id="ecommerceToggle">
                 <div class="flex items-center">
-                    <img src="{{ asset('storage/icons/keranjang-gray.svg') }}" alt="ecommerce" class="h-5 w-5 mr-3">
+                    <img src="{{ secure_asset('storage/icons/keranjang-gray.svg') }}" alt="ecommerce" class="h-5 w-5 mr-3">
                     <span class="font-roboto text-sm font-normal leading-5 tracking-wide text-left text-[#999999]">E Commerce</span>
                 </div>
                 <svg id="dropdownArrow" class="transition-transform duration-300" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
