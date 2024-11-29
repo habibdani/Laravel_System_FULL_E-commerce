@@ -103,4 +103,12 @@ class ViewPageController extends Controller
 
         return view('productbyid-page', compact('productId'));
     }
+    public function dashboardSettingspecialproduct(Request $request)
+    {
+        return view('setting-specialproduct');
+    }
+    public function welcomepage()
+    {
+        return view('welcome-page');
+    }
 }

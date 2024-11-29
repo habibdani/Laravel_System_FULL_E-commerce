@@ -89,10 +89,10 @@
             const imageUrl = document.getElementById('newImagePreview').src;
 
             // Validasi input
-            if (!tittle || !description || imageUrl === location.origin + '/blank') {
-                alert('Semua field harus diisi dengan benar.');
-                return;
-            }
+            // if (!tittle || !description || imageUrl === location.origin + '/blank') {
+            //     alert('Semua field harus diisi dengan benar.');
+            //     return;
+            // }
 
             if (!isValidURL(imageUrl)) {
                 alert('URL gambar tidak valid.');
@@ -252,15 +252,18 @@
             }
 
             // Ambil nilai dari input dan preview image
-            const tittle = document.getElementById(`editTitle-${id}`).value.trim();
-            const description = document.getElementById(`editDescription-${id}`).value.trim();
+            const tittleElement = document.getElementById(`editTitle-${id}`);
+            const descriptionElement = document.getElementById(`editDescription-${id}`);
             const imageUrl = document.getElementById(`editImagePreview-${id}`).src;
 
             // Validasi input
-            if (!tittle || !description || imageUrl === location.origin + '/blank') {
-                alert('Semua field harus diisi dengan benar.');
-                return;
-            }
+            // if (!tittle || !description || imageUrl === location.origin + '/blank') {
+            //     alert('Semua field harus diisi dengan benar.');
+            //     return;
+            // }
+
+            const tittle = tittleElement && tittleElement.value.trim() ? tittleElement.value.trim() : null;
+            const description = descriptionElement && descriptionElement.value.trim() ? descriptionElement.value.trim() : null;
 
             // Debugging log untuk memverifikasi data
             console.log('Payload:', { tittle, description, image: imageUrl });

@@ -527,15 +527,18 @@ class ProductController extends Controller
         try {
             // Validasi payload
             $validatedData = $request->validate([
-                'tittle' => 'required|string|max:255', // Tittle wajib diisi, maksimal 255 karakter
-                'description' => 'required|string|max:500', // Description wajib diisi, maksimal 500 karakter
+                'tittle' => 'nullable|string|max:255', // Tittle wajib diisi, maksimal 255 karakter
+                'description' => 'nullable|string|max:500', // Description wajib diisi, maksimal 500 karakter
                 'image' => 'required|string|url', // Image wajib diisi dan harus berupa URL yang valid
             ]);
 
+            $tittle = $validatedData['tittle'] ?? null;
+            $description = $validatedData['description'] ?? null;
+
             // Insert data ke database
             DB::insert("INSERT INTO banner_besar (tittle, description, image) VALUES (?, ?, ?)", [
-                $validatedData['tittle'],
-                $validatedData['description'],
+                $tittle,
+                $description,
                 $validatedData['image'],
             ]);
 

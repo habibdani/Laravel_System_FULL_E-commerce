@@ -4,6 +4,21 @@
             <div id="subproduct3" class="relative w-[1200px] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk Spesial) -->
                 <div id="special-product" class="relative z-0 shadow-custom w-[325.53px] h-[285.14px] bg-white rounded-md overflow-hidden">
+                    <div id="special-product-image"
+                        class="absolute inset-0 bg-cover bg-center" 
+                        style="background-image: url('{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}');">
+                    </div>
+                    <div class="relative z-10 p-5">
+                        <h2 id="special-product-name" class="text-[16px] mb-2 font-bold text-white uppercase">HOLLOW BESI</h2>
+                        <div class="pt-2 special-product-background">
+                            <p id="special-product-price" class="rounded-md p-2 w-[122.19px] leading-[28.13px] text-[24px] text-white font-bold">
+                                <span class="text-[16px] text-white leading-[16.41px]">Rp.</span > 26.100 <span class="leading-[16.41px] text-[16px] text-white">/meter</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div id="special-product" class="relative z-0 shadow-custom w-[325.53px] h-[285.14px] bg-white rounded-md overflow-hidden">
                     <div class="p-5">
                         <h2 id="special-product-name" class="text-[16px] mb-2 font-bold text-[#E01535] uppercase">HOLLOW BESI</h2>
                         <div class="pt-2 special-product-background">
@@ -15,7 +30,7 @@
                     <div class="-mt-2">
                         <img id="special-product-image" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}" alt="Hollow Besi" style="rotate: y -180deg;" class="rounded-b-md object-cover w-[213.27px] h-[160px]">
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Kartu Produk -->
                 <div id="product-list" class=" absolute z-5 flex overflow-x-auto mx-4 px-1 z-5 space-x-3 max-w-[97%]" style="top: 22%;">

@@ -298,7 +298,7 @@
 
             <div id="buttom-sidebar" class="mt-auto">
                 <hr>
-                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#ADADAD] text-white font-normal text-[14px] rounded-t-md transition duration-300 flex items-center justify-center">
+                <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#ADADAD] text-white font-normal text-[18px] rounded-t-md transition duration-300 flex items-center justify-center">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalallprice" value="">0</span>
                 </div>
                 <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] shadow-md flex justify-between items-center">

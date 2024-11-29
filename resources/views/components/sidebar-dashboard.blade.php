@@ -4,7 +4,7 @@
         <li class="mb-6">
             <a href="#" class="flex items-center px-3 py-2">
                 <img src="{{ asset('storage/icons/diagram.svg') }}" alt="diagram" class="h-5 w-5 mr-3">
-                <span class="font-roboto text-sm font-bold leading-5 tracking-wide text-left text-[#E01535]">Dashboard</span>
+                <span class="font-roboto text-sm font-bold leading-5 tracking-wide text-left text-[#E01535]" herf="">Dashboard</span>
             </a>
         </li>
 

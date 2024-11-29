@@ -4,14 +4,18 @@
             <!-- Ubah kelas flex agar responsif -->
             <div id="subsessionconsule" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[1200px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
                 <!-- Left Section -->
-                <div class="shadow-custom w-full lg:w-[900px] h-[245px] p-4 flex items-center rounded-md bg-white space-x-[20px]">
+                <div class="shadow-custom w-full lg:w-[900px] h-[245px] p-4 flex items-center justify-between rounded-md bg-white space-x-[20px]">
                     <div class="ml-[10px]">
                         <h2 class="font-roboto text-[22px] font-bold mb-3">Consult your needs now</h2>
                         <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Get the best offer from us, contact us and we will immediately serve what you need.</p>
                         <a href="mailto:team@andalprima.co.id" class="flex items-center justify-center w-[95px] h-[28.5px] inline-block bg-[#E01535] font-roboto text-[14px] font-normal text-white rounded">Contact Us</a>
                     </div>
-                    <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
+                    <div class="flex items-center space-x-[20px]">
+                        <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
+                        <img src="{{ asset('storage/images/123.jpeg') }}" alt="image" class="h-[245px] w-[245px]">
+                    </div>
                 </div>
+
                 <!-- Right Section -->
                 <div id="right-section-consule" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover z-[-10] rounded-md bg-center p-4 text-center"
                 style="background-image: url('{{ asset('storage/images/istockphoto-870572906-612x612.jpg') }}');">

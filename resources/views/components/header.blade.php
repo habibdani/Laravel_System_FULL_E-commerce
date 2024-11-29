@@ -31,14 +31,6 @@
                 </a>
             </div>
 
-            <!-- Cart Icon -->
-            <div class="flex items-center" id="headerkeranjang" style="width: 5%">
-                <a href="http://127.0.0.1:8001/" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
-                    <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
-                    <span id="keranjang" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center">0</span>
-                </a>
-            </div>
-
             <!-- Search and Category -->
             <div class="relative flex items-center" id="headerpencarian" style="width: 60%">
                 <button id="category" class="bg-[#FFFFFF] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-center" style="width: 25%">
@@ -54,6 +46,14 @@
                         placeholder="Search for products, types, and brands"
                     />
                 </div>
+            </div>
+
+              <!-- Cart Icon -->
+            <div class="flex items-center" id="headerkeranjang" style="width: 5%">
+                <a href="http://127.0.0.1:8001/" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
+                    <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
+                    <span id="keranjang" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center">0</span>
+                </a>
             </div>
 
             <!-- Contact Info -->
