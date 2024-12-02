@@ -13,7 +13,7 @@
         <!-- Main Dashboard Content -->
         <div class="flex-1 p-4 ">
             <a href="#" class="flex items-center px-3 py-2 rounded">
-                <img src="{{ asset('storage/icons/diagram-black.svg') }}" alt="diagram" class="h-5 w-5 mr-2">
+                <img src="{{ secure_asset('storage/icons/diagram-black.svg') }}" alt="diagram" class="h-5 w-5 mr-2">
                 <span class="font-roboto text-[20px] font-semibold leading-4.5 tracking-wide text-left text-black">Dashboard</span>
             </a>
             <!-- Adjusted Grid Layout -->

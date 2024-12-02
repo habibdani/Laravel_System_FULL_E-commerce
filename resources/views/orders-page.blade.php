@@ -14,7 +14,7 @@
             <!-- Header -->
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center">
-                    <img src="{{ asset('storage/icons/keranjang-black.svg') }}" alt="Orders" class="h-5 w-5 mr-2">
+                    <img src="{{ secure_asset('storage/icons/keranjang-black.svg') }}" alt="Orders" class="h-5 w-5 mr-2">
                     <span class="font-roboto text-[20px] font-semibold leading-4.5 tracking-wide text-left text-black">Orders</span>
                 </div>
             </div>
