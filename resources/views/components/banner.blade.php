@@ -32,10 +32,7 @@
 <style>
     /* Subbanner (Default) */
     #subbanner {
-        position: relative;
-        overflow: hidden;
-        transition: background-image 1s ease-in-out;
-
+        transition: transform 1s ease-in-out;
     }
 
     /* Kontainer Teks dan Gambar */
@@ -61,6 +58,24 @@
         transition: opacity 1s ease-in-out;
     }
 
+    .scroll-in-right {
+        transform: translateX(100%);
+        opacity: 0;
+        transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    }
+
+    .scroll-in-left {
+        transform: translateX(-100%);
+        opacity: 0;
+        transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    }
+
+    .scroll-active {
+        transform: translateX(0);
+        opacity: 1;
+        transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    }
+
     /* Responsif */
     @media (max-width: 450px) {
         #subbanner {
@@ -79,93 +94,99 @@
     }
 </style>
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-    const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
-    const banner = document.getElementById('subbanner');
-    const title = document.querySelector('.banner-title');
-    const description = document.querySelector('.banner-description');
-    const nextButton = document.getElementById('next-button');
-    const prevButton = document.getElementById('prev-button');
-    let banners = []; // Untuk menyimpan data dari API
-    let currentIndex = 0;
+    document.addEventListener('DOMContentLoaded', function () {
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const banner = document.getElementById('subbanner');
+        const title = document.querySelector('.banner-title');
+        const description = document.querySelector('.banner-description');
+        const nextButton = document.getElementById('next-button');
+        const prevButton = document.getElementById('prev-button');
+        let banners = []; // Untuk menyimpan data dari API
+        let currentIndex = 0;
+        let autoSlideInterval;
 
-    // Fungsi untuk memuat data dari API
-    async function fetchBanners() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/banner-besar`);
-            const data = await response.json();
+        // Fungsi untuk memuat data dari API
+        async function fetchBanners() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/banner-besar`);
+                const data = await response.json();
 
-            if (data.success) {
-                banners = data.data.map(banner => ({
-                    image: banner.image.replace('http://127.0.0.1:8001', '').trim(),
-                    tittle: banner.tittle,
-                    description: banner.description
-                }));
+                if (data.success) {
+                    banners = data.data.map(banner => ({
+                        image: banner.image.replace('http://127.0.0.1:8001', '').trim(),
+                        tittle: banner.tittle,
+                        description: banner.description
+                    }));
 
-                if (banners.length > 0) {
-                    setBackground(currentIndex); // Set background pertama kali
-                    startAutoSlide(); // Mulai carousel otomatis
+                    if (banners.length > 0) {
+                        setBackground(currentIndex); // Set background pertama kali
+                        startAutoSlide(); // Mulai carousel otomatis
+                    } else {
+                        console.warn('Tidak ada data banner untuk ditampilkan.');
+                    }
                 } else {
-                    console.warn('Tidak ada data banner untuk ditampilkan.');
+                    console.error('Failed to fetch banners:', data.message);
+                    alert('Gagal memuat banner.');
                 }
-            } else {
-                console.error('Failed to fetch banners:', data.message);
-                alert('Gagal memuat banner.');
+            } catch (error) {
+                console.error('Error fetching banners:', error);
+                alert('Terjadi kesalahan saat memuat data banner.');
             }
-        } catch (error) {
-            console.error('Error fetching banners:', error);
-            alert('Terjadi kesalahan saat memuat data banner.');
         }
-    }
 
-    // Fungsi untuk mengubah background, title, dan description
-    function setBackground(index) {
-        if (!banners.length) return;
+        // Fungsi untuk mengubah background, title, dan description
+        function setBackground(index) {
+            if (!banners.length) return;
 
-        // Fade out
-        banner.classList.add('fade-out');
-        title.classList.add('fade-out');
-        description.classList.add('fade-out');
-
-        setTimeout(() => {
-            // Ganti gambar dan teks
             const currentBanner = banners[index];
-            banner.style.backgroundImage = `linear-gradient(180deg, #000000 -36.47%, rgba(28, 28, 28, 0.595) 35.86%, rgba(68, 68, 68, 0) 100%), url(${currentBanner.image})`;
-            title.textContent = currentBanner.tittle || 'No Title';
-            description.textContent = currentBanner.description || 'No Description';
 
-            // Fade in
-            banner.classList.remove('fade-out');
-            title.classList.remove('fade-out');
-            description.classList.remove('fade-out');
-            banner.classList.add('fade-in');
-            title.classList.add('fade-in');
-            description.classList.add('fade-in');
-        }, 1000); // Durasi animasi keluar
-    }
+            // Simultaneous transition
+            banner.style.transition = 'transform 1s ease-in-out'; // Transisi untuk keluar
+            banner.style.transform = 'translateX(-100%)'; // Geser keluar layar ke kiri
 
-    // Fungsi untuk menjalankan carousel otomatis
-    function startAutoSlide() {
-        setInterval(() => {
+            // Ganti gambar saat animasi keluar sedang berlangsung
+            setTimeout(() => {
+                // Ubah gambar dan teks di posisi kanan
+                banner.style.transition = 'none'; // Nonaktifkan transisi sementara
+                banner.style.transform = 'translateX(100%)'; // Pindahkan langsung ke kanan
+                banner.style.backgroundImage = `url(${currentBanner.image})`;
+                title.textContent = currentBanner.tittle || '';
+                description.textContent = currentBanner.description || '';
+
+                // Geser gambar masuk ke layar
+                setTimeout(() => {
+                    banner.style.transition = 'transform 0.5s ease-in-out'; // Tambahkan transisi masuk
+                    banner.style.transform = 'translateX(0)'; // Geser ke posisi tengah
+                }, 10); // Tunggu sedikit waktu untuk memastikan perubahan selesai
+            }, 250); // Ganti gambar di tengah animasi keluar (0.25 detik)
+        }
+
+
+        // Fungsi untuk menjalankan carousel otomatis
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % banners.length;
+                setBackground(currentIndex);
+            }, 7000); // Ganti setiap 7 detik
+        }
+
+        // Fungsi untuk tombol navigasi berikutnya
+        nextButton.addEventListener('click', () => {
+            clearInterval(autoSlideInterval); // Hentikan auto-slide sementara
             currentIndex = (currentIndex + 1) % banners.length;
             setBackground(currentIndex);
-        }, 7000); // Ganti setiap 7 detik
-    }
+            startAutoSlide(); // Mulai ulang auto-slide
+        });
 
-    // Fungsi untuk tombol navigasi berikutnya
-    nextButton.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % banners.length;
-        setBackground(currentIndex);
+        // Fungsi untuk tombol navigasi sebelumnya
+        prevButton.addEventListener('click', () => {
+            clearInterval(autoSlideInterval); // Hentikan auto-slide sementara
+            currentIndex = (currentIndex - 1 + banners.length) % banners.length;
+            setBackground(currentIndex);
+            startAutoSlide(); // Mulai ulang auto-slide
+        });
+
+        // Initialize
+        fetchBanners(); // Memuat data dari API
     });
-
-    // Fungsi untuk tombol navigasi sebelumnya
-    prevButton.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + banners.length) % banners.length;
-        setBackground(currentIndex);
-    });
-
-    // Initialize
-    fetchBanners(); // Memuat data dari API
-});
-
 </script>

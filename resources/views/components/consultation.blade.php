@@ -4,7 +4,7 @@
             <!-- Ubah kelas flex agar responsif -->
             <div id="subsessionconsule" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[1200px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
                 <!-- Left Section -->
-                <div class="shadow-custom w-full lg:w-[900px] h-[245px] p-4 flex items-center justify-between rounded-md bg-white space-x-[20px]">
+                <div class="shadow-custom w-full lg:w-[900px] h-[245px] pt-4 pb-4 pl-4 pr-0 flex items-center justify-between rounded-md bg-white space-x-[20px]">
                     <div class="ml-[10px]">
                         <h2 class="font-roboto text-[22px] font-bold mb-3">Consult your needs now</h2>
                         <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Get the best offer from us, contact us and we will immediately serve what you need.</p>
@@ -12,7 +12,9 @@
                     </div>
                     <div class="flex items-center space-x-[20px]">
                         <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
-                        <img src="{{ asset('storage/images/123.jpeg') }}" alt="image" class="h-[245px] w-[245px]">
+                        <div class="banner-wrapper rounded-r-md">
+                            <img src="{{ asset('storage/images/123.jpeg') }}" alt="image" class="rounded-r-md" id="banner-kecil-2">
+                        </div>
                     </div>
                 </div>
 
@@ -27,8 +29,8 @@
                     <!-- <div id="right-tangle" class="absolute right-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
                         <img src="{{ asset('storage/icons/right.svg') }}" alt="icon-right" class="w-[6px] h-[11px]">
                     </div> -->
-                    <h2 id="right-section-title" class="text-left lg:text-left text-[18px] font-poppins font-bold mb-2 text-[#292929] font-semibold">Dapatkan Penawaran Baru Dari Kami!</h2>
-                    <a id="right-section-button" class="inline-block font-poppins bg-white bg-opacity-70  text-[16px] text-[#E01535] flex items-center justify-center h-auto w-auto rounded font-semibold">Total 75% Discount!</a>
+                    <h2 id="right-section-title" class="text-left lg:text-left text-[18px] bg-white bg-opacity-70 p-2 rounded font-poppins font-bold mb-2 text-[#292929] font-semibold">Dapatkan Penawaran Baru Dari Kami!</h2>
+                    <a id="right-section-button" class="inline-block font-poppins bg-white bg-opacity-70  text-[14px] text-[#292929] mb-1 flex items-center justify-center h-auto w-auto rounded font-semibold">Total 75% Discount!</a>
                 </div>
             </div>
         </div>
@@ -36,6 +38,36 @@
 </section>
 
 <style>
+    .banner-wrapper {
+        position: relative;
+        height: 245px;
+        width: 245px;
+        border-radius: 8px; /* Sesuaikan dengan rounded-r-md */
+        overflow: hidden; /* Agar gradien tetap dalam batas */
+    }
+
+    .banner-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%; /* Lebar gradasi */
+        height: 100%;
+        background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+        z-index: 1; /* Memastikan gradasi berada di atas */
+        pointer-events: none; /* Agar tidak mengganggu interaksi gambar */
+    }
+
+    .banner-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Menjaga proporsi gambar */
+        z-index: 0; /* Memastikan gambar di bawah gradasi */
+    }
+
     #right-section-consule {
     transition: background-image 1s ease-in-out;
     }
@@ -139,9 +171,37 @@
     document.addEventListener('DOMContentLoaded', async () => {
         const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
         const rightSection = document.getElementById('right-section-consule');
+        const bgimagekecil2 = document.getElementById('banner-kecil-2');
         const rightSectionButton = document.getElementById('right-section-button');
         let banners = []; // Array untuk menyimpan data banner kecil
         let currentIndex = 0;
+
+        async function fetchBannerKecil2() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/banner-kecil-2`);
+                const data = await response.json();
+
+                if (data.success) {
+                    if (data.data.length > 0) {
+                        // Ambil banner pertama dari data array
+                        const bannerImage = data.data[0].image.replace('http://127.0.0.1:8001', '').trim();
+
+                        // Setel background image
+                        bgimagekecil2.src = bannerImage; // Hapus 'url()' jika ini untuk properti `src`
+                        console.log(`Banner kecil 2: ${bannerImage}`);
+                    } else {
+                        console.error('Tidak ada data banner kecil 2 tersedia.');
+                        alert('Tidak ada data banner kecil 2.');
+                    }
+                } else {
+                    console.error('Gagal memuat banner kecil 2:', data.message);
+                    alert('Gagal memuat data banner kecil 2.');
+                }
+            } catch (error) {
+                console.error('Error fetching banner kecil 2:', error);
+                alert('Terjadi kesalahan saat memuat banner kecil 2.');
+            }
+        }
 
         // Fungsi untuk mengambil data dari API
         async function fetchBannerKecil() {
@@ -199,5 +259,6 @@
 
         // Panggil fungsi untuk memuat data banner kecil
         await fetchBannerKecil();
+        await fetchBannerKecil2();
     });
 </script>

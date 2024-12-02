@@ -184,7 +184,6 @@
                     <td><input type="text" class="form-control" value="${rekening.nama_bank}" id="editNamaBank-${rekening.id}"></td>
                     <td class="text-center">
                         <button class="btn btn-success btn-sm" onclick="saveUpdatedRekening(${rekening.id})">Save</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteRekening(${rekening.id})">Delete</button>
                     </td>
                 `;
                 tableBody.appendChild(row);

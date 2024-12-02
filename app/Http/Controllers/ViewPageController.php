@@ -88,6 +88,10 @@ class ViewPageController extends Controller
     {
         return view('setting-banner-kecil');
     }
+    public function dashboardSettingbannerkecil2()
+    {
+        return view('setting-banner-kecil-2');
+    }
     public function dashboardSettingrekening()
     {
         return view('setting-rekening');

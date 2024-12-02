@@ -4,15 +4,15 @@
             <div id="subproduct3" class="relative w-[1200px] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk Spesial) -->
                 <div id="special-product" class="relative z-0 shadow-custom w-[325.53px] h-[285.14px] bg-white rounded-md overflow-hidden">
-                    <div id="special-product-image"
+                    <div id="best-product-background"
                         class="absolute inset-0 bg-cover bg-center" 
                         style="background-image: url('{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}');">
                     </div>
                     <div class="relative z-10 p-5">
-                        <h2 id="special-product-name" class="text-[16px] mb-2 font-bold text-white uppercase">HOLLOW BESI</h2>
-                        <div class="pt-2 special-product-background">
-                            <p id="special-product-price" class="rounded-md p-2 w-[122.19px] leading-[28.13px] text-[24px] text-white font-bold">
-                                <span class="text-[16px] text-white leading-[16.41px]">Rp.</span > 26.100 <span class="leading-[16.41px] text-[16px] text-white">/meter</span>
+                        <h2 id="best-product-title" class="text-[16px] mb-2 font-bold text-white uppercase">HOLLOW BESI</h2>
+                        <div class="pl-2 best-product-background-img" 
+                            style="background-image: url('{{ asset('storage/design/bingkaisulit.svg') }}');">
+                            <p id="best-product-text" class="rounded-md p-2 w-[122.19px] leading-[28.13px] text-[24px] text-white font-bold"> Rp. 26 /meter
                             </p>
                         </div>
                     </div>
@@ -21,8 +21,8 @@
                 <!-- <div id="special-product" class="relative z-0 shadow-custom w-[325.53px] h-[285.14px] bg-white rounded-md overflow-hidden">
                     <div class="p-5">
                         <h2 id="special-product-name" class="text-[16px] mb-2 font-bold text-[#E01535] uppercase">HOLLOW BESI</h2>
-                        <div class="pt-2 special-product-background">
-                            <p id="special-product-price" class="rounded-md p-2 w-[122.19px] leading-[28.13px] text-[24px] text-[#000] font-bold">
+                        <div class="pt-2 best-product-background-img">
+                            <p id="best-product-price" class="rounded-md p-2 w-[122.19px] leading-[28.13px] text-[24px] text-[#000] font-bold">
                                 <span class="text-[16px] leading-[16.41px]">Rp.</span> 26.100 <span class="leading-[16.41px] text-[16px]">/meter</span>
                             </p>
                         </div>
@@ -53,10 +53,13 @@
 </section>
 
 <style>
-    .special-product-background {
+    .best-product-background-img {
         background-image: url('{{ asset('storage/design/bingkaisulit.svg') }}');
         background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
     }
+
     .shadow-custom {
         box-shadow: 0px 4px 4px 0px #00000026;
     }
@@ -118,3 +121,39 @@
         }
     }
 </style>
+<script>
+    async function fetchBestProductBanner() {
+    try {
+        const response = await fetch('http://127.0.0.1:8001/api/banner-best-product');
+        const data = await response.json();
+
+        if (data.success) {
+            if (data.data.length > 0) {
+                // Ambil data pertama dari array
+                const bestProduct = data.data[0];
+
+                // Update elemen HTML
+                document.getElementById('best-product-title').textContent = bestProduct.tittle;
+                document.getElementById('best-product-text').textContent = bestProduct.text;
+
+                const backgroundImage = bestProduct.image.replace('http://127.0.0.1:8001/', '');
+                document.getElementById('best-product-background').style.backgroundImage = `url('${backgroundImage}')`;
+
+                console.log('Best product banner updated successfully');
+            } else {
+                console.warn('No banner data found for best product.');
+            }
+        } else {
+            console.error('Failed to fetch best product banner:', data.message);
+            alert('Gagal memuat banner produk terbaik.');
+        }
+    } catch (error) {
+        console.error('Error fetching best product banner:', error);
+        alert('Kesalahan jaringan atau server saat memuat banner produk terbaik.');
+    }
+}
+
+// Panggil fungsi fetch
+fetchBestProductBanner();
+
+</script>
