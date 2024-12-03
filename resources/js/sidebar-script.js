@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const shippingAreaId = sessionStorage.getItem('shipping_area_id');
             const shippingDistrictId = sessionStorage.getItem('district_id');
             const shippingSubdistrictId = sessionStorage.getItem('subdistrict_id');
+            const totalPriceValue = sessionStorage.getItem(`total_price_value`);
             const ongkir = sessionStorage.getItem('ongkir_value_attribute');
             const shipping_id = sessionStorage.getItem('tipe_pembelian');
             const additionalPricePercentage = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             for (let i = 0; i < productCardCount; i++) {
                 const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
+                const productVariantName = sessionStorage.getItem(`product_variant_name_${i}`);
                 const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
                 const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
 
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         bookingItems.push({
                             product_variant_id: productVariantId,
+                            product_variant_name: productVariantName,
                             price,
                             qty,
                             product_variant_item_id: productVariantItemId,
@@ -109,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     bookingItems.push({
                         product_variant_id: productVariantId,
+                        product_variant_name: productVariantName,
                         price,
                         qty,
                         product_variant_item_id: null,
@@ -135,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 additional_price_percentage: additionalPricePercentage || null,
                 commission_percentage: commissionPercentage,
                 booking_items: bookingItems,
+                total_price_booking: totalPriceValue,
                 ktp_image: ktpImage,
                 bank_name: bankName,
                 bank_account_number: bankAccountNumber,
@@ -176,12 +181,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function sendEmail() {
         const clientEmail = sessionStorage.getItem('client_email');
-        const orderData = sessionStorage.getItem('order_data');
+        const orderData = sessionStorage.getItem('order_data'); // Data harus berupa JSON string
+        const nomorwa = sessionStorage.getItem('waNomor');
+        const linkwa = sessionStorage.getItem('waLink');
+        const namaRekening = sessionStorage.getItem('namaRekening');
+        const nomorRekening = sessionStorage.getItem('nomorRekening');
 
         if (!clientEmail || !orderData) {
-            console.error("Email atau data pesanan tidak ditemukan di sessionStorage.");
+            console.error("❌ Email atau data pesanan tidak ditemukan di sessionStorage.");
             return;
         }
+
+        const requestBody = {
+            to: clientEmail, // Email tujuan
+            subject: "Informasi Pesanan Anda", // Subjek email
+            data: orderData, // Pastikan data JSON
+            nomorwa: nomorwa,
+            linkwa: linkwa,
+            namaRekening: namaRekening,
+            nomorRekening: nomorRekening,
+        };
 
         try {
             const response = await fetch('http://127.0.0.1:8001/api/send-email', {
@@ -189,20 +208,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    to: clientEmail,
-                    subject: "Informasi Pesanan Anda",
-                    body: orderData,
-                }),
+                body: JSON.stringify(requestBody),
             });
 
             if (response.ok) {
-                console.log("Email berhasil dikirim.");
+                console.log("✅ Email berhasil dikirim:", requestBody);
             } else {
-                console.error("Gagal mengirim email:", await response.json());
+                console.error("❌ Gagal mengirim email:", errorResponse);
             }
         } catch (error) {
-            console.error("Terjadi kesalahan saat mengirim email:", error);
+            console.error("❌ Terjadi kesalahan saat mengirim email:", error.message);
         }
     }
 
@@ -318,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Sembunyikan sidebar dan perbesar peta ke lebar penuh
             sidebar.classList.remove('sidebar-visible');
             sidebar.classList.add('sidebar-hidden');
-            considebar.classList.add('z-0');
+            considebar.classList.add('z-20');
             considebar.classList.remove('z-20');
             toggleBtn.classList.remove('toggle-visible');
             toggleBtn.classList.add('toggle-hidden');

@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         sidebar.classList.remove('sidebar-visible');
         sidebar.classList.add('sidebar-hidden');
-        considebar.classList.add('z-0');
+        considebar.classList.add('z-20');
         considebar.classList.remove('z-20');
         toggleBtn.classList.remove('toggle-visible');
         toggleBtn.classList.add('toggle-hidden');

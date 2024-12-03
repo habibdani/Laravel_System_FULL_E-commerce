@@ -130,7 +130,7 @@
         btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
 
         const considebar = document.getElementById('container-sidebar')
-        considebar.classList.add('z-0');
+        considebar.classList.add('z-20');
         considebar.classList.remove('z-20');
 
         const button2 = document.getElementById('btn-slide-2');

@@ -339,7 +339,7 @@
             </div>
         </div>
 
-        <button id="toggle" style="height: 80px !important;" name="tt" class="p-3 sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
+        <button id="toggle" style="height: 80px !important; z-index: 9999 !important; position: absolute;" name="tt" class="p-3 sidebar-transition absolute top-1/3 rounded-r-md bg-[#E01535] toggle-visible"
                 data-visible-icon="{{ asset('storage/icons/vector.svg') }}"
                 data-hidden-icon="{{ asset('storage/icons/vector-hidden.svg') }}">
             <img id="toggleimg" src="{{ asset('storage/icons/vector.svg') }}" alt="toggle">
