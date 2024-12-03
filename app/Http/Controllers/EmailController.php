@@ -128,11 +128,7 @@ class EmailController extends Controller
 
                         <h3>Informasi Pengiriman</h3>
                         <table>
-                            <tr><th>Ongkir</th><td>Rp {$data['payload']['ongkir']}</td></tr>
-                            <tr>
-                                <th>Total yang harus dibayarkan</th>
-                                <td>Rp <?= number_format($data['payload']['ongkir'] + $data['payload']['total_price_booking'], 0, ',', '.'); ?></td>
-                            </tr>                        
+                            <tr><th>Ongkir</th><td>Rp {$data['payload']['ongkir']}</td></tr>                       
                         </table>
 
                         <h3>Informasi Rekening</h3>
