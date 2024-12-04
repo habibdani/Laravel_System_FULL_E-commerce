@@ -88,6 +88,10 @@ class ViewPageController extends Controller
     {
         return view('setting-banner-kecil');
     }
+    public function dashboardSettingbannerkecil2()
+    {
+        return view('setting-banner-kecil-2');
+    }
     public function dashboardSettingrekening()
     {
         return view('setting-rekening');
@@ -102,5 +106,13 @@ class ViewPageController extends Controller
         $productId = $request->query('product_id');
 
         return view('productbyid-page', compact('productId'));
+    }
+    public function dashboardSettingspecialproduct(Request $request)
+    {
+        return view('setting-specialproduct');
+    }
+    public function welcomepage()
+    {
+        return view('welcome-page');
     }
 }

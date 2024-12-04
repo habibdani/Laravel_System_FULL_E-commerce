@@ -4,7 +4,7 @@
         <li class="mb-6">
             <a href="#" class="flex items-center px-3 py-2">
                 <img src="{{ asset('storage/icons/diagram.svg') }}" alt="diagram" class="h-5 w-5 mr-3">
-                <span class="font-roboto text-sm font-bold leading-5 tracking-wide text-left text-[#E01535]">Dashboard</span>
+                <span class="font-roboto text-sm font-bold leading-5 tracking-wide text-left text-[#E01535]" herf="">Dashboard</span>
             </a>
         </li>
 
@@ -19,7 +19,7 @@
             <a href="javascript:void(0)" class="flex items-center px-3 py-2 justify-between" id="ecommerceToggle">
                 <div class="flex items-center">
                     <img src="{{ asset('storage/icons/keranjang-gray.svg') }}" alt="ecommerce" class="h-5 w-5 mr-3">
-                    <span class="font-roboto text-sm font-normal leading-5 tracking-wide text-left text-[#999999]">E Commerce</span>
+                    <span class="font-roboto text-sm font-normal leading-5 tracking-wide text-left text-[#999999]">CMS sidebar</span>
                 </div>
                 <svg id="dropdownArrow" class="transition-transform duration-300" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7.12891 1.10229L3.90118 4.32983L0.673645 1.10229" stroke="#ADADAD" stroke-linecap="round" stroke-linejoin="round"/>

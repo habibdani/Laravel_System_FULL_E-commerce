@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
             // Pastikan totalStock adalah angka yang valid
             if (isNaN(totalStock)) {
-                console.error("Total stok awal tidak valid.");
+                totalStock = 0;                
                 return;
             }
         
@@ -148,8 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             sidebar.classList.remove('sidebar-hidden');
             sidebar.classList.add('sidebar-visible');
-            considebar.classList.add('z-20');
-            considebar.classList.remove('z-0');
+            considebar.style.width = ""; // menghapus style="width: 20px !important;"
+            // considebar.classList.add('z-20');
+            // considebar.classList.remove('z-20');
             toggleBtn.classList.remove('toggle-hidden');
             toggleBtn.classList.add('toggle-visible');
 
@@ -333,9 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             loadingSpinner.classList.add('hidden');
         }, 500);
+        loadingSpinner.classList.add('hidden');
     }, 1500);
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-
-});

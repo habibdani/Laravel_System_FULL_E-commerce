@@ -1,41 +1,43 @@
 <section name="filter-product" id="sessionproductfilter" class="py-0 mt-8">
-    <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div id="subsessionproductfilter" class="relative w-[1200px] flex items-center justify-between">
-            <!-- Bagian Kiri (Produk filter) -->
-            <div id="filter-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
-                <div class="p-5">
-                    <h2 id="filterProductName" class="text-[22px] font-bold text-black">Hasil Pencarian Product</h2>
-                    <span class="text-[12px] filter-description font-normal text-[#747474]">Bestproduct products for u</span>
+    <div class="parallax-appear">
+        <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
+            <div id="subsessionproductfilter" class="relative w-[1200px] flex items-center justify-between">
+                <!-- Bagian Kiri (Produk filter) -->
+                <div id="filter-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
+                    <div class="p-5">
+                        <h2 id="filterProductName" class="text-[22px] font-bold text-black">Hasil Pencarian Product</h2>
+                        <span class="text-[12px] filter-description font-normal text-[#747474]">Bestproduct products for u</span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Kartu Produk -->
-            <div id="filter-product-list" class="absolute mx-4 px-1 z-5 flex overflow-x-auto space-x-3 max-w-[97%]" style="top: 30%;">
-                <!-- Produk akan ditambahkan oleh JavaScript di sini -->
-            </div>
+                <!-- Kartu Produk -->
+                <div id="filter-product-list" class="absolute mx-4 px-1 z-5 flex overflow-x-auto space-x-3 max-w-[97%]" style="top: 30%;">
+                    <!-- Produk akan ditambahkan oleh JavaScript di sini -->
+                </div>
 
-            <!-- Link 'View All' dan Tombol Navigasi -->
-            <div id="view-all-container" class="absolute top-[13%] right-5 flex items-center space-x-3">
-                <!-- Link 'View All' -->
-                <!-- <a id="filter-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
-                    View all (0+)
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a> -->
+                <!-- Link 'View All' dan Tombol Navigasi -->
+                <div id="view-all-container" class="absolute top-[13%] right-5 flex items-center space-x-3">
+                    <!-- Link 'View All' -->
+                    <!-- <a id="filter-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
+                        View all (0+)
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a> -->
 
-                <!-- Tombol Prev -->
-                <button id="prev-button-product-filter" class="bg-[#E8E8E8] p-2 rounded-full shadow-custom">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 12L6 8L10 4" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <!-- Tombol Next -->
-                <button id="next-button-product-filter" class="bg-[#E01535] p-2 rounded-full shadow-custom">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                    <!-- Tombol Prev -->
+                    <button id="prev-button-product-filter" class="bg-[#E8E8E8] p-2 rounded-full shadow-custom">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 12L6 8L10 4" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <!-- Tombol Next -->
+                    <button id="next-button-product-filter" class="bg-[#E01535] p-2 rounded-full shadow-custom">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

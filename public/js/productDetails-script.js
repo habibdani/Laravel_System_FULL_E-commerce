@@ -149,10 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.remove('sidebar-hidden');
             sidebar.classList.add('sidebar-visible');
             considebar.classList.add('z-20');
-            considebar.classList.remove('z-0');
+            // considebar.classList.remove('z-20');
             toggleBtn.classList.remove('toggle-hidden');
             toggleBtn.classList.add('toggle-visible');
-
+            considebar.style.width = "0px";
             const toggleIcon = toggleBtn.querySelector('img');
             const visibleIcon = toggleBtn.getAttribute('data-visible-icon');
             toggleIcon.src = visibleIcon;

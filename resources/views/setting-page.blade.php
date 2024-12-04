@@ -50,6 +50,20 @@
                                 <a href="{{ url('/dashboard/setting/list-wa') }}" class="btn btn-gradient btn-rounded">Kelola</a>
                             </td>
                         </tr>
+                        <tr class="align-middle" style="height: 60px !important">
+                            <td class="text-center">Setting Special Product </td>
+                            <td class="text-center">Kelola image special product</td>
+                            <td class="text-center">
+                                <a href="{{ url('/dashboard/setting/list-specialproduct') }}" class="btn btn-gradient btn-rounded">Kelola</a>
+                            </td>
+                        </tr>
+                        <tr class="align-middle" style="height: 60px !important">
+                            <td class="text-center">Setting background kecil </td>
+                            <td class="text-center">Kelola image background kecil</td>
+                            <td class="text-center">
+                                <a href="{{ url('/dashboard/setting/list-banner-kecil-2') }}" class="btn btn-gradient btn-rounded">Kelola</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

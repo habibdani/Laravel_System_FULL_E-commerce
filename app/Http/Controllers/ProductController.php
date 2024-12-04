@@ -527,15 +527,18 @@ class ProductController extends Controller
         try {
             // Validasi payload
             $validatedData = $request->validate([
-                'tittle' => 'required|string|max:255', // Tittle wajib diisi, maksimal 255 karakter
-                'description' => 'required|string|max:500', // Description wajib diisi, maksimal 500 karakter
+                'tittle' => 'nullable|string|max:255', // Tittle wajib diisi, maksimal 255 karakter
+                'description' => 'nullable|string|max:500', // Description wajib diisi, maksimal 500 karakter
                 'image' => 'required|string|url', // Image wajib diisi dan harus berupa URL yang valid
             ]);
 
+            $tittle = $validatedData['tittle'] ?? null;
+            $description = $validatedData['description'] ?? null;
+
             // Insert data ke database
             DB::insert("INSERT INTO banner_besar (tittle, description, image) VALUES (?, ?, ?)", [
-                $validatedData['tittle'],
-                $validatedData['description'],
+                $tittle,
+                $description,
                 $validatedData['image'],
             ]);
 
@@ -572,16 +575,20 @@ class ProductController extends Controller
         try {
             // Validasi payload
             $validatedData = $request->validate([
-                'tittle' => 'required|string|max:255', // Title wajib diisi, berupa string dengan maksimal 255 karakter
-                'description' => 'required|string|max:500', // Description wajib diisi, maksimal 500 karakter
-                'image' => 'required|string|url', // Image wajib diisi dan harus berupa URL yang valid
+                'tittle' => 'nullable|string|max:255', // Title tidak wajib, maksimal 255 karakter
+                'description' => 'nullable|string|max:500', // Description tidak wajib, maksimal 500 karakter
+                'image' => 'required|string|url', // Image tetap wajib diisi dan harus berupa URL yang valid
             ]);
+
+            // Atur nilai default jika tittle atau description tidak disediakan
+            $tittle = $validatedData['tittle'] ?? null;
+            $description = $validatedData['description'] ?? null;
 
             // Update data di database
             $updated = DB::update("UPDATE banner_besar SET tittle = ?, image = ?, description = ? WHERE id = ?", [
-                $validatedData['tittle'],
+                $tittle,
                 $validatedData['image'],
-                $validatedData['description'],
+                $description,
                 $id,
             ]);
 
@@ -605,7 +612,6 @@ class ProductController extends Controller
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }
-
 
     // Delete Banner Besar
     public function deleteBannerBesar($id)
@@ -633,6 +639,57 @@ class ProductController extends Controller
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }
+
+    // Update Banner Kecil
+    public function updateBannerKecil(Request $request, $id)
+    {
+        try {
+            // Validasi payload
+            $validatedData = $request->validate([
+                'text' => 'required|string|max:255', // Text wajib diisi, maksimal 255 karakter
+                'image' => 'required|string|url', // Image wajib diisi, harus berupa URL yang valid
+            ]);
+    
+            // Update data di database
+            $updated = DB::update("UPDATE banner_kecil SET text = ?, image = ? WHERE id = ?", [
+                $validatedData['text'],
+                $validatedData['image'],
+                $id,
+            ]);
+    
+            if ($updated) {
+                // Jika data berhasil diperbarui
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Banner kecil updated successfully',
+                    'data' => $validatedData, // Kembalikan data yang diupdate
+                ], 200); // Status 200 untuk OK
+            } else {
+                // Jika ID tidak ditemukan
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Banner kecil not found',
+                ], 404); // Status 404 untuk Not Found
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(), // Detail kesalahan validasi
+            ], 400); // Status 400 untuk Bad Request
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Error updating banner kecil: ' . $e->getMessage());
+    
+            // Jika terjadi error lainnya
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage(), // Tambahkan detail error untuk debugging
+            ], 500); // Status 500 untuk Internal Server Error
+        }
+    }    
 
     // Get Single Banner Kecil by ID
     public function getBannerKecilById($id)
@@ -690,29 +747,53 @@ class ProductController extends Controller
         }
     }
 
+    // Delete Banner Kecil
+    public function deleteBannerKecil($id)
+    {
+        try {
+            $deleted = DB::update("UPDATE banner_kecil SET deleted_at = NOW() WHERE id = ?", [$id]);
+
+            if ($deleted) {
+                return ApiResponseHelper::success(null, 'Banner kecil deleted successfully');
+            } else {
+                return ApiResponseHelper::error('Banner kecil not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    // Get All Banner Kecil
+    public function getBannerKecil2()
+    {
+        try {
+            $results = DB::select("SELECT * FROM banner_kecil_2");
+            return ApiResponseHelper::success($results, 'Banner kecil 2 retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
 
     // Update Banner Kecil
-    public function updateBannerKecil(Request $request, $id)
+    public function updateBannerKecil2(Request $request, $id)
     {
         try {
             // Validasi payload
             $validatedData = $request->validate([
-                'text' => 'required|string|max:255', // Text wajib diisi, maksimal 255 karakter
                 'image' => 'required|string|url', // Image wajib diisi, harus berupa URL yang valid
             ]);
-    
+
             // Update data di database
-            $updated = DB::update("UPDATE banner_kecil SET text = ?, image = ? WHERE id = ?", [
-                $validatedData['text'],
+            $updated = DB::update("UPDATE banner_kecil_2 SET image = ? WHERE id = ?", [
                 $validatedData['image'],
                 $id,
             ]);
-    
+
             if ($updated) {
                 // Jika data berhasil diperbarui
                 return response()->json([
                     'success' => true,
-                    'message' => 'Banner kecil updated successfully',
+                    'message' => 'Banner kecil 2 updated successfully',
                     'data' => $validatedData, // Kembalikan data yang diupdate
                 ], 200); // Status 200 untuk OK
             } else {
@@ -732,7 +813,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             // Log error untuk debugging
             \Log::error('Error updating banner kecil: ' . $e->getMessage());
-    
+
             // Jika terjadi error lainnya
             return response()->json([
                 'success' => false,
@@ -740,25 +821,60 @@ class ProductController extends Controller
                 'error' => $e->getMessage(), // Tambahkan detail error untuk debugging
             ], 500); // Status 500 untuk Internal Server Error
         }
-    }    
-
-    // Delete Banner Kecil
-    public function deleteBannerKecil($id)
+    }  
+    
+    public function getBannerBestProduct()
     {
         try {
-            $deleted = DB::update("UPDATE banner_kecil SET deleted_at = NOW() WHERE id = ?", [$id]);
-
-            if ($deleted) {
-                return ApiResponseHelper::success(null, 'Banner kecil deleted successfully');
-            } else {
-                return ApiResponseHelper::error('Banner kecil not found', 404);
-            }
+            $results = DB::select("SELECT * FROM banner_best_product");
+            return ApiResponseHelper::success($results, 'Banner besar retrieved successfully');
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Something went wrong', 500);
         }
     }
 
-    
+    public function updateBannerBestProduct(Request $request, $id)
+    {
+        try {
+            // Validasi payload
+            $validatedData = $request->validate([
+                'tittle' => 'nullable|string|max:255', 
+                'text' => 'nullable|string|max:500', 
+                'image' => 'required|string|url',
+            ]);
+
+            // Atur nilai default jika tittle atau description tidak disediakan
+            $tittle = $validatedData['tittle'] ?? null;
+            $text = $validatedData['text'] ?? null;
+
+            // Update data di database
+            $updated = DB::update("UPDATE banner_best_product SET tittle = ?, image = ?, text = ? WHERE id = 1", [
+                $tittle,
+                $validatedData['image'],
+                $text,
+            ]);
+
+            if ($updated) {
+                // Jika data berhasil diupdate
+                return ApiResponseHelper::success(null, 'Banner best product updated successfully');
+            } else {
+                // Jika ID tidak ditemukan
+                return ApiResponseHelper::error('Banner best product not found', 404);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors(),
+            ], 400); // Status 400 untuk validasi error
+        } catch (\Exception $e) {
+            // Jika terjadi error lainnya
+            \Log::error('Error updating banner best product: ' . $e->getMessage());
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
     public function createVariantType(Request $request)
     {
         try {
@@ -986,7 +1102,7 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('images', 'public');
 
             // Mengembalikan path gambar
-            return ApiResponseHelper::success(['image_url' => asset('storage/' . $imagePath)], 'Image uploaded successfully');
+            return ApiResponseHelper::success(['image_url' => secure_asset('storage/' . $imagePath)], 'Image uploaded successfully');
         } catch (\Exception $e) {
             Log::error('Error in uploadImage: ' . $e->getMessage());
             return ApiResponseHelper::error('Something went wrong', 500);
@@ -1084,7 +1200,7 @@ class ProductController extends Controller
         }
     }
 
-    
+
 
     // Update Info Rekening
     public function updateInfoRekening(Request $request, $id)

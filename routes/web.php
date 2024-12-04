@@ -20,15 +20,17 @@ Route::get('/dashboard/orders/detail/{booking_id}', [ViewPageController::class, 
 Route::get('/dashboard/setting', [ViewPageController::class, 'dashboardSetting'])->name('dashboard.setting');
 Route::get('/dashboard/setting/list-banner-besar', [ViewPageController::class, 'dashboardSettingbannerbesar'])->name('dashboard.setting.bannerbesar');
 Route::get('/dashboard/setting/list-banner-kecil', [ViewPageController::class, 'dashboardSettingbannerkecil'])->name('dashboard.setting.bannerkecil');
+Route::get('/dashboard/setting/list-banner-kecil-2', [ViewPageController::class, 'dashboardSettingbannerkecil2'])->name('dashboard.setting.bannerkecil2');
 Route::get('/dashboard/setting/list-rekening', [ViewPageController::class, 'dashboardSettingrekening'])->name('dashboard.setting.rekening');
 Route::get('/dashboard/setting/list-wa', [ViewPageController::class, 'dashboardSettingwa'])->name('dashboard.setting.wa');
-
+Route::get('/dashboard/setting/list-specialproduct', [ViewPageController::class, 'dashboardSettingspecialproduct'])->name('dashboard.setting.specialproduct');
 // Halaman utama (shop page)
 Route::get('/', function () {
     return view('welcome-page');
 });
 
 // Rute untuk halaman peta, toko, dan produk
+Route::get('/welcome-page',[ViewPageController::class, 'welcomepage']);
 Route::get('/view-maps', [ViewPageController::class, 'maps']);
 Route::get('/view-shop', [ViewPageController::class, 'shop']);
 Route::get('/view-product', [ViewPageController::class, 'product'])->name('view.product.details');

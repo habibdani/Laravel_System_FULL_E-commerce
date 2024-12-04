@@ -21,13 +21,17 @@ Route::get('/product/details', [ProductController::class, 'productdetails']);
 Route::get('/banner-besar', [ProductController::class, 'getBannerBesar']); // Read All
 Route::get('/banner-besar/{id}', [ProductController::class, 'getBannerBesarById']); // Read Single
 
-
 // Banner Kecil Routes
 Route::get('/banner-kecil', [ProductController::class, 'getBannerKecil']); // Read All
 Route::get('/banner-kecil/{id}', [ProductController::class, 'getBannerKecilById']); // Read Single
 Route::post('/banner-kecil', [ProductController::class, 'createBannerKecil']); // Create
 Route::put('/banner-kecil/{id}', [ProductController::class, 'updateBannerKecil']); // Update
 Route::delete('/banner-kecil/{id}', [ProductController::class, 'deleteBannerKecil']); // Delete
+
+Route::get('/banner-kecil-2', [ProductController::class, 'getBannerKecil2']); // Read All
+Route::put('/banner-kecil-2/{id}', [ProductController::class, 'updateBannerKecil2']); // Update
+
+Route::get('/banner-best-product', [ProductController::class, 'getBannerBestProduct']); // Read All
 
 Route::get('/info-rekening', [ProductController::class, 'getInfoRekening']); // Read All
 Route::get('/info-rekening/{id}', [ProductController::class, 'getInfoRekeningById']); // Read Single
@@ -66,6 +70,8 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::post('/banner-besar', [ProductController::class, 'createBannerBesar']); // Create
     Route::put('/banner-besar/{id}', [ProductController::class, 'updateBannerBesar']); // Update
     Route::delete('/banner-besar/{id}', [ProductController::class, 'deleteBannerBesar']); // Delete
+    Route::put('/banner-best-product/{id}', [ProductController::class, 'updateBannerBestProduct']); // Update
+
 });
 
 Route::get('/test-middleware', function() {

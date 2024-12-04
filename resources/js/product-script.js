@@ -310,13 +310,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const hiddenProductCount = totalProducts - visibleProductCount;
 
-                if (hiddenProductCount > 0) {
-                    viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>`;
-                } else {
-                    viewAllLink.textContent = `View all`;
-                }
+                // if (hiddenProductCount > 0) {
+                //     viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                //         <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                //     </svg>`;
+                // } else {
+                //     viewAllLink.textContent = `View all`;
+                // }
             }
 
             // Perbarui link View All
@@ -350,8 +350,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         sidebar.classList.remove('sidebar-visible');
         sidebar.classList.add('sidebar-hidden');
-        considebar.classList.add('z-0');
-        considebar.classList.remove('z-20');
+        considebar.style.width = "20px"; // Menambahkan style="width: 20px !important;"
+
+        // considebar.classList.add('z-20');
+        // considebar.classList.remove('z-20');
         toggleBtn.classList.remove('toggle-visible');
         toggleBtn.classList.add('toggle-hidden');
 
@@ -361,8 +363,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const jumlahitem = document.getElementById('jumlahitem');
         jumlahitem.classList.remove('hidden');
 
-        const toslide2andshop = document.getElementById('to-slide-2-and-shop');
-        toslide2andshop.classList.add('hidden');
+        // const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+        // toslide2andshop.classList.add('hidden');
 
         const totalbayar = document.getElementById('totalbayar');
         totalbayar.classList.remove('hidden');

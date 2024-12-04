@@ -1,38 +1,40 @@
 <section name="relate-product" class="py-0 mt-8">
-    <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <div id="subsessionproductrelate" class="relative w-[1200px] flex items-center justify-between">
-            <!-- Bagian Kiri (Produk Spesial) -->
-            <div id="relate-product" class="relative z-0 shadow-custom w-full h-[285.14px] bg-white rounded-md overflow-hidden">
-                <div class="p-5">
-                    <h2 id="relate-product-name" class="text-[22px] mb-2 font-bold text-black ">Relate Product</h2>
+    <div class="parallax-appear">
+        <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
+            <div id="subsessionproductrelate" class="relative w-[1200px] flex items-center justify-between">
+                <!-- Bagian Kiri (Produk Spesial) -->
+                <div id="relate-product" class="relative z-0 shadow-custom w-full h-[285.14px] bg-white rounded-md overflow-hidden">
+                    <div class="p-5">
+                        <h2 id="relate-product-name" class="text-[22px] mb-2 font-bold text-black ">Relate Product</h2>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Kartu Produk -->
-            <div id="relate-product-list" class=" absolute mx-4 px-1 z-5 flex overflow-x-auto space-x-3 max-w-[97%]" style="top: 25%;">
-                <!-- Produk akan ditambahkan oleh JavaScript di sini -->
-            </div>
+                <!-- Kartu Produk -->
+                <div id="relate-product-list" class=" absolute mx-4 px-1 z-5 flex overflow-x-auto space-x-3 max-w-[97%]" style="top: 25%;">
+                    <!-- Produk akan ditambahkan oleh JavaScript di sini -->
+                </div>
 
-             <!-- Link 'View All' -->
-             <div id="view-all-container" class="absolute top-[10%] right-5 flex items-center space-x-3">
-                <!-- <a id="relate-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
-                    View all (0+)
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a> -->
-                <!-- Tombol Prev -->
-                <button id="prev-button-product-relate" class="bg-[#E8E8E8] p-2 rounded-full shadow-custom">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 12L6 8L10 4" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <!-- Tombol Next -->
-                <button id="next-button-product-relate" class="bg-[#E01535] p-2 rounded-full shadow-custom">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                <!-- Link 'View All' -->
+                <div id="view-all-container" class="absolute top-[10%] right-5 flex items-center space-x-3">
+                    <!-- <a id="relate-view-all-link" href="#" class="text-[12px] font-semibold text-[#4A4A4A] hover:underline flex items-center">
+                        View all (0+)
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a> -->
+                    <!-- Tombol Prev -->
+                    <button id="prev-button-product-relate" class="bg-[#E8E8E8] p-2 rounded-full shadow-custom">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 12L6 8L10 4" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <!-- Tombol Next -->
+                    <button id="next-button-product-relate" class="bg-[#E01535] p-2 rounded-full shadow-custom">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4L10 8L6 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

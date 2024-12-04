@@ -12,14 +12,14 @@
 
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <img src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo" class="h-8">
+                    <img src="{{ secure_asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo" class="h-8">
                 </div>
             </div>
 
             <!-- Right Section (Circular Logo) -->
             <div class="flex items-center">
                 <div class="bg-white shadow-lg rounded-full overflow-hidden p-2">
-                    <img src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Notifications" class="object-left h-6 w-6 object-cover">
+                    <img src="{{ secure_asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Notifications" class="object-left h-6 w-6 object-cover">
                 </div>
             </div>
         </div>
