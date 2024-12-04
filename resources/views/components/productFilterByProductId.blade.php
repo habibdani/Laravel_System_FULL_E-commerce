@@ -139,8 +139,8 @@
         const jumlahitem = document.getElementById('jumlahitem');
         jumlahitem.classList.remove('hidden');
 
-        const toslide2andshop = document.getElementById('to-slide-2-and-shop');
-        toslide2andshop.classList.add('hidden');
+        // const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+        // toslide2andshop.classList.add('hidden');
 
         const totalbayar = document.getElementById('totalbayar');
         totalbayar.classList.remove('hidden');

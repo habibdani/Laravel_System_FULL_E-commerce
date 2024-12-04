@@ -352,11 +352,11 @@ function updateViewAllLink(totalProducts, listWidth, viewAllLink) {
     const visibleProductCount = Math.floor(listWidth / productCardWidth);
     const hiddenProductCount = totalProducts - visibleProductCount;
 
-    if (hiddenProductCount > 0) {
-        viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-    } else {
-        viewAllLink.textContent = 'View all';
-    }
+    // if (hiddenProductCount > 0) {
+    //     viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    // } else {
+    //     viewAllLink.textContent = 'View all';
+    // }
 }
 
 // Attach event listener to the search input field with debounce
@@ -381,13 +381,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (searchValue) {
             // Jika ada value di search input
             productFilterSection.style.display = 'block'; // Tampilkan filter-product
-            exploreProductSection.style.display = 'none'; // Sembunyikan explore-product
-            specialProductSection.style.display = 'none'; // Sembunyikan special-product
+            if(exploreProductSection){exploreProductSection.style.display = 'none';} // Sembunyikan explore-product
+            if(specialProductSection){specialProductSection.style.display = 'none';} // Sembunyikan special-product
         } else {
             // Jika tidak ada value di search input
             productFilterSection.style.display = 'none'; // Sembunyikan filter-product
-            exploreProductSection.style.display = 'block'; // Tampilkan explore-product
-            specialProductSection.style.display = 'block'; // Tampilkan special-product
+            if(exploreProductSection){exploreProductSection.style.display = 'block';} // Tampilkan explore-product
+            if(specialProductSection){specialProductSection.style.display = 'block';} // Tampilkan special-product
         }
     }
 

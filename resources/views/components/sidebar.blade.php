@@ -71,11 +71,11 @@
         }
     </style>
 
-    <div class="flex fixed h-full w-1/4 left-0 sidebar-transition mt-[54px]" id="container-sidebar">
+    <div class="flex fixed h-full left-0 sidebar-transition mt-[54px] z-20" id="container-sidebar">
         <div id="sidebar" class="w-full p-5 transform sidebar-visible sidebar-transition bg-white shadow-custom flex flex-col justify-between">
             <!-- Grup Tombol di Bagian Atas -->
 
-            <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-2">
+            <div class="p-1.5 flex items-center justify-center w-full h-[40.79px] shadow-inner rounded-md bg-gray-200 justify-around mb-2 overflow-hidden">
                 <button id="btn-slide-2" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
                 w-1/3 h-[26.95px] font-roboto text-[14px] font-semibold text-[#9D9D9D] bg-transparent">Shop</button>
                 <button id="btn-slide-1" disabled class="custom-clipath pl-3 pr-5 rounded-l-md flex items-center justify-center
@@ -292,16 +292,16 @@
             </div>
 
             <div class="divtotalbayar mb-2">
-                <button id="totalbayar" value="" class="h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
+                <button id="totalbayar" value="" class="overflow-hidden h-[37.6px] w-full px-3 bg-[#F4F4F4] text-[#ADADAD] font-semibold font-[14px] rounded-md transition duration-300 hidden flex items-center justify-center">
                 </button>
             </div>
 
-            <div id="buttom-sidebar" class="mt-auto">
+            <div id="buttom-sidebar" class="mt-auto overflow-hidden">
                 <hr>
                 <div id="jumlahitem" class="font-roboto w-full px-3 h-[38px] bg-[#ADADAD] text-white font-normal text-[18px] rounded-t-md transition duration-300 flex items-center justify-center">
                     <span id="totalitem" value="" class="mx-1">0</span> Item Dibeli: Rp. <span id="totalallprice" value="">0</span>
                 </div>
-                <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] shadow-md flex justify-between items-center">
+                <div id="dataongkir" class="bg-white h-[40.56px] p-2 border border-[#DADCE0] shadow-md flex justify-between items-center ">
                     <div class="text-center w-1/3">
                         <p class="text-gray-600 text-xs">Ongkos kirim:</p>
                         <div id="ongkir-display" location-value="" ongkir-value="" class="text-green-600 font-semibold text-[16px]">Rp.0</div>

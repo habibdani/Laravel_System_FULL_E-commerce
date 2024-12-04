@@ -38,9 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
         btnSlide2.classList.add('text-white', 'bg-[#E01535]');
         btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
 
-        const considebar = document.getElementById('container-sidebar')
-        considebar.classList.add('z-20');
-        considebar.classList.remove('z-20');
+        const considebar = document.getElementById('container-sidebar');
+        considebar.style.width = "20px"; // Menambahkan style="width: 20px !important;"
+        // considebar.classList.add('z-20');
+        // considebar.classList.remove('z-20');
 
         const button2 = document.getElementById('btn-slide-2');
         button2.removeAttribute('disabled');
@@ -48,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const jumlahitem = document.getElementById('jumlahitem');
         jumlahitem.classList.remove('hidden');
 
-        const toslide2andshop = document.getElementById('to-slide-2-and-shop');
-        toslide2andshop.classList.add('hidden');
+        // const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+        // toslide2andshop.classList.add('hidden');
 
         const totalbayar = document.getElementById('totalbayar');
         totalbayar.classList.remove('hidden');
@@ -234,13 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const hiddenProductCount = totalProducts - visibleProductCount;
 
-                if (hiddenProductCount > 0) {
-                    viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>`;
-                } else {
-                    viewAllLink.textContent = `View all`;
-                }
+                // if (hiddenProductCount > 0) {
+                //     viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                //         <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                //     </svg>`;
+                // } else {
+                //     viewAllLink.textContent = `View all`;
+                // }
             }
 
             // Perbarui link View All

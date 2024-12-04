@@ -104,65 +104,68 @@
 
     @media (max-width: 450px) {
     /* Stack Right Section below Left Section */
-    section[name="consult"] .flex.flex-col.lg\:flex-row {
-        flex-direction: column;
-        width: 100%;
-    }
+        section[name="consult"] .flex.flex-col.lg\:flex-row {
+            flex-direction: column;
+            width: 100%;
+        }
 
-    /* Remove horizontal spacing and add vertical spacing for smaller screens */
-    section[name="consult"] .space-y-4 {
-        margin-bottom: 16px;
-    }
+        #banner-kecil-2{
+            display: none;
+        }
+        /* Remove horizontal spacing and add vertical spacing for smaller screens */
+        section[name="consult"] .space-y-4 {
+            margin-bottom: 16px;
+        }
 
-    /* Set Left Section width to 331px for small screens */
-    section[name="consult"] .w-full.lg\:w-\[720px\] {
-        width: 331px;
-    }
+        /* Set Left Section width to 331px for small screens */
+        section[name="consult"] .w-full.lg\:w-\[720px\] {
+            width: 331px;
+        }
 
-    /* Set Right Section width to 331px for small screens */
-    section[name="consult"] .w-full.lg\:w-\[245px\] {
-        width: 331px;
-    }
+        /* Set Right Section width to 331px for small screens */
+        section[name="consult"] .w-full.lg\:w-\[245px\] {
+            width: 331px;
+        }
 
-    /* Adjust the position of navigation buttons */
-    #left-tangle, #right-tangle {
-        position: absolute;
-        top: 50%; /* Center vertically */
-        transform: translateY(-50%); /* Adjust for vertical centering */
-        width: 30px;
-        height: 30px;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        /* border-radius: 50%; */
-    }
+        /* Adjust the position of navigation buttons */
+        #left-tangle, #right-tangle {
+            position: absolute;
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust for vertical centering */
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            /* border-radius: 50%; */
+        }
 
-    /* Position left navigation button */
-    #left-tangle {
-        left: -15px; /* Offset to the left of the image boundary */
-    }
+        /* Position left navigation button */
+        #left-tangle {
+            left: -15px; /* Offset to the left of the image boundary */
+        }
 
-    /* Position right navigation button */
-    #right-tangle {
-        right: -15px; /* Offset to the right of the image boundary */
-    }
+        /* Position right navigation button */
+        #right-tangle {
+            right: -15px; /* Offset to the right of the image boundary */
+        }
 
-    /* Center align text and adjust width for smaller screens */
-    #right-section-title {
-        text-align: center;
-        font-size: 16px;
-    }
+        /* Center align text and adjust width for smaller screens */
+        #right-section-title {
+            text-align: center;
+            font-size: 16px;
+        }
 
-    #right-section-button {
-        text-align: center;
-        width: auto;
+        #right-section-button {
+            text-align: center;
+            width: auto;
+        }
+        #subsessionconsule{
+            width: 80%;
+        }
     }
-    #subsessionconsule{
-        width: 80%;
-    }
-}
 
 </style>
 
