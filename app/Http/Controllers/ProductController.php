@@ -1315,4 +1315,22 @@ class ProductController extends Controller
         }
     }
 
+    public function getInfoTypeClient($id)
+    {
+        try {
+            // Validate if the ID is provided
+            if (!$id) {
+                return ApiResponseHelper::validationError('Client ID is required', 400);
+            }
+
+            $results = DB::select("SELECT * FROM client_types WHERE id = ?", [$id]);
+            if (empty($results)) {
+                return ApiResponseHelper::error('Info client not found', 404);
+            }
+            return ApiResponseHelper::success($results[0], 'Info client retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
 }

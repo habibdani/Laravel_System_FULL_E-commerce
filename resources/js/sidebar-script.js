@@ -1272,7 +1272,7 @@ const updatePaymentButtonState = () => {
     }
 
     // Periksa posisi route halaman
-    if (currentUrl === "http://127.0.0.1:8001/") {
+    if (currentUrl === "http://127.0.0.1:8001/view-shop") {
         // Sembunyikan bingkaibuttonpayment
         bingkaibuttonalamt.classList.remove('hidden');
         bingkaibuttonpayment.classList.add('hidden');

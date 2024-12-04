@@ -260,8 +260,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 productName.style.overflow = 'hidden';
                 productName.style.textOverflow = 'ellipsis';
 
+                let price_percentage = sessionStorage.getItem('price_percentage');
+                // Pastikan price_percentage adalah angka yang valid, jika tidak, set ke null
+                price_percentage = !isNaN(price_percentage) && price_percentage !== null ? parseFloat(price_percentage) : 0;
+                // Harga produk
+                let variant_price = product.variant_price;
+                // Cek jika price_percentage valid (bukan null)
+                let finalPrice = variant_price; // Jika price_percentage null, tidak ada penjumlahan
+                if (price_percentage !== null) {
+                    // Menghitung harga setelah penambahan price_percentage
+                    let priceIncrease = (price_percentage / 100) * variant_price;
+                    finalPrice = variant_price + priceIncrease;
+                }
+
                 const productPrice = document.createElement('p');
-                productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(product.variant_price)}`;
+                productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(finalPrice)}`;
                 productPrice.classList.add('text-[14px]', 'text-left', 'font-semibold', 'text-[#292929]', 'm-2');
                 productPrice.style.width = '100%';
                 productPrice.style.whiteSpace = 'nowrap';

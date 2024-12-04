@@ -33,6 +33,8 @@ Route::put('/banner-kecil-2/{id}', [ProductController::class, 'updateBannerKecil
 
 Route::get('/banner-best-product', [ProductController::class, 'getBannerBestProduct']); // Read All
 
+Route::get('/info-client/{id}', [ProductController::class, 'getInfoTypeClient']); // Read All
+
 Route::get('/info-rekening', [ProductController::class, 'getInfoRekening']); // Read All
 Route::get('/info-rekening/{id}', [ProductController::class, 'getInfoRekeningById']); // Read Single
 Route::post('/info-rekening', [ProductController::class, 'createInfoRekening']); // Create
