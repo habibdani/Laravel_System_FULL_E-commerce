@@ -21,6 +21,11 @@ class EmailController extends Controller
             'nomorRekening' => 'required|string',
         ]);
 
+        // Validasi data tambahan lainnya
+        if (empty($validated['to']) || empty($validated['subject']) || empty($validated['data'])) {
+            return response()->json(['error' => 'Data yang diperlukan tidak lengkap. Pastikan semua data sudah diisi dengan benar.'], 400);
+        }
+
         // Decode JSON menjadi array dengan error handling
         try {
             $data = json_decode($validated['data'], true);
@@ -30,6 +35,11 @@ class EmailController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json(['error' => 'Gagal membaca data JSON.', 'details' => $e->getMessage()], 400);
+        }
+
+        // Pastikan payload memiliki struktur yang benar
+        if (!isset($data['payload']['client_name']) || !isset($data['payload']['client_email']) || !isset($data['payload']['client_phone_number']) || !isset($data['payload']['address'])) {
+            return response()->json(['error' => 'Data JSON tidak lengkap. Pastikan semua informasi yang diperlukan ada dalam payload.'], 400);
         }
 
         // Proses generate HTML template dengan error handling
@@ -123,7 +133,7 @@ class EmailController extends Controller
             }
 
             $htmlContent .= "
-                            <tr><th colspan='3' style='text-align: right;'>Total</th><td>Rp " . number_format($data['payload']['total_price_booking '], 0, ',', '.') . "</td></tr>
+                            <tr><th colspan='3' style='text-align: right;'>Total</th><td>Rp " . number_format($data['payload']['total_price_booking'], 0, ',', '.') . "</td></tr>
                         </table>
 
                         <h3>Informasi Pengiriman</h3>
@@ -161,5 +171,6 @@ class EmailController extends Controller
             return response()->json(['error' => 'Gagal mengirim email.', 'details' => $e->getMessage()], 500);
         }
     }
+
 
 }

@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             sidebar.classList.remove('sidebar-hidden');
             sidebar.classList.add('sidebar-visible');
-            // considebar.style.width = "20px"; // Menambahkan style="width: 20px !important;"
+            considebar.style.width = ""; // menghapus style="width: 20px !important;"
             // considebar.classList.add('z-20');
             // considebar.classList.remove('z-20');
             toggleBtn.classList.remove('toggle-hidden');
