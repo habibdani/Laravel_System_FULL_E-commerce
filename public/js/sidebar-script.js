@@ -1515,8 +1515,28 @@ function updateInfoFromSessionStorage() {
 
 
 // Jalankan fungsi untuk memperbarui informasi
+const listOrderContainer = document.getElementById('list-order-container');
 
+if (listOrderContainer) {
+    // Function to update sessionStorage whenever content changes
+    const updateSessionStorage = () => {
+        sessionStorage.setItem('List_product_sidebar_HTML', listOrderContainer.innerHTML);
+    };
 
+    // Initialize a MutationObserver
+    const observer = new MutationObserver(() => {
+        updateSessionStorage(); // Update sessionStorage when a mutation is observed
+    });
 
+    // Observe changes to the child elements of list-order-container
+    observer.observe(listOrderContainer, {
+        childList: true, // Monitor addition or removal of child nodes
+        subtree: true,   // Monitor changes within child nodes
+        characterData: true // Monitor text content changes
+    });
+
+    // Initial sessionStorage setup
+    updateSessionStorage();
+}
 
 

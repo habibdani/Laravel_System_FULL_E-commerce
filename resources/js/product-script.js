@@ -57,12 +57,22 @@ document.addEventListener('DOMContentLoaded', function() {
             productTitle.innerText = productData.full_name_product;
             productTitle.setAttribute('product-variant-id',productData.product_variant_id)
 
+            let price_percentage = sessionStorage.getItem('price_percentage');
+            price_percentage = !isNaN(price_percentage) && price_percentage !== null ? parseFloat(price_percentage) : 0;
+            let variant_price = productData.price;
+            let finalPrice = variant_price; // Jika price_percentage null, tidak ada penjumlahan
+            if (price_percentage !== null) {
+                let priceIncrease = (price_percentage / 100) * variant_price;
+                finalPrice = variant_price + priceIncrease;
+            }
+
             const productPrice = document.getElementById('productPrice');
-            productPrice.setAttribute('price-value-product', productData.price);
-            productPrice.innerText = productData.price_display;
+            const formattedPrice = `Rp. ${new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFractionDigits: 0 }).format(finalPrice)}`;
+            productPrice.setAttribute('price-value-product', finalPrice);
+            productPrice.innerText = formattedPrice;
 
             const stockElement = document.getElementById('productStock');
-            stockElement.innerText = productData.stock -1;
+            stockElement.innerText = productData.stock;
 
             const productDescription = document.getElementById('productDescription');
             productDescription.innerHTML = productData.descriptions;
@@ -261,14 +271,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 productName.style.textOverflow = 'ellipsis';
 
                 let price_percentage = sessionStorage.getItem('price_percentage');
-                // Pastikan price_percentage adalah angka yang valid, jika tidak, set ke null
                 price_percentage = !isNaN(price_percentage) && price_percentage !== null ? parseFloat(price_percentage) : 0;
-                // Harga produk
                 let variant_price = product.variant_price;
-                // Cek jika price_percentage valid (bukan null)
                 let finalPrice = variant_price; // Jika price_percentage null, tidak ada penjumlahan
                 if (price_percentage !== null) {
-                    // Menghitung harga setelah penambahan price_percentage
                     let priceIncrease = (price_percentage / 100) * variant_price;
                     finalPrice = variant_price + priceIncrease;
                 }

@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loadingSpinner = document.getElementById('loading_spinner');
     loadingSpinner.classList.remove('hidden');
-
+    // if (loadingSpinner) {
+    //     setTimeout(() => {
+    //         loadingSpinner.classList.add('hidden');
+    //     }, 3000);
+    // }
     setTimeout(() => {
         const quantityInput = document.getElementById('quantity');
         const decreaseButton = document.getElementById('decrease');
@@ -244,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 productCardCount++;
                 sessionStorage.setItem('product_card_count', productCardCount);
 
+
                 // Add product card to the sidebar
                 const listOrderContainer = document.querySelector('.list-order-item');
                 const newProductCard = document.createElement('div');
@@ -298,9 +303,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 listOrderContainer.appendChild(newProductCard);
             }
 
-            
-
             updateTotalItemAndPrice();
+
         });
 
         // Fungsi untuk menghitung total harga dan jumlah item di sidebar
@@ -328,6 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 console.error('Elemen totalitem, totalprice, atau jumlahitem tidak ditemukan');
             }
+
         }
 
 

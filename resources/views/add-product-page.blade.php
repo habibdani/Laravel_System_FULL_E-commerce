@@ -14,7 +14,7 @@
             <!-- Header -->
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center">
-                    <img src="{{ secure_asset('storage/icons/keranjang-black.svg') }}" alt="Tambah Produk" class="h-5 w-5 mr-2">
+                    <img src="{{ asset('storage/icons/keranjang-black.svg') }}" alt="Tambah Produk" class="h-5 w-5 mr-2">
                     <span class="font-roboto text-[20px] font-semibold leading-4.5 tracking-wide text-left text-black">Tambah Produk</span>
                 </div>
 
@@ -127,7 +127,7 @@
                     <!-- Variant -->
                     <div class="bg-white shadow rounded-lg p-4 flex items-center justify-center">
                         <div class="text-center">
-                            <img src="{{ secure_asset('storage/icons/warning.svg') }}" alt="Warning" class="h-10 w-10 mb-2">
+                            <img src="{{ asset('storage/icons/warning.svg') }}" alt="Warning" class="h-10 w-10 mb-2">
                             <p class="text-gray-500">Variant tidak boleh kosong</p>
                         </div>
                     </div>

@@ -73,7 +73,7 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::put('/banner-besar/{id}', [ProductController::class, 'updateBannerBesar']); // Update
     Route::delete('/banner-besar/{id}', [ProductController::class, 'deleteBannerBesar']); // Delete
     Route::put('/banner-best-product/{id}', [ProductController::class, 'updateBannerBestProduct']); // Update
-
+    Route::put('/update-presentage',[ProductController::class, 'updatePricePercentage']);
 });
 
 Route::get('/test-middleware', function() {

@@ -24,6 +24,7 @@ Route::get('/dashboard/setting/list-banner-kecil-2', [ViewPageController::class,
 Route::get('/dashboard/setting/list-rekening', [ViewPageController::class, 'dashboardSettingrekening'])->name('dashboard.setting.rekening');
 Route::get('/dashboard/setting/list-wa', [ViewPageController::class, 'dashboardSettingwa'])->name('dashboard.setting.wa');
 Route::get('/dashboard/setting/list-specialproduct', [ViewPageController::class, 'dashboardSettingspecialproduct'])->name('dashboard.setting.specialproduct');
+Route::get('/dashboard/setting/dropship',[ViewPageController::class,'dropshipsetting']);
 // Halaman utama (shop page)
 Route::get('/', function () {
     return view('welcome-page');

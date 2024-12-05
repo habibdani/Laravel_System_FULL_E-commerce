@@ -1102,7 +1102,7 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('images', 'public');
 
             // Mengembalikan path gambar
-            return ApiResponseHelper::success(['image_url' => secure_asset('storage/' . $imagePath)], 'Image uploaded successfully');
+            return ApiResponseHelper::success(['image_url' => asset('storage/' . $imagePath)], 'Image uploaded successfully');
         } catch (\Exception $e) {
             Log::error('Error in uploadImage: ' . $e->getMessage());
             return ApiResponseHelper::error('Something went wrong', 500);
@@ -1328,6 +1328,38 @@ class ProductController extends Controller
                 return ApiResponseHelper::error('Info client not found', 404);
             }
             return ApiResponseHelper::success($results[0], 'Info client retrieved successfully');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    public function updatePricePercentage(Request $request)
+    {
+        try {
+            // Ambil nilai dari body request
+            $id = $request->input('id');
+            $price_percentage = $request->input('price_percentage');
+
+            // Validate if the ID is provided
+            if (!$id) {
+                return ApiResponseHelper::validationError('Client ID is required', 400);
+            }
+
+            // Validate if price_percentage is provided and is numeric
+            if (!isset($price_percentage) || !is_numeric($price_percentage)) {
+                return ApiResponseHelper::validationError('Price percentage must be a valid number', 400);
+            }
+
+            // Execute the update query
+            $updated = DB::update("UPDATE client_types SET price_persentage = ? WHERE id = ?", [$price_percentage, $id]);
+
+            // Check if the update was successful
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Price percentage updated successfully');
+            }
+
+            // If no rows were affected, return an error
+            return ApiResponseHelper::error('No client found with the provided ID', 404);
         } catch (\Exception $e) {
             return ApiResponseHelper::error('Something went wrong', 500);
         }

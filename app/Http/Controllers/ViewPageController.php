@@ -115,4 +115,8 @@ class ViewPageController extends Controller
     {
         return view('welcome-page');
     }
+    public function dropshipsetting()
+    {
+        return view('setting-dropship');
+    }
 }

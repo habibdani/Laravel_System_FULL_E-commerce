@@ -64,6 +64,13 @@
                                 <a href="{{ url('/dashboard/setting/list-banner-kecil-2') }}" class="btn btn-gradient btn-rounded">Kelola</a>
                             </td>
                         </tr>
+                        <tr class="align-middle" style="height: 60px !important">
+                            <td class="text-center">Setting dropship </td>
+                            <td class="text-center">Kelola presentage dropship</td>
+                            <td class="text-center">
+                                <a href="{{ url('/dashboard/setting/dropship') }}" class="btn btn-gradient btn-rounded">Kelola</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
