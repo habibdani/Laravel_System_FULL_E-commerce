@@ -1545,6 +1545,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
         // Jalankan fungsi sekali saat pertama kali halaman dimuat
         updateCartSummary();
-    }, 700);
+    }, 1000);
   
 });

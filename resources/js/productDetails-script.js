@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
                     // Hitung stok tersisa
                     const stock = totalStock - currentValue;
-                    console.log('oke5.6');
+                    // console.log('oke5.6');
                     // Perbarui tampilan stok tersisa
                     // productStockElement.innerText = stock;
                 }, 0); // Timeout diperlukan untuk menangkap nilai terbaru setelah key press
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const storedProductId = sessionStorage.getItem(`product_variant_id_${i}`);
                 if (storedProductId === productVariantId) {
                     // Update quantity and price if the product already exists
-                    console.log('prodictvid',storedProductId);
+                    // console.log('prodictvid',storedProductId);
                     const currentQty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
                     const newQty = currentQty + parseInt(qty);
                     const currentPrice = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
@@ -328,11 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
 
-
         setTimeout(() => {
             loadingSpinner.classList.add('hidden');
-        }, 500);
+        }, 1500);
         loadingSpinner.classList.add('hidden');
-    }, 1500);
+    }, 2500);
 });
 
