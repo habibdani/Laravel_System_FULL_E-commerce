@@ -1,11 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loadingSpinner = document.getElementById('loading_spinner');
     loadingSpinner.classList.remove('hidden');
-    // if (loadingSpinner) {
-    //     setTimeout(() => {
-    //         loadingSpinner.classList.add('hidden');
-    //     }, 3000);
-    // }
+
     setTimeout(() => {
         const quantityInput = document.getElementById('quantity');
         const decreaseButton = document.getElementById('decrease');
@@ -93,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-
         increaseButton.addEventListener('click', () => {
             let currentValue = parseInt(quantityInput.value);
             if (currentValue < stock) {
@@ -103,17 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const productStockElement = document.getElementById('productStock');
-        
+        const productStockElement = parseInt(document.getElementById('productStock').innerText);
         if (quantityInput && productStockElement) {
-            let totalStock = parseInt(productStockElement.innerText, 10); // Total stok awal
-        
+            let totalStock = productStockElement; // Total stok awal
+
             // Pastikan totalStock adalah angka yang valid
             if (isNaN(totalStock)) {
                 totalStock = 0;                
                 return;
             }
-        
             quantityInput.addEventListener('keydown', (event) => {
                 setTimeout(() => {
                     let currentValue = parseInt(quantityInput.value, 10);
@@ -129,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
                     // Hitung stok tersisa
                     const stock = totalStock - currentValue;
-        
+                    console.log('oke5.6');
                     // Perbarui tampilan stok tersisa
                     // productStockElement.innerText = stock;
                 }, 0); // Timeout diperlukan untuk menangkap nilai terbaru setelah key press
@@ -140,10 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalStock = parseInt(productStockElement.innerText, 10); // Perbarui total stok jika stok awal berubah
                 if (isNaN(totalStock)) totalStock = 0;
             });
+            
         } else {
             console.error("Element quantityInput atau productStock tidak ditemukan di DOM.");
         }        
-        
         // fuction ketika menambahkan product ke keranjang
         addButton.addEventListener('click', () => {
             const sidebar = document.getElementById('sidebar');
@@ -201,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const storedProductId = sessionStorage.getItem(`product_variant_id_${i}`);
                 if (storedProductId === productVariantId) {
                     // Update quantity and price if the product already exists
+                    console.log('prodictvid',storedProductId);
                     const currentQty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
                     const newQty = currentQty + parseInt(qty);
                     const currentPrice = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
@@ -304,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             updateTotalItemAndPrice();
-
         });
 
         // Fungsi untuk menghitung total harga dan jumlah item di sidebar

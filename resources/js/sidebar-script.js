@@ -1438,6 +1438,37 @@ function updateInfoFromSessionStorage() {
     }
 }
 
+
+
+
+
+// Jalankan fungsi untuk memperbarui informasi
+
+
+const listOrderContainer = document.getElementById('list-order-container');
+
+if (listOrderContainer) {
+    let previousContent = ''; // Variable to track the previous content of the container
+
+    // Function to update sessionStorage if content has changed
+    const updateSessionStorage = () => {
+        const currentContent = listOrderContainer.innerHTML;
+        if (currentContent !== previousContent) { // Check if content has changed
+            sessionStorage.setItem('List_product_sidebar_HTML', currentContent);
+            previousContent = currentContent; // Update the tracked content
+        }
+    };
+
+    // Set an interval to check for changes every 300ms
+    setInterval(() => {
+        updateSessionStorage();
+    }, 300);
+
+    // Initial sessionStorage setup
+    updateSessionStorage();
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // Fungsi untuk menghitung total item dan total harga
@@ -1462,7 +1493,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Cari span harga berdasarkan ID dan ambil attribute value-price-product-sidebar-XX
                 const priceElement = item.querySelector('span[id^="price-product-sidebar-"]');
                 const price = priceElement ? parseInt(priceElement.getAttribute('value-price-product-sidebar-' + priceElement.id.split('-').pop())) : 0;
-    
+                console.log('tes',price);
+                console.log('tes2',qty);
                 totalItem += qty;
                 totalPrice += qty * price;
             });
@@ -1470,7 +1502,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update jumlah item dan total harga
             totalItemElement.innerText = totalItem;
             totalPrice = totalPrice || 0;
-            totalPriceElement.innerText = ` ${totalPrice.toLocaleString()}`;
+            totalPriceElement.innerText = `${totalPrice}`;
     
             // Update juga attribute 'value' untuk totalitem dan totalprice
             totalItemElement.setAttribute('value', totalItem);
@@ -1517,34 +1549,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 700);
   
 });
-
-
-
-// Jalankan fungsi untuk memperbarui informasi
-
-
-const listOrderContainer = document.getElementById('list-order-container');
-
-if (listOrderContainer) {
-    let previousContent = ''; // Variable to track the previous content of the container
-
-    // Function to update sessionStorage if content has changed
-    const updateSessionStorage = () => {
-        const currentContent = listOrderContainer.innerHTML;
-        if (currentContent !== previousContent) { // Check if content has changed
-            sessionStorage.setItem('List_product_sidebar_HTML', currentContent);
-            previousContent = currentContent; // Update the tracked content
-        }
-    };
-
-    // Set an interval to check for changes every 300ms
-    setInterval(() => {
-        updateSessionStorage();
-    }, 300);
-
-    // Initial sessionStorage setup
-    updateSessionStorage();
-}
-
-
-
