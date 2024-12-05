@@ -1169,12 +1169,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // hidden tombbol di bebrapa halaman
 document.addEventListener("DOMContentLoaded", function() {
-    // const buttonPilihAlamat = document.getElementById("bottonpilihAlamat");
+    const buttonPilihAlamat = document.getElementById("bottonpilihAlamat");
     // const buttonGotoShop = document.getElementById("bottonGoShop");
     const buttonTotalBayar = document.getElementById("totalbayar");
-    const buttonpyment = document.getElementById('payment');
+    const buttonpyment = document.getElementById('bingkaibuttonpyment');
     const currentUrl = window.location.pathname;
-
+// const bingkaibuttonpyment
     // Periksa apakah URL adalah '/view-maps' atau '/'
     if (currentUrl === '/view-maps') {
       // Tambahkan class 'hidden' jika di halaman /view-maps
@@ -1189,7 +1189,7 @@ document.addEventListener("DOMContentLoaded", function() {
       buttonTotalBayar.classList.add('hidden');
       buttonpyment.classList.remove('hidden');
     }else if(currentUrl === '/view-product'){
-    //   buttonPilihAlamat.classList.add('hidden');
+      buttonPilihAlamat.classList.add('hidden');
     //   buttonGotoShop.classList.remove('hidden');
       buttonTotalBayar.classList.add('hidden');
       buttonpyment.classList.add('hidden');
@@ -1241,7 +1241,7 @@ window.onbeforeunload = function () {
 const updatePaymentButtonState = () => {
     const buttonpayment = document.getElementById('payment');
     const buttonpilihalamat = document.getElementById('pilihAlamatok');
-    const productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;
+    const productCardCount = parseInt(sessionStorage.getItem('product_card_count') || 0) ;
     const districtId = parseInt(sessionStorage.getItem('district_id')) || 0;
     const bingkaibuttonalamt = document.getElementById('bottonpilihAlamat');
     const bingkaibuttonpayment = document.getElementById('bingkaibuttonpyment');
@@ -1267,7 +1267,7 @@ const updatePaymentButtonState = () => {
         bingkaibuttonpayment.classList.remove('hidden');
     } else {
         // Sembunyikan semua tombol jika kondisi tidak terpenuhi
-        bingkaibuttonalamt.classList.add('hidden');
+        bingkaibuttonalamt.classList.remove('hidden');
         bingkaibuttonpayment.classList.add('hidden');
     }
 
