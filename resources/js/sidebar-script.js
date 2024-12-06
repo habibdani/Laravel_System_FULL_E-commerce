@@ -1247,38 +1247,39 @@ const updatePaymentButtonState = () => {
     const bingkaibuttonpayment = document.getElementById('bingkaibuttonpyment');
     const checkclientemail = sessionStorage.getItem('client_email');
     // Dapatkan URL halaman saat ini
-    const currentUrl = window.location.href;
 
     // Periksa kondisi utama (productCardCount dan districtId)
-    if (productCardCount === 0) {
-        // Sembunyikan tombol alamat jika productCardCount = 0
-        bingkaibuttonalamt.classList.add('hidden');
-        bingkaibuttonpayment.classList.add('hidden');
-    } else if (productCardCount > 0 && districtId > 0 && checkclientemail) {
-        // Aktifkan tombol payment jika kedua kondisi terpenuhi
-        buttonpayment.removeAttribute('disabled');
-        buttonpayment.classList.add('bg-[#E01535]', 'text-white');
-        buttonpayment.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]', 'hidden');
-
-        // Sembunyikan tombol alamat
-        bingkaibuttonalamt.classList.add('hidden');
-
-        // Tampilkan tombol Payment
-        bingkaibuttonpayment.classList.remove('hidden');
-    } else {
-        // Sembunyikan semua tombol jika kondisi tidak terpenuhi
-        bingkaibuttonalamt.classList.remove('hidden');
-        bingkaibuttonpayment.classList.add('hidden');
-    }
+    
 
     // Periksa posisi route halaman
-    if (currentUrl === "http://127.0.0.1:8001/view-shop") {
-        // Sembunyikan bingkaibuttonpayment
-        bingkaibuttonalamt.classList.remove('hidden');
-        bingkaibuttonpayment.classList.add('hidden');
-    } else if (currentUrl.startsWith("http://127.0.0.1:8001/view-maps?client_type_id=1")) {
+    if (window.location.pathname === "/view-shop" || window.location.pathname === "/view-product") {
+        if (productCardCount > 0){
+            bingkaibuttonalamt.classList.remove('hidden');
+            bingkaibuttonpayment.classList.add('hidden');
+        }else{
+            bingkaibuttonalamt.classList.add('hidden');
+            bingkaibuttonpayment.classList.add('hidden');
+        }        // Sembunyikan bingkaibuttonpayment
+       
+    } else if (window.location.pathname === "/view-maps") {
         // Sembunyikan bingkaibuttonalamt
-        bingkaibuttonalamt.classList.add('hidden');
+        if (productCardCount > 0 && districtId > 0 && checkclientemail) {
+            // Aktifkan tombol payment jika kedua kondisi terpenuhi
+            buttonpayment.removeAttribute('disabled');
+            buttonpayment.classList.add('bg-[#E01535]', 'text-white');
+            buttonpayment.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]', 'hidden');
+    
+            // Sembunyikan tombol alamat
+            bingkaibuttonalamt.classList.add('hidden');
+    
+            // Tampilkan tombol Payment
+            bingkaibuttonpayment.classList.remove('hidden');
+        } else {
+            // Sembunyikan semua tombol jika kondisi tidak terpenuhi
+            bingkaibuttonalamt.classList.remove('hidden');
+            bingkaibuttonpayment.classList.add('hidden');
+        }
+        // bingkaibuttonalamt.classList.add('hidden');
     }
 };
 

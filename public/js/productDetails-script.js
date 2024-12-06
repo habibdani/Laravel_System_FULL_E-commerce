@@ -298,12 +298,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             
-
             updateTotalItemAndPrice();
         });
 
         // Fungsi untuk menghitung total harga dan jumlah item di sidebar
         function updateTotalItemAndPrice() {
+
             const priceElements = document.querySelectorAll('[id^="price-product-sidebar-"]');
             let totalPrice = 0;
             let totalItems = 0;
@@ -325,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalPriceElement.innerText = ` ${totalPrice.toLocaleString('id-ID')}`;
                 jumlahItemElement.classList.remove('hidden');
             } else {
+
                 console.error('Elemen totalitem, totalprice, atau jumlahitem tidak ditemukan');
             }
         }
@@ -333,9 +334,5 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             loadingSpinner.classList.add('hidden');
         }, 500);
-    }, 1500);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-
+    }, 3500);
 });
