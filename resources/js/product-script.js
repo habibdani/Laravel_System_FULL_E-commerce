@@ -385,12 +385,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // const toslide2andshop = document.getElementById('to-slide-2-and-shop');
         // toslide2andshop.classList.add('hidden');
 
-        const totalbayar = document.getElementById('totalbayar');
-        totalbayar.classList.remove('hidden');
+        // const totalbayar = document.getElementById('totalbayar');
+        // totalbayar.classList.remove('hidden');
 
         const toggleIcon = toggleBtn.querySelector('img');
         const hiddenIcon = toggleBtn.getAttribute('data-hidden-icon');
         toggleIcon.src = hiddenIcon; // Mengganti src dengan gambar tersembunyi
+
+        const totalBayarElement = document.getElementById('totalbayar');
+        totalBayarElement.classList.add('hidden');
     });
 
 });

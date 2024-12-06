@@ -333,6 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             loadingSpinner.classList.add('hidden');
-        }, 500);
-    }, 3500);
+        }, 1000);
+    }, 5000);
 });

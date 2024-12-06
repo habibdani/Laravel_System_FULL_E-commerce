@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('btn-slide-1').addEventListener('click', function() {
         showSlide(1);
+        validatepyment = false;
     });
-
     document.getElementById('createorder').addEventListener('click', async function () {
         try {
             // Collect data from inputs and SessionStorage
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const ongkir = sessionStorage.getItem('ongkir_value_attribute');
             const shipping_id = sessionStorage.getItem('tipe_pembelian');
             const additionalPricePercentage = parseFloat(sessionStorage.getItem('total_price_value')) || 0;
-
+            const type_client = sessionStorage.getItem('type_client');
             // Hardcoded fields
             const commissionPercentage = null; // Placeholder for commission
             const ktpImage = "path/to/ktp_image.jpg"; // Placeholder
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Prepare the payload
             const payload = {
-                client_type_id: 1, // Placeholder
+                client_type_id: type_client, // Placeholder
                 client_name: clientName,
                 client_phone_number: clientPhoneNumber,
                 client_email: clientEmail,
@@ -168,11 +168,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Additional actions after successful order creation
             alert('Order created successfully!');
-            showSlide(4); // Display slide 4
+            // showSlide(4); // Display slide 4
             document.getElementById('overlay').classList.add('hidden'); // Hide overlay
             // Pemanggilan fungsi
             // Panggil fungsi untuk mengirim email
             sendEmail();
+            const loadingSpinner = document.getElementById('loading_spinner');
+            loadingSpinner.classList.remove('hidden');
         } catch (error) {
             console.error('Error creating order:', error);
             alert('Error creating order. Please try again.');
@@ -213,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 console.log("✅ Email berhasil dikirim:", requestBody);
+                resetdatasessionstorage();
             } else {
                 console.error("❌ Gagal mengirim email:", errorResponse);
             }
@@ -221,11 +224,80 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function createPopup() {
+        // Buat elemen overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'popupOverlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'rgba(0, 0, 0, 0.5)';
+        overlay.style.zIndex = '999';
+        overlay.style.display = 'flex'; // Gunakan flexbox
+        overlay.style.alignItems = 'center'; // Vertikal di tengah
+        overlay.style.justifyContent = 'center'; // Horizontal di tengah
+    
+        // Buat elemen popup
+        const popup = document.createElement('div');
+        popup.id = 'popupSuccess';
+        popup.style.background = 'white';
+        popup.style.borderRadius = '10px';
+        popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+        popup.style.padding = '20px';
+        popup.style.zIndex = '1000';
+        popup.style.width = '90%';
+        popup.style.maxWidth = '400px';
+        popup.style.textAlign = 'center'; // Konten terpusat
+    
+        // Tambahkan konten ke dalam popup
+        popup.innerHTML = `
+            <h2 style="margin: 0 0 10px; font-size: 18px; color: #333;">Pesanan berhasil dibuat!</h2>
+            <p>Silahkan check email Anda untuk melihat detail informasi pesanan Anda.</p>
+            <button id="popupButton" style="
+                margin-top: 15px;
+                background: #4caf50;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+            ">Oke</button>
+        `;
+    
+        // Tambahkan event listener untuk tombol popup
+        popup.querySelector('#popupButton').addEventListener('click', () => {
+            redirectToPage();
+        });
+    
+        // Tambahkan overlay dan popup ke body
+        overlay.appendChild(popup); // Tambahkan popup ke dalam overlay
+        document.body.appendChild(overlay); // Tambahkan overlay ke body
+    }
+    
+    // Fungsi untuk mengarahkan ke halaman tertentu
+    function redirectToPage() {
+        window.location.href = 'http://127.0.0.1:8001/';
+    }
+    
+    let preventSave = false;
+
+    function resetdatasessionstorage() {
+        preventSave = true; // Set flag untuk mencegah saveDataToSessionStorage
+        sessionStorage.clear(); // Hapus semua data dari sessionStorage
+        const loadingSpinner = document.getElementById('loading_spinner');
+        loadingSpinner.classList.add('hidden');
+        createPopup();    
+    }
 
 // payment
+    // let validatepyment = false;
+    sessionStorage.setItem(`validatepyment`,false);
     function handleSlideAndPaymentActions() {
         showSlide(3); // Menampilkan slide 3
-
+        sessionStorage.setItem(`validatepyment`,true);
         const storedLocation = sessionStorage.getItem('city_value');
         if (storedLocation) {
             // Mengubah isian dari input #kota jika ada nilai city
@@ -243,6 +315,9 @@ document.addEventListener('DOMContentLoaded', function() {
             buttonTotalBayar.classList.remove('hidden'); // Menampilkan tombol total bayar
             updateTotalBayarText(); // Memperbarui teks total bayar
         }
+
+        // const totalBayarElement = document.getElementById('totalbayar');
+        // totalBayarElement.classList.remove('hidden');
     }
 
     function checkFormInputs() {
@@ -308,6 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('payment').addEventListener('click', handleSlideAndPaymentActions);
 
     function showSlide4(slideNumber) {
+        sessionStorage.setItem(`validatepyment`,false);
         document.querySelectorAll('[id^="slide-"]').forEach(slide => slide.classList.add('hidden'));
         document.getElementById('slide-' + slideNumber).classList.remove('hidden');
 
@@ -677,7 +753,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         `product_varaint_quantity_${index}`,
                         `product_price_text_${index}`,
                         `product_variant_name_${index}`,
-                        `productImageSrc-${index}`,
+                        `productImageSrc_${index}`,
                         `product_variant_price_value_${index}`,
                         `product_variant_price_value_satuan_${index}`,
                         `product_variant_item_count_${index}`
@@ -854,7 +930,7 @@ function saveDataToSessionStorage() {
 
         // Simpan data gambar
         if (imgElement) {
-            sessionStorage.setItem(`productImageSrc-${index}`, imgElement.src);
+            sessionStorage.setItem(`productImageSrc_${index}`, imgElement.src);
         }
 
         // Simpan ID produk dan text-nya
@@ -1015,7 +1091,7 @@ function renderProductsFromSessionStorage() {
     if (data.totalItemValue) {
         for (let i = 0; i < data.totalItemValue; i++) {
             // Ambil data produk dari sessionStorage
-            const productImageSrc = sessionStorage.getItem(`productImageSrc-${i}`);
+            const productImageSrc = sessionStorage.getItem(`productImageSrc_${i}`);
             const productIdValue = sessionStorage.getItem(`product_variant_id_${i}`);
             const productIdText = sessionStorage.getItem(`product_variant_name_${i}`);
             const productPriceValue = sessionStorage.getItem(`product_variant_price_value_${i}`);
@@ -1230,11 +1306,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Simpan data sebelum halaman ditutup atau direfresh
 window.onbeforeunload = function () {
-    try {
-        saveDataToSessionStorage();
-        console.log('Data telah disimpan ke sessionStorage sebelum halaman ditutup.');
-    } catch (error) {
-        console.error('Gagal menyimpan data sebelum halaman ditutup:', error);
+    if (!preventSave) { // Hanya jalankan jika preventSave = false
+        try {
+            saveDataToSessionStorage();
+            console.log('Data telah disimpan ke sessionStorage sebelum halaman ditutup.');
+        } catch (error) {
+            console.error('Gagal menyimpan data sebelum halaman ditutup:', error);
+        }
     }
 };
 
@@ -1246,6 +1324,8 @@ const updatePaymentButtonState = () => {
     const bingkaibuttonalamt = document.getElementById('bottonpilihAlamat');
     const bingkaibuttonpayment = document.getElementById('bingkaibuttonpyment');
     const checkclientemail = sessionStorage.getItem('client_email');
+    const totalBayarElement = document.getElementById('totalbayar');
+
     // Dapatkan URL halaman saat ini
 
     // Periksa kondisi utama (productCardCount dan districtId)
@@ -1256,9 +1336,12 @@ const updatePaymentButtonState = () => {
         if (productCardCount > 0){
             bingkaibuttonalamt.classList.remove('hidden');
             bingkaibuttonpayment.classList.add('hidden');
+            totalBayarElement.classList.add('hidden');
         }else{
             bingkaibuttonalamt.classList.add('hidden');
             bingkaibuttonpayment.classList.add('hidden');
+            totalBayarElement.classList.add('hidden');
+            // buttonpilihalamat.classList.add('hidden');
         }        // Sembunyikan bingkaibuttonpayment
        
     } else if (window.location.pathname === "/view-maps") {
@@ -1268,16 +1351,27 @@ const updatePaymentButtonState = () => {
             buttonpayment.removeAttribute('disabled');
             buttonpayment.classList.add('bg-[#E01535]', 'text-white');
             buttonpayment.classList.remove('bg-[#F4F4F4]', 'text-[#ADADAD]', 'hidden');
-    
-            // Sembunyikan tombol alamat
+            bingkaibuttonpayment.classList.remove('hidden');
             bingkaibuttonalamt.classList.add('hidden');
+
+            if (sessionStorage.getItem('validatepyment') === 'true') {
+                totalBayarElement.classList.remove('hidden');
+                bingkaibuttonpayment.classList.add('hidden');
+            }
+            else{
+                totalBayarElement.classList.add('hidden');
+                bingkaibuttonpayment.classList.remove('hidden');
+            }
+            // 
+            // Sembunyikan tombol alamat
     
             // Tampilkan tombol Payment
-            bingkaibuttonpayment.classList.remove('hidden');
+            
         } else {
             // Sembunyikan semua tombol jika kondisi tidak terpenuhi
-            bingkaibuttonalamt.classList.remove('hidden');
+            bingkaibuttonalamt.classList.add('hidden');
             bingkaibuttonpayment.classList.add('hidden');
+            totalBayarElement.classList.add('hidden');
         }
         // bingkaibuttonalamt.classList.add('hidden');
     }
@@ -1342,7 +1436,7 @@ function removeDuplicateProductVariantIds() {
                     `product_varaint_quantity_${maxIndex}`,
                     `product_price_text_${maxIndex}`,
                     `product_variant_name_${maxIndex}`,
-                    `productImageSrc-${maxIndex}`,
+                    `productImageSrc_${maxIndex}`,
                     `product_variant_price_value_${maxIndex}`,
                     `product_variant_price_value_satuan_${maxIndex}`,
                     `product_variant_item_count_${maxIndex}`

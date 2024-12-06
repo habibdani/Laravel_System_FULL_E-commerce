@@ -4,6 +4,7 @@ import { fetchShippingDistricts } from './api/fetchShippingDistricts';
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Leaflet map
     var map = L.map('map-container').setView([-6.2657501, 106.7012177], 13);
+    sessionStorage.setItem('tipe_pembelian',2);
 
     // Load and display OpenStreetMap tiles
     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('btn-slide-' + slideNumber).classList.add('text-white', 'bg-[#E01535]');
         document.getElementById('btn-slide-' + slideNumber).classList.remove('text-[#9D9D9D]', 'bg-transparent');
     }
+
 
     // Default map marker and icons
     const defaultOrigin = [-6.2657501, 106.7012177];
