@@ -27,7 +27,7 @@ Route::get('/dashboard/setting/list-specialproduct', [ViewPageController::class,
 Route::get('/dashboard/setting/dropship',[ViewPageController::class,'dropshipsetting']);
 // Halaman utama (shop page)
 Route::get('/', function () {
-    return view('view-shop');
+    return view('shop-page');
 });
 
 // Rute untuk halaman peta, toko, dan produk
