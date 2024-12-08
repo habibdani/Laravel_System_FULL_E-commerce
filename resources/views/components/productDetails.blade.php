@@ -1,9 +1,9 @@
 <section name="detail-product" class="py-0 mt-8 z-5">
     <div class="parallax-appear">
         <div class="container mx-auto w-full h-full">
-            <div class="flex flex-col pt-20 lg:flex-row justify-between space-y-3 lg:space-y-0 lg:space-x-3 lg:max-w-[90%] w-full mx-auto">
+            <div class="flex flex-col pt-20 lg:flex-row justify-between space-y-3 lg:space-y-0 lg:space-x-3 w-[90%] mx-auto">
                 <!-- Left Section (Image and Thumbnails) -->
-                <div class="lg:w-3/4 w-full flex image-and-thumbnails flex-col lg:flex-row items-start space-x-3">
+                <div id="detailproductleft" class="lg:w-3/4 w-full flex image-and-thumbnails flex-col lg:flex-row items-start space-x-3">
                     <div class="w-full lg:w-1/3 flex flex-col z-10 responsive-main-image">
                         <img id="mainImage" src="{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}"
 
@@ -89,6 +89,8 @@
         </div>
     </div>
     <style>
+        
+
         .gelombang-option.active,
         .tebal-option.active {
             border-color: #E01535;
@@ -96,10 +98,10 @@
             background-color: #F9F5F6;
         }
 
-        @media (max-width: 428px) {
+        @media (max-width: 1023px) {
             .responsive-main-image {
-                max-width: 90%;
-                width: 100%;
+                /* max-width: 90%; */
+                width: 90%;
                 margin: 0 auto; /* Center the div horizontally */
                 display: flex;
                 align-items: center;
@@ -108,10 +110,15 @@
 
             /* Sesuaikan juga ukuran gambar utama */
             #mainImage {
-                max-width: 100%; /* Ensure image fits within 390px container */
-                width: 331px;
+                /* max-width: 90%; Ensure image fits within 390px container */
+                width: 90%;
                 height: auto;
                 object-fit: cover;
+            }
+
+            #detailproductleft > * {
+                margin-right: 0 !important; /* Hilangkan efek space-x-3 (biasanya gap antar elemen) */
+                gap: 0 !important; /* Jika menggunakan gap antar flex/grid item */
             }
 
             /* Thumbnail wrapper agar tidak melewati lebar kontainer */
@@ -125,7 +132,7 @@
 
             .main-detail-product,
             .submain-detail-product {
-                width: 331px; /* Atur lebar khusus pada layar kecil */
+                width: 90%; /* Atur lebar khusus pada layar kecil */
                 margin: 0 auto; /* Center secara horizontal */
             }
             .image-and-thumbnails {
@@ -133,7 +140,7 @@
             }
 
             .product-note {
-                width: 331px; /* Atur lebar khusus pada layar kecil */
+                width: 90%; /* Atur lebar khusus pada layar kecil */
                 margin: 0 auto; /* Center secara horizontal */
             }
 
@@ -154,7 +161,7 @@
     <script> // script khusu responsive
         function handleResponsiveClasses() {
             const element = document.querySelector('.image-and-thumbnails');
-            if (window.innerWidth <= 428) {
+            if (window.innerWidth <= 1023) {
                 element.classList.remove('space-x-3');
             } else {
                 element.classList.add('space-x-3');

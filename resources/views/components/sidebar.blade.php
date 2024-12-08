@@ -64,9 +64,14 @@
         }
 
         /* CSS untuk layar ponsel atau ukuran layar 428px ke bawah */
-        @media (max-width: 428px) {
+        @media (max-width: 499px) {
             #container-sidebar {
                 width: 90%; /* Mengganti w-1/4 dengan w-[85%] */
+            }
+        }
+        @media (min-width: 500px) and (max-width: 999px) {
+            #container-sidebar {
+                width: 40%; /* Lebar untuk layar antara 450px dan 750px */
             }
         }
     </style>

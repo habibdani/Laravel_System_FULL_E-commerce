@@ -106,7 +106,7 @@
     /* Stack Right Section below Left Section */
         section[name="consult"] .flex.flex-col.lg\:flex-row {
             flex-direction: column;
-            width: 100%;
+            width: 90%;
         }
         #right-section-consule {
             width: 245px !important; /* Paksa ukuran di layar lg */
@@ -121,14 +121,14 @@
         }
 
         /* Set Left Section width to 331px for small screens */
-        section[name="consult"] .w-full.lg\:w-\[720px\] {
+        /* section[name="consult"] .w-full.lg\:w-\[720px\] {
             width: 331px;
-        }
+        } */
 
         /* Set Right Section width to 331px for small screens */
-        section[name="consult"] .w-full.lg\:w-\[245px\] {
+        /* section[name="consult"] .w-full.lg\:w-\[245px\] {
             width: 331px;
-        }
+        } */
 
         /* Adjust the position of navigation buttons */
         #left-tangle, #right-tangle {
