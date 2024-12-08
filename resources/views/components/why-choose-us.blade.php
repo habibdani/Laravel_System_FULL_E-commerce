@@ -1,9 +1,9 @@
-<section name="why" id="sessionwhy" class="py-0 mt-12">
+<section name="why" id="sessionwhy" class="py-0 mt-12 items-center justify-center mx-auto" style="margin-top: 2rem;">
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full px-4" style="height: 279px !important;">
             <div id="subsessionwhy" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[90%] space-y-4 lg:space-y-0 lg:space-x-[30px]">
                 <!-- Left Section -->
-                <div class="shadow-custom w-full lg:max-w-full h-full p-8 flex items-center justify-between rounded-md bg-white relative overflow-visible">
+                <div class="shadow-custom w-full lg:max-w-full h-full p-8 flex items-center justify-between rounded-md bg-white relative ">
                     <div class="flex-1 pr-6">
                         <h2 class="text-[22px] font-semibold mb-6 text-center lg:text-left">Why should you choose Andal Prima?</h2>
                         <div class="space-y-2">
