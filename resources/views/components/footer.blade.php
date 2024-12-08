@@ -1,4 +1,4 @@
-<footer class=" py-0 mt-8 mx-9">
+<footer class=" py-0 mt-8">
     <div class="parallax-appear">
         <div class="mx-auto p-2 bg-[#E01535] w-[90%] text-white h-[121.86px] rounded-lg flex items-center justify-between">
             <!-- Left Section: Logo and Social Media Icons -->
@@ -59,7 +59,7 @@
         }
     }
 
-    @media (max-width: 428px) {
+    @media (max-width: 1024px) {
         /* Susun bagian footer secara vertikal */
         .responsive-br {
             display: none; /* Sembunyikan <br> */
@@ -68,7 +68,7 @@
             flex-direction: column; /* Mengatur elemen secara vertikal */
             align-items: center;
             text-align: center;
-            width: 100%; /* Lebar penuh */
+            width: 90%; /* Lebar penuh */
             padding: 1rem;
             height: auto; /* Sesuaikan tinggi otomatis */
         }

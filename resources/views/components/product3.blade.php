@@ -1,4 +1,4 @@
-<section name="product3" class="py-0 mt-8" style="margin-bottom: 2rem; flex-direction: column; text-align: center;">
+<section name="product3" class="py-0 mt-8" style="display: block;">
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
             <div id="subproduct3" class="relative w-[90%] flex items-center justify-between" >

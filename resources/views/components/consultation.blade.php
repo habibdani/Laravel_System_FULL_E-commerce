@@ -4,14 +4,14 @@
             <!-- Ubah kelas flex agar responsif -->
             <div id="subsessionconsule" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[90%] space-y-4 lg:space-y-0 lg:space-x-[30px]">
                 <!-- Left Section -->
-                <div class="shadow-custom w-full lg:w-full h-[245px] pt-4 pb-4 pl-4 pr-0 flex items-center justify-between rounded-md bg-white space-x-[20px]">
+                <div id="consulsectionleft" class="shadow-custom w-full lg:w-full h-[245px] pt-4 pb-4 pl-4 pr-0 flex items-center justify-between rounded-md bg-white space-x-[20px]">
                     <div class="ml-[10px]">
                         <h2 class="font-roboto text-[22px] font-bold mb-3">Consult your needs now</h2>
                         <p class="font-roboto text-[12px] text-[#6B6B6B] mb-3">Get the best offer from us, contact us and we will immediately serve what you need.</p>
                         <a href="mailto:team@andalprima.co.id" class="flex items-center justify-center w-[95px] h-[28.5px] inline-block bg-[#E01535] font-roboto text-[14px] font-normal text-white rounded">Contact Us</a>
                     </div>
                     <div class="flex items-center space-x-[20px]">
-                        <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-[123px] w-[118px]">
+                        <img src="{{ asset('storage/design/message.svg') }}" alt="message" class="h-full w-[118px]">
                         <div class="banner-wrapper rounded-r-md">
                             <img src="{{ asset('storage/images/123.jpeg') }}" alt="image" class="rounded-r-md" id="banner-kecil-2">
                         </div>
@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- Right Section -->
-                <div id="right-section-consule" class="relative w-full lg:w-[245px] h-[245px] shadow-custom bg-cover z-[-10] rounded-md bg-center p-4 text-center"
+                <div id="right-section-consule" class="relative sm:w-full lg:w-[245px] h-[245px] shadow-custom bg-cover z-[-10] rounded-md bg-center p-4 text-center"
                 style="background-image: url('{{ asset('storage/images/istockphoto-870572906-612x612.jpg') }}');">
                     <!-- Left rectangle -->
                     <!-- <div id="left-tangle" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-[46px] w-[23px] bg-black bg-opacity-50 flex items-center justify-center cursor-pointer">
@@ -102,16 +102,19 @@
         box-shadow: 0px 4px 4px 0px #00000026;
     }
 
-    @media (max-width: 450px) {
+    @media (max-width: 1124px) {
     /* Stack Right Section below Left Section */
         section[name="consult"] .flex.flex-col.lg\:flex-row {
             flex-direction: column;
             width: 100%;
         }
-
-        #banner-kecil-2{
-            display: none;
+        #right-section-consule {
+            width: 245px !important; /* Paksa ukuran di layar lg */
         }
+
+        /* #banner-kecil-2{
+            display: none;
+        } */
         /* Remove horizontal spacing and add vertical spacing for smaller screens */
         section[name="consult"] .space-y-4 {
             margin-bottom: 16px;
@@ -162,10 +165,16 @@
             text-align: center;
             width: auto;
         }
-        #subsessionconsule{
+        /* #subsessionconsule{
             width: 80%;
+        } */
+    }
+    @media (max-width: 543px) {
+        #consulsectionleft{
+            display: none;
         }
     }
+    
 
 </style>
 

@@ -1,6 +1,6 @@
-<section name="why" id="sessionwhy" class="py-0 mt-12 items-center justify-center mx-auto" style="margin-top: 2rem;">
+<section name="why" id="sessionwhy" class="py-0 mt-12" style="">
     <div class="parallax-appear">
-        <div class="flex flex-col items-center justify-center mx-auto w-full px-4" style="height: 279px !important;">
+        <div class="flex flex-col items-center justify-center mx-auto w-full" style="height: 279px !important;">
             <div id="subsessionwhy" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[90%] space-y-4 lg:space-y-0 lg:space-x-[30px]">
                 <!-- Left Section -->
                 <div class="shadow-custom w-full lg:max-w-full h-full p-8 flex items-center justify-between rounded-md bg-white relative ">
@@ -39,7 +39,7 @@
                 </div>
 
                 <!-- Right Section -->
-                <div class="shadow-custom w-full lg:max-w-[245px] h-full p-8 flex flex-col items-center justify-between rounded-md bg-white relative overflow-visible">
+                <div class="shadow-custom w-full lg:max-w-[206px] h-full p-8 flex flex-col items-center justify-between rounded-md bg-white relative overflow-visible">
                     <div id="whyright" class="absolute left-[-135px] z-10 lg:block">
                         <img src="{{ asset('storage/design/person.svg') }}" alt="person" class="z-1">
                     </div>
@@ -80,8 +80,12 @@
     }
 
     /* Responsive styling */
-
-    @media (max-width: 450px) {
+    @media (min-width: 1125px) {
+        #sessionwhy {
+            display: block; /* Tampilkan elemen pada layar besar */
+        }
+    }
+    @media (max-width: 1124px) {
         #subsessionwhy{
             width: 80%;
         }

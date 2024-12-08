@@ -41,6 +41,16 @@
         </div>
 </section>
 <style>
+    #subsessionproductexplore {
+        position: relative; /* Pastikan posisi parent relative */
+        overflow: hidden; /* Sembunyikan elemen yang keluar dari batas */
+        box-sizing: border-box;
+    }
+
+    /* #explore-product-list {
+        max-width: 100%; 
+    } */
+
     .shadow-custom {
         box-shadow: 0px 4px 4px 0px #00000026;
     }
