@@ -2,7 +2,7 @@
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
             <!-- Ubah kelas flex agar responsif -->
-            <div id="subsessionconsule" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[1300px] space-y-4 lg:space-y-0 lg:space-x-[30px]">
+            <div id="subsessionconsule" class="flex flex-col lg:flex-row items-center justify-center w-full lg:w-[90%] space-y-4 lg:space-y-0 lg:space-x-[30px]">
                 <!-- Left Section -->
                 <div class="shadow-custom w-full lg:w-full h-[245px] pt-4 pb-4 pl-4 pr-0 flex items-center justify-between rounded-md bg-white space-x-[20px]">
                     <div class="ml-[10px]">

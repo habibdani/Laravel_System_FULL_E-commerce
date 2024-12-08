@@ -1,7 +1,7 @@
 <section name="special-product" id="sessionproductspecial" class="py-0 mt-8">
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-            <div id="subsessionproductspecial" class="relative w-[1300px] flex items-center justify-between">
+            <div id="subsessionproductspecial" class="relative w-[90%] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk Spesial) -->
                 <div id="special-product" class="relative z-0 shadow-custom w-full h-[285.14px] bg-white rounded-md overflow-hidden">
                     <div class="p-5">
