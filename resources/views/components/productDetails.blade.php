@@ -1,7 +1,7 @@
 <section name="detail-product" class="py-0 mt-8 z-5">
     <div class="parallax-appear">
         <div class="container mx-auto w-full h-full">
-            <div class="flex flex-col pt-20 lg:flex-row justify-between space-y-3 lg:space-y-0 lg:space-x-3 lg:max-w-[1200px] w-full mx-auto">
+            <div class="flex flex-col pt-20 lg:flex-row justify-between space-y-3 lg:space-y-0 lg:space-x-3 lg:max-w-[1300px] w-full mx-auto">
                 <!-- Left Section (Image and Thumbnails) -->
                 <div class="lg:w-3/4 w-full flex image-and-thumbnails flex-col lg:flex-row items-start space-x-3">
                     <div class="w-full lg:w-1/3 flex flex-col z-10 responsive-main-image">

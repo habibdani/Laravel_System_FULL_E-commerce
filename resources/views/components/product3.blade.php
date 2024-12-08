@@ -1,7 +1,7 @@
 <section name="product3" class="py-0 mt-8">
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-            <div id="subproduct3" class="relative w-[1200px] flex items-center justify-between">
+            <div id="subproduct3" class="relative w-[1300px] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk Spesial) -->
                 <div id="special-product" class="relative z-0 shadow-custom w-[325.53px] h-[285.14px] bg-white rounded-md overflow-hidden">
                     <div id="best-product-background"

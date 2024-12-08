@@ -1,7 +1,7 @@
 <section name="filter-product" id="sessionproductfilter" class="py-0 mt-8">
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-            <div id="subsessionproductfilter" class="relative w-[1200px] flex items-center justify-between">
+            <div id="subsessionproductfilter" class="relative w-[1300px] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk filter) -->
                 <div id="filter-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
                     <div class="p-5">

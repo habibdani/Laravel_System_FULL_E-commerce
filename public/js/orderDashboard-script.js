@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="5" data-status-name="Delivered">Delivered</li>
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="6" data-status-name="Unpaid">Unpaid</li>
                                 <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="7" data-status-name="Reject">Reject</li>
-                                <li class="p-2 hover:bg-gray-100 cursor-pointer" data-status-id="1" data-status-name="Order Receipt">Order Receipt</li>
                             </ul>
                         </td>
                         <td class="px-6 py-4">Rp. ${new Intl.NumberFormat('id-ID').format(order.amount)}</td>

@@ -1,7 +1,7 @@
 <section name="filproductid-product" id="sessionproductfilproductid" class="py-0 mt-8">
     <div class="parallax-appear">
         <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-            <div id="subsessionproductfilproductid" class="relative w-[1200px] mt-[100px] flex items-center justify-between">
+            <div id="subsessionproductfilproductid" class="relative w-[1300px] mt-[100px] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk filproductid) -->
                 <div id="filproductid-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
                     <div class="p-5">

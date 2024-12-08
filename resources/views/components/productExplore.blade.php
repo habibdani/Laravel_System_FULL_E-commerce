@@ -1,6 +1,6 @@
 <section name="explore-product" id="sessionproductexplore" class="py-0 mt-8">
         <div class="parallax-appear flex flex-col items-center justify-center mx-auto w-full h-full">
-            <div id="subsessionproductexplore" class="relative w-[1200px] flex items-center justify-between">
+            <div id="subsessionproductexplore" class="relative w-[1300px] flex items-center justify-between">
                 <!-- Bagian Kiri (Produk Explore) -->
                 <div id="explore-product" class="relative z-0 shadow-custom w-full h-[306.83px] bg-white rounded-md overflow-hidden">
                     <div class="p-5">

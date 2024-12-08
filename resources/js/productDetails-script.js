@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updatePrice() {
             let totalPrice = basePrice;
+            console.log('base price : ', basePrice)
 
             Object.values(selectedPrices).forEach(price => {
                 totalPrice += price;
