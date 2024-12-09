@@ -174,14 +174,14 @@
             display: none;
         }
     }
-    
+
 
 </style>
 
 
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const rightSection = document.getElementById('right-section-consule');
         const bgimagekecil2 = document.getElementById('banner-kecil-2');
         const rightSectionButton = document.getElementById('right-section-button');
@@ -196,7 +196,7 @@
                 if (data.success) {
                     if (data.data.length > 0) {
                         // Ambil banner pertama dari data array
-                        const bannerImage = data.data[0].image.replace('http://127.0.0.1:8001', '').trim();
+                        const bannerImage = data.data[0].image.replace('https://andalprima.hansmade.online', '').trim();
 
                         // Setel background image
                         bgimagekecil2.src = bannerImage; // Hapus 'url()' jika ini untuk properti `src`
@@ -223,7 +223,7 @@
 
                 if (data.success) {
                     banners = data.data.map(banner => ({
-                        image: banner.image.replace('http://127.0.0.1:8001', '').trim(),
+                        image: banner.image.replace('https://andalprima.hansmade.online', '').trim(),
                         text: banner.text,
                     }));
                     changeBackground(); // Set gambar dan teks pertama kali

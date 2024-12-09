@@ -47,12 +47,12 @@
         shopNowButtons.forEach(button => {
             button.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent the form from submitting the default way
-                
+
                 // Get the client type id from the hidden input field
                 const clientTypeId = this.closest('form').querySelector('input[name="client_type_id"]').value;
 
                 // Hit the API with dynamic client type id
-                fetch(`http://127.0.0.1:8001/api/info-client/${clientTypeId}`)
+                fetch(`https://andalprima.hansmade.online/api/info-client/${clientTypeId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {

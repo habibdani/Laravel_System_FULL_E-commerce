@@ -372,7 +372,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const norekeningElement = document.getElementById('norekening');
         const namarekeneingElement = document.getElementById('namarekeneing');
         const norekeningElement2 = document.getElementById('norekening2');
@@ -409,7 +409,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const nomorwaElement = document.getElementById('nomorwa');
         const nomorwa2Element = document.getElementById('nomorwa2');
 
