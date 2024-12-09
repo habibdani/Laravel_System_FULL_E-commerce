@@ -11,12 +11,16 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build',   // Direktori output untuk build production
-        assetsDir: 'assets',      // Direktori tempat file aset
+        outDir: 'public/build',   // Output utama di public/build
+        assetsDir: 'assets',      // Aset disimpan di folder assets
         manifest: true,           // Buat manifest.json
         rollupOptions: {
-            input: 'resources/js/app.js', // Entry point
+            input: {
+                main: 'resources/js/app.js',
+                styles: 'resources/css/app.css',
+            },
         },
+        emptyOutDir: true,        // Hapus folder build sebelum build baru
     },
-    base: '/build/', // Base path untuk semua aset
+    base: '/build/', // Path dasar untuk semua resource
 });
