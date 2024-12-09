@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/header-script.js',
+                'resources/js/sidebar-script.js',
             ],
         }),
     ],
@@ -20,6 +21,7 @@ export default defineConfig({
                 main: 'resources/js/app.js',
                 styles: 'resources/css/app.css',
                 headerScript: 'resources/js/header-script.js',
+                sidebarScript: 'resources/js/sidebar-script.js',
             },
         },
         emptyOutDir: true,        // Hapus folder build sebelum build baru
