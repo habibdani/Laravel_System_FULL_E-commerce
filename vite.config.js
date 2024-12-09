@@ -19,6 +19,7 @@ export default defineConfig({
             input: {
                 main: 'resources/js/app.js',
                 styles: 'resources/css/app.css',
+                headerScript: 'resources/js/header-script.js',
             },
         },
         emptyOutDir: true,        // Hapus folder build sebelum build baru
