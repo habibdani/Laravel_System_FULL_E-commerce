@@ -29,7 +29,7 @@ export default defineConfig({
                 'resources/js/api/fetchShippingDistricts.js',
                 'resources/js/api/fetchShippings.js',
                 'resources/js/api/fetchSpecialProduct.js',
-                'resources/js/api/addProduct-script.js',
+                'resources/js/addproduct-script.js',
             ],
         }),
     ],
@@ -63,7 +63,7 @@ export default defineConfig({
                 fetchShippingDistricts: 'resources/js/api/fetchShippingDistricts.js',
                 fetchShippings: 'resources/js/api/fetchShippings.js',
                 fetchSpecialProduct: 'resources/js/api/fetchSpecialProduct.js',
-                addProductScript: 'resources/js/api/addProduct-script.js',
+                addProductScript: 'resources/js/addproduct-script.js',
             },
         },
         emptyOutDir: true,        // Hapus folder build sebelum build baru
