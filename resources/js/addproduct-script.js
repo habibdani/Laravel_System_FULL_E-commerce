@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.ok && data.success) {
                 const imageUrl = data.data.image_url;
                 const imageName = imageUrl.split('/').pop(); // Mendapatkan nama file dari URL
+                alert("Gambar berhasil diunggah!");
 
                 // Tampilkan nama file yang sudah di-hash
                 uploadedImageName.textContent = imageName;
@@ -318,7 +319,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (response.ok && data.success) {
                     const imageUrl = data.data.image_url;
                     const imageName = imageUrl.split('/').pop(); // Mendapatkan nama file dari URL
-
+                    alert("Gambar berhasil diunggah!");
                     // Tampilkan nama file yang sudah di-hash
                     uploadedImageName.textContent = imageName;
                     uploadedImageContainer.classList.remove('hidden');
@@ -476,6 +477,28 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
+// Mendapatkan referensi tombol delete_variant_button
+const deleteButton = document.getElementById('delete_variant_button');
+
+// Menambahkan event listener ketika tombol diklik
+deleteButton.addEventListener('click', function() {
+    // Mendapatkan elemen container yang berisi semua product_variant
+    const container = document.getElementById('product-variant-list-container');
+    
+    // Mendapatkan semua elemen dengan kelas product_variant di dalam container
+    const productVariants = container.getElementsByClassName('product_varaint');
+    
+    // Cek jika ada elemen product_variant di dalam container
+    if (productVariants.length > 0) {
+        // Menghapus elemen product_variant yang paling terakhir (yang paling bawah)
+        const lastVariant = productVariants[productVariants.length - 1];
+        lastVariant.remove();  // Menghapus elemen tersebut dari DOM
+    } else {
+        alert('Tidak ada varian produk yang dapat dihapus.');
+    }
+});
+
+
 const overlay = document.getElementById('overlay');
 const popupMessage = document.getElementById('popup-save-product');
 const saveButton = document.getElementById('save_button');
@@ -566,10 +589,154 @@ confirmButton.addEventListener('click', async () => {
 
         const result = await response.json();
         console.log('Response dari API:', result);
-        loadingSpinner.classList.add('hidden');
-        // Lakukan sesuatu dengan response dari API, seperti redirect atau menampilkan notifikasi
+        if (result.success) {  // Asumsi response API mengandung field 'success'
+            alert('Produk berhasil ditambahkan!');
+            // Lakukan redirect atau aksi lain jika perlu
+            loadingSpinner.classList.add('hidden');
+
+        } else {
+            alert('Gagal menambahkan produk. Coba lagi!');
+        }
     } catch (error) {
         console.error('Error saat memanggil API:', error);
         loadingSpinner.classList.add('hidden');
     }
 });
+
+const form = document.getElementById('addCategoryForm');
+const loadingSpinner2 = document.getElementById('loadingSpinner2');
+const responseMessage = document.getElementById('responseMessage');
+
+form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Mencegah reload halaman saat submit
+    
+    const typeName = document.getElementById('type_name').value;
+
+    // Menyiapkan payload
+    const payload = {
+        type_name: typeName
+    };
+
+    const token = sessionStorage.getItem('authToken');
+        
+        // Cek jika token tidak ada
+        if (!token) {
+            alert('Token is missing, please log in again.');
+            return; // Tidak lanjutkan eksekusi jika token tidak ada
+        }
+
+
+    try {
+        // Menampilkan spinner loading
+        loadingSpinner2.classList.remove('hidden');
+        responseMessage.textContent = '';
+
+        // Mengirim request ke API
+        const response = await fetch('http://127.0.0.1:8001/api/insert-product-type', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Gunakan token autentikasi jika perlu
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        
+        // Menyembunyikan spinner setelah response
+        
+
+        // Mengecek apakah response berhasil
+        if (response.ok && result.success) {
+            responseMessage.textContent = 'Category added successfully!';
+            responseMessage.classList.add('text-green-500');
+            responseMessage.classList.remove('text-red-500');
+            loadingSpinner2.classList.add('hidden');
+            // Reset form setelah berhasil
+            form.reset();
+        } else {
+            responseMessage.textContent = 'Failed to add category. Please try again.';
+            responseMessage.classList.add('text-red-500');
+            responseMessage.classList.remove('text-green-500');
+            loadingSpinner2.classList.add('hidden');
+        }
+    } catch (error) {
+        // Menyembunyikan spinner jika terjadi error
+        loadingSpinner2.classList.add('hidden');
+        console.error('Error:', error);
+        responseMessage.textContent = 'An error occurred. Please try again.';
+        responseMessage.classList.add('text-red-500');
+        responseMessage.classList.remove('text-green-500');
+    }
+});
+
+const form3 = document.getElementById('addVariantTypeForm');
+    const loadingSpinner3 = document.getElementById('loadingSpinner3');
+    const responseMessage3 = document.getElementById('responseMessage3');
+
+    form3.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Mencegah reload halaman saat submit
+        
+        const variantTypeName = document.getElementById('variant_type_name').value;
+
+        // Menyiapkan payload
+        const payload = {
+            varaint_type_name: variantTypeName
+        };
+
+        // Mengambil token dari sessionStorage
+        const token = sessionStorage.getItem('authToken');
+        
+        // Cek jika token tidak ada
+        if (!token) {
+            alert('Token is missing, please log in again.');
+            return; // Tidak lanjutkan eksekusi jika token tidak ada
+        }
+
+        try {
+            // Menampilkan spinner loading
+            loadingSpinner3.classList.remove('hidden');
+            responseMessage3.textContent = '';
+
+            // Mengirim request ke API
+            const response = await fetch('http://127.0.0.1:8001/api/insert-variant-type', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Menggunakan token yang sudah diambil dari sessionStorage
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            
+            // Menyembunyikan spinner setelah response
+            loadingSpinner3.classList.add('hidden');
+
+            // Mengecek apakah response berhasil
+            if (response.ok && result.success) {
+                responseMessage3.textContent = 'Variant Type added successfully!';
+                responseMessage3.classList.add('text-green-500');
+                responseMessage3.classList.remove('text-red-500');
+                
+                // Reset form setelah berhasil
+                form3.reset();
+
+                // Reload halaman setelah sukses
+                setTimeout(() => {
+                    window.location.reload(); // Reload halaman setelah 1 detik
+                }, 1000); // Bisa disesuaikan, misalnya 1 detik untuk memberi waktu pada pengguna melihat pesan sukses
+            } else {
+                responseMessage3.textContent = 'Failed to add variant type. Please try again.';
+                responseMessage3.classList.add('text-red-500');
+                responseMessage3.classList.remove('text-green-500');
+            }
+        } catch (error) {
+            // Menyembunyikan spinner jika terjadi error
+            loadingSpinner3.classList.add('hidden');
+            console.error('Error:', error);
+            responseMessage3.textContent = 'An error occurred. Please try again.';
+            responseMessage3.classList.add('text-red-500');
+            responseMessage3.classList.remove('text-green-500');
+        }
+    });

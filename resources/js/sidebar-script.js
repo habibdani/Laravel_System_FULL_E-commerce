@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Prepare the payload
             const payload = {
-                client_type_id: type_client, // Placeholder
+                client_type_id: 1, // Placeholder
                 client_name: clientName,
                 client_phone_number: clientPhoneNumber,
                 client_email: clientEmail,

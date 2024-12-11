@@ -37,7 +37,7 @@
                                 <input id="product_name" type="text" class="px-3 py-2 border-[1px] border-[#DADCE0] mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Nama produk ini">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Product Kategori</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Product Category</label>
                                 <select id="dropdownproduct-category"
                                         class="block w-full rounded-lg border-[1px] border-[#DADCE0] border-gray-300 bg-white px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
                                     <!-- Kategori akan diisi secara dinamis melalui JavaScript -->
@@ -120,15 +120,53 @@
                 <div class="space-y-6">
                     <!-- Type -->
                     <div class="bg-white shadow rounded-lg p-4">
-                        <h2 class="font-bold text-gray-700 text-lg mb-4">Type</h2>
-
+                        <h2 class="font-bold text-gray-700 text-lg mb-4">Add new Product Category</h2>
+                        
+                        <!-- Form untuk menambahkan kategori produk -->
+                        <form id="addCategoryForm">
+                            <div class="mb-4">
+                                <label for="type_name" class="block text-sm font-medium text-gray-700">Category Name</label>
+                                <input type="text" id="type_name" name="type_name" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter category name" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <button type="submit" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Add Category</button>
+                            </div>
+                        </form>
+                        
+                        <!-- Loading Spinner (optional) -->
+                        <div id="loadingSpinner2" class="hidden text-center">
+                            <span class="text-gray-500">Loading...</span>
+                        </div>
+                        
+                        <!-- Success/Error Message -->
+                        <div id="responseMessage" class="mt-4 text-center"></div>
                     </div>
 
                     <!-- Variant -->
-                    <div class="bg-white shadow rounded-lg p-4 flex items-center justify-center">
-                        <div class="text-center">
-                            <img src="{{ asset('storage/icons/warning.svg') }}" alt="Warning" class="h-10 w-10 mb-2">
-                            <p class="text-gray-500">Variant tidak boleh kosong</p>
+                    <div class="bg-white shadow rounded-lg p-4">
+                        <div class="w-full max-w-sm">
+                            <h2 class="font-bold text-gray-700 text-lg mb-4">Add Variant Type Item</h2>
+                            
+                            <!-- Form untuk menambahkan tipe varian item -->
+                            <form id="addVariantTypeForm">
+                                <div class="mb-4">
+                                    <label for="variant_type_name" class="block text-sm font-medium text-gray-700">Variant Type Name</label>
+                                    <input type="text" id="variant_type_name" name="variant_type_name" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter variant type name" required>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <button type="submit" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Add Variant Type</button>
+                                </div>
+                            </form>
+                            
+                            <!-- Loading Spinner (optional) -->
+                            <div id="loadingSpinner3" class="hidden text-center">
+                                <span class="text-gray-500">Loading...</span>
+                            </div>
+                            
+                            <!-- Success/Error Message -->
+                            <div id="responseMessage3" class="mt-4 text-center"></div>
                         </div>
                     </div>
                 </div>
