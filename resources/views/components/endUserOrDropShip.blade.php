@@ -1,9 +1,9 @@
-<section name="consult" class="py-0 mt-[140px]">
+<section name="consult" class="py-0 min-[320px]:mt-[80px] lg:mt-[140px] px-5">
     <div class="flex flex-col items-center justify-center mx-auto w-full h-full">
-        <span class=" leading-[26px] mb-[40px] text-[22px] text-[#292929] font-bold items-center justify-center font-medium">Pilih Sebelum Berbelanja</span>
-        <div class="flex items-center justify-center w-[994px] space-x-[30px]">
+        <span class="leading-[26px] min-[320px]:mb-[30px] lg:mb-[40px] text-[22px] text-[#292929] font-bold items-center justify-center font-medium">Pilih Sebelum Berbelanja</span>
+        <div class="flex flex-col lg:flex-row items-center justify-center w-full space-y-4 lg:space-x-[30px]">
             <!-- Left Section -->
-            <div class="shadow-custom border-[1px] border-[#D9D9D9] w-[365px] h-[228px] p-4 flex items-center rounded-md space-x-[70px]">
+            <div class="shadow-custom border-[1px] bg-white border-[#D9D9D9] w-full lg:w-[365px] h-[228px] p-4 flex items-center rounded-md space-x-[70px]">
                 <div class="ml-[10px]">
                     <img src="{{ asset('storage/icons/end-user.svg') }}" alt="end-user" class="h-[46px] w-[50px] mb-3">
                     <span class="font-roboto text-[18px] font-normal mb-3 border-b border-[#E01535]">Exclusive Products for Personal Use</span>
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <!-- Right Section -->
-            <div class="shadow-custom border-[1px] border-[#D9D9D9] w-[365px] h-[228px] p-4 flex items-center rounded-md space-x-[70px]">
+            <div class="shadow-custom border-[1px] bg-white border-[#D9D9D9] w-full lg:w-[365px] h-[228px] p-4 flex items-center rounded-md space-x-[70px]">
                 <div class="ml-[10px]">
                     <img src="{{ asset('storage/icons/drop-ship.svg') }}" alt="drop-ship" class="h-[33px] w-[40px] mt-1 mb-3">
                     <span class="font-roboto text-[18px] font-normal mb-3 border-b border-[#E01535]">Streamlined Solutions for Drop Shippers</span>
@@ -47,12 +47,12 @@
         shopNowButtons.forEach(button => {
             button.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent the form from submitting the default way
-                
+
                 // Get the client type id from the hidden input field
                 const clientTypeId = this.closest('form').querySelector('input[name="client_type_id"]').value;
 
                 // Hit the API with dynamic client type id
-                fetch(`http://127.0.0.1:8001/api/info-client/${clientTypeId}`)
+                fetch(`https://andalprima.hansmade.online/api/info-client/${clientTypeId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {

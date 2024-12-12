@@ -40,8 +40,8 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
-      
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
+
         const nomorwa3Element = document.getElementById('nomorwa3');
 
         // Fungsi untuk mengambil data nomor WA dari API
@@ -54,7 +54,7 @@
                     const waInfo = data.data; // Ambil data WA dari respons
 
                     // Update teks pada elemen
-                
+
                     // Update link WhatsApp
                     const waLink = `http://web.whatsapp.com/send?phone=62${waInfo.nomorwa.replace(/^0/, '')}`;
                     nomorwa3Element.href = waLink;

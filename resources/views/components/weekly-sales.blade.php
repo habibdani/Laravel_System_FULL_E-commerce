@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<script src="http://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     var ctx = document.getElementById('minimalSalesChart').getContext('2d');
     var minimalSalesChart = new Chart(ctx, {

@@ -5,12 +5,12 @@
                 <!-- Bagian Kiri (Produk Spesial) -->
                 <div id="special-product" class="relative z-0 shadow-custom w-[325.53px] h-[285.14px] bg-white rounded-md overflow-hidden">
                     <div id="best-product-background"
-                        class="absolute inset-0 bg-cover bg-center" 
+                        class="absolute inset-0 bg-cover bg-center"
                         style="background-image: url('{{ asset('storage/images/e85ec02d42912480eefa75c5e42cf14a.jpeg') }}');">
                     </div>
                     <div class="relative z-10 p-5">
                         <h2 id="best-product-title" class="text-[16px] mb-2 font-bold text-white uppercase">HOLLOW BESI</h2>
-                        <div class="pl-2 best-product-background-img" 
+                        <div class="pl-2 best-product-background-img"
                             style="background-image: url('{{ asset('storage/design/bingkaisulit.svg') }}');">
                             <p id="best-product-text" class="rounded-md p-2 w-[122.19px] leading-[28.13px] text-[24px] text-white font-bold"> Rp. 26 /meter
                             </p>
@@ -124,7 +124,7 @@
 <script>
     async function fetchBestProductBanner() {
     try {
-        const response = await fetch('http://127.0.0.1:8001/api/banner-best-product');
+        const response = await fetch('https://andalprima.hansmade.online/api/banner-best-product');
         const data = await response.json();
 
         if (data.success) {
@@ -136,7 +136,7 @@
                 document.getElementById('best-product-title').textContent = bestProduct.tittle;
                 document.getElementById('best-product-text').textContent = bestProduct.text;
 
-                const backgroundImage = bestProduct.image.replace('http://127.0.0.1:8001/', '');
+                const backgroundImage = bestProduct.image.replace('https://andalprima.hansmade.online/', '');
                 document.getElementById('best-product-background').style.backgroundImage = `url('${backgroundImage}')`;
 
                 console.log('Best product banner updated successfully');
