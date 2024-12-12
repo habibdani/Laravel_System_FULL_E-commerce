@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < productCardCount; i++) {
                 const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
                 const productVariantName = sessionStorage.getItem(`product_variant_name_${i}`);
-                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
+                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_satuan_${i}`)) || 0;
                 const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
 
                 if (!productVariantId || qty <= 0 || price <= 0) {
