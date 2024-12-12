@@ -1,7 +1,7 @@
 
 <nav class="bg-[#FFF9F4] fixed top-0 w-full shadow-md pt-2 z-50">
     <!-- hidden Row -->
-    <div class="w-[80%] mx-auto px-[10%] lg:px-8" id="rowhiddenheader">
+    <div class="w-[80%] mx-auto lg:px-8" id="rowhiddenheader">
         <div class="flex justify-between h-10 mx-auto">
             <!-- Left Section: Logo -->
             <div class="flex items-center logo-section">
@@ -22,7 +22,7 @@
 
 
     <!-- First Row -->
-    <div class="max-w-[80%] mx-auto px-2 sm:px-6 lg:px-8 " id="fristrowheader">
+    <div class="max-w-[80%] mx-auto " id="fristrowheader">
         <div class="flex space-x-2.5 justify-center h-10 mx-auto" id="subfrstrowheader">
             <!-- Left Side (Logo and Company Name) -->
             <div class="flex items-center" id="firstrowlogo" >
@@ -35,7 +35,7 @@
             <div class="relative flex items-center" id="headerpencarian" style="width: 60%">
                 <button id="category" class="bg-[#FFFFFF] h-8 px-2 pr-3 rounded-l-md text-sm border border-gray-300 focus:outline-none flex items-center justify-start" style="width: 25%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                     <img src="{{ asset('storage/icons/category.svg') }}" alt="category" class="h-4 w-4 mr-1.5">
-                    <span class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-left">Category</span>
+                    <span id="buttoncategorytext" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-left">Category</span>
                 </button>
                 <div class="relative w-full">
                     <img src="{{ asset('storage/icons/pencarian.svg') }}" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" alt="Search Icon">
@@ -50,8 +50,9 @@
 
               <!-- Cart Icon -->
             <div class="flex items-center" id="headerkeranjang" style="width: 5%">
-                <a href="https://andalprima.hansmade.online/view-shop" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
-                    <img src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
+                <a href="https://andalprima.hansmade.online" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
+                    <img id="keranjangicon" src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
+
                     <span id="keranjang" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center">0</span>
                 </a>
             </div>
@@ -167,6 +168,13 @@
     /* Style untuk layar di bawah 450px */
     @media (max-width: 450px) {
         #firstrowlogo, #firstrownomor{
+            display: none;
+        }
+        
+        #buttoncategorytext {
+            display: none;
+        }
+        #keranjangicon{
             display: none;
         }
         #headerkeranjang {
