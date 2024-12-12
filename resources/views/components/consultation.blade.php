@@ -109,7 +109,7 @@
             width: 90%;
         }
         #right-section-consule {
-            width: 245px !important; /* Paksa ukuran di layar lg */
+            width: 90% !important; 
         }
 
         /* #banner-kecil-2{

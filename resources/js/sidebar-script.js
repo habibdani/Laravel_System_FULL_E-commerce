@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < productCardCount; i++) {
                 const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
                 const productVariantName = sessionStorage.getItem(`product_variant_name_${i}`);
-                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
+                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_satuan_${i}`)) || 0;
                 const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
 
                 if (!productVariantId || qty <= 0 || price <= 0) {
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Prepare the payload
             const payload = {
-                client_type_id: type_client, // Placeholder
+                client_type_id: 1, // Placeholder
                 client_name: clientName,
                 client_phone_number: clientPhoneNumber,
                 client_email: clientEmail,

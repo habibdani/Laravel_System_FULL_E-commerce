@@ -151,6 +151,21 @@ class BookingController extends Controller
                     'note' => $item['note'] ?? null, // opsional
                     'created_at' => now(),
                 ]);
+
+                // Update stok qty di tabel product_variants
+                $productVariantId = $item['product_variant_id'];
+                $quantityBooked = $item['qty'];
+
+                // Update stok produk varian setelah booking
+                $updated = DB::table('product_variants')
+                    ->where('id', $productVariantId)
+                    ->decrement('stock', $quantityBooked); // Mengurangi stok dengan jumlah yang dibooking
+
+                if ($updated === 0) {
+                    // Jika stoknya tidak bisa dikurangi (misalnya stok tidak cukup)
+                    DB::rollBack();
+                    return ApiResponseHelper::error('Not enough stock for product variant ' . $productVariantId, 400);
+                }
             }
 
             // Insert ke tabel booking_status_histories

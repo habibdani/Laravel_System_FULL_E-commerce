@@ -81,6 +81,7 @@
         #subbanner {
             width: 80%;
             height: 180px;
+            margin-top: 120px;
         }
 
         .banner-title {
