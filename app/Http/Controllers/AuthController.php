@@ -28,18 +28,42 @@ class AuthController extends Controller
 
         // Create token using raw query (assuming you're using Laravel Sanctum for tokens)
         $token = $admin[0]->id . '|' . base64_encode(Str::random(40)); // Use Str::random instead of str_random
-        DB::insert('INSERT INTO personal_access_tokens (tokenable_id, tokenable_type, name, token, abilities, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())', [
+        $hashedToken = hash('sha256', $token);
+
+        // Check if a token already exists for this `tokenable_id`
+        $existingToken = DB::select('SELECT * FROM personal_access_tokens WHERE tokenable_id = ? AND tokenable_type = ?', [
             $admin[0]->id,
-            'App\Models\Admin',
-            'admin-token',
-            hash('sha256', $token),
-            '*'
+            'App\Models\Admin'
         ]);
+
+        if (!empty($existingToken)) {
+            // If the tokenable_id exists, update the token
+            DB::update('UPDATE personal_access_tokens SET token = ?, updated_at = NOW() WHERE tokenable_id = ? AND tokenable_type = ?', [
+                $hashedToken,
+                $admin[0]->id,
+                'App\Models\Admin'
+            ]);
+        } else {
+            // If the tokenable_id doesn't exist, insert a new token
+            DB::insert('INSERT INTO personal_access_tokens (tokenable_id, tokenable_type, name, token, abilities, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())', [
+                $admin[0]->id,
+                'App\Models\Admin',
+                'admin-token',
+                $hashedToken,
+                '*'
+            ]);
+        }
 
         return ApiResponseHelper::success([
             'token' => $token,
-            'message' => 'Login successful'
-        ]);
+            'admin_id' => $admin[0]->id
+        ], 'Login successful');
+
+        // return redirect()->route('dashboard')->with([
+        //     'token' => $token,
+        //     'message' => 'Login successful'
+        // ]);
+
     }
 
     public function showLoginForm()
@@ -49,10 +73,12 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        // Get the bearer token from the request
         $token = $request->bearerToken();
 
+        // Check if a token is provided
         if (!$token) {
-            return ApiResponseHelper::error('No token provided');
+            return ApiResponseHelper::error('No token provided', 400);
         }
 
         // Hash the token for comparison
@@ -61,12 +87,14 @@ class AuthController extends Controller
         // Delete the token using raw query
         $deleted = DB::delete('DELETE FROM personal_access_tokens WHERE token = ?', [$hashedToken]);
 
+        // Check if the token was successfully deleted
         if ($deleted) {
             return ApiResponseHelper::success([
                 'message' => 'Logged out successfully'
-            ]);
+            ], 200);
         } else {
-            return ApiResponseHelper::error('Failed to logout', );
+            // If token not found or failed to delete, return an error
+            return ApiResponseHelper::error('Failed to logout or token not found', 400);
         }
     }
 

@@ -57,9 +57,19 @@ document.addEventListener('DOMContentLoaded', function() {
             productTitle.innerText = productData.full_name_product;
             productTitle.setAttribute('product-variant-id',productData.product_variant_id)
 
+            let price_percentage = sessionStorage.getItem('price_percentage');
+            price_percentage = !isNaN(price_percentage) && price_percentage !== null ? parseFloat(price_percentage) : 0;
+            let variant_price = productData.price;
+            let finalPrice = variant_price; // Jika price_percentage null, tidak ada penjumlahan
+            if (price_percentage !== null) {
+                let priceIncrease = (price_percentage / 100) * variant_price;
+                finalPrice = variant_price + priceIncrease;
+            }
+
             const productPrice = document.getElementById('productPrice');
-            productPrice.setAttribute('price-value-product', productData.price);
-            productPrice.innerText = productData.price_display;
+            const formattedPrice = `Rp. ${new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFractionDigits: 0 }).format(finalPrice)}`;
+            productPrice.setAttribute('price-value-product', finalPrice);
+            productPrice.innerText = formattedPrice;
 
             const stockElement = document.getElementById('productStock');
             stockElement.innerText = productData.stock;
@@ -108,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         button.innerText = item.variant_item_name;
                         button.setAttribute('add_price', item.add_price);
                         button.setAttribute('variant_item_id', item.variant_item_id);
+                        button.setAttribute('variant_item_name', item.variant_item_name);
 
                         optionDiv.appendChild(button); // Tambahkan tombol ke dalam optionDiv
                     });
@@ -131,6 +142,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Buat elemen p untuk label varian
                     const labelElement = document.createElement('p');
                     labelElement.id = `type-label-${index + 1}`;  // Set ID dinamis berdasarkan indeks
+                    labelElement.setAttribute('variant_item_type_id',variantType.variant_item_type_id);
+                    labelElement.setAttribute('variant_item_type_name',variantType.variant_item_type_name);
                     labelElement.classList.add('text-gray-600', 'text-[12px]');
                     labelElement.innerText = variantType.variant_item_type_name; // Isi dengan nama variant type
                     variantSideContainer.appendChild(labelElement);
@@ -141,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     valueElement.classList.add('text-gray-800', 'font-semibold', 'mb-2', 'text-[12px]');
                     valueElement.innerText = '-'; // Default value atau bisa di-update nantinya
                     valueElement.setAttribute('variant_item_id', '');
+                    valueElement.setAttribute('variant_item_name', '');
                     variantSideContainer.appendChild(valueElement);
                 });
             }
@@ -256,8 +270,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 productName.style.overflow = 'hidden';
                 productName.style.textOverflow = 'ellipsis';
 
+                let price_percentage = sessionStorage.getItem('price_percentage');
+                price_percentage = !isNaN(price_percentage) && price_percentage !== null ? parseFloat(price_percentage) : 0;
+                let variant_price = product.variant_price;
+                let finalPrice = variant_price; // Jika price_percentage null, tidak ada penjumlahan
+                if (price_percentage !== null) {
+                    let priceIncrease = (price_percentage / 100) * variant_price;
+                    finalPrice = variant_price + priceIncrease;
+                }
+
                 const productPrice = document.createElement('p');
-                productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(product.variant_price)}`;
+                productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(finalPrice)}`;
                 productPrice.classList.add('text-[14px]', 'text-left', 'font-semibold', 'text-[#292929]', 'm-2');
                 productPrice.style.width = '100%';
                 productPrice.style.whiteSpace = 'nowrap';
@@ -306,13 +329,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const hiddenProductCount = totalProducts - visibleProductCount;
 
-                if (hiddenProductCount > 0) {
-                    viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>`;
-                } else {
-                    viewAllLink.textContent = `View all`;
-                }
+                // if (hiddenProductCount > 0) {
+                //     viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                //         <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                //     </svg>`;
+                // } else {
+                //     viewAllLink.textContent = `View all`;
+                // }
             }
 
             // Perbarui link View All
@@ -346,8 +369,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         sidebar.classList.remove('sidebar-visible');
         sidebar.classList.add('sidebar-hidden');
-        considebar.classList.add('z-0');
-        considebar.classList.remove('z-20');
+        considebar.style.width = "20px"; // Menambahkan style="width: 20px !important;"
+
+        // considebar.classList.add('z-20');
+        // considebar.classList.remove('z-20');
         toggleBtn.classList.remove('toggle-visible');
         toggleBtn.classList.add('toggle-hidden');
 
@@ -357,15 +382,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const jumlahitem = document.getElementById('jumlahitem');
         jumlahitem.classList.remove('hidden');
 
-        const toslide2andshop = document.getElementById('to-slide-2-and-shop');
-        toslide2andshop.classList.add('hidden');
+        // const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+        // toslide2andshop.classList.add('hidden');
 
-        const totalbayar = document.getElementById('totalbayar');
-        totalbayar.classList.remove('hidden');
+        // const totalbayar = document.getElementById('totalbayar');
+        // totalbayar.classList.remove('hidden');
 
         const toggleIcon = toggleBtn.querySelector('img');
         const hiddenIcon = toggleBtn.getAttribute('data-hidden-icon');
         toggleIcon.src = hiddenIcon; // Mengganti src dengan gambar tersembunyi
+
+        const totalBayarElement = document.getElementById('totalbayar');
+        totalBayarElement.classList.add('hidden');
     });
 
 });

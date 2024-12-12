@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : DB Local
+ Source Server         : db lokal
  Source Server Type    : MySQL
  Source Server Version : 100432 (10.4.32-MariaDB)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 100432 (10.4.32-MariaDB)
  File Encoding         : 65001
 
- Date: 18/11/2024 06:33:30
+ Date: 26/11/2024 09:32:17
 */
 
 SET NAMES utf8mb4;
@@ -30,7 +30,7 @@ CREATE TABLE `admins`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `admins_email_unique`(`email` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admins
@@ -52,7 +52,7 @@ CREATE TABLE `booking_dropship_identities`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of booking_dropship_identities
@@ -73,9 +73,9 @@ CREATE TABLE `booking_items`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `qty` int NOT NULL,
-  `product_variant_item_id` int NOT NULL,
+  `product_variant_item_id` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of booking_items
@@ -88,6 +88,9 @@ INSERT INTO `booking_items` VALUES (6, 1, 3, 150, 'Please handle with care', '20
 INSERT INTO `booking_items` VALUES (7, 2, 3, 75, NULL, '2024-08-22 15:47:35', NULL, NULL, 1, 3);
 INSERT INTO `booking_items` VALUES (8, 1, 4, 150, 'Please handle with care', '2024-10-28 03:40:45', NULL, NULL, 2, 1);
 INSERT INTO `booking_items` VALUES (9, 2, 4, 75, NULL, '2024-10-28 03:40:45', NULL, NULL, 1, 3);
+INSERT INTO `booking_items` VALUES (10, 9, 8, 4500000, 'null', '2024-11-25 17:12:52', NULL, NULL, 5, NULL);
+INSERT INTO `booking_items` VALUES (11, 1, 8, 20000000, '15x15', '2024-11-25 17:12:52', NULL, NULL, 2, 1);
+INSERT INTO `booking_items` VALUES (12, 1, 8, 20000000, '1.1mm', '2024-11-25 17:12:52', NULL, NULL, 2, 2);
 
 -- ----------------------------
 -- Table structure for booking_shippings
@@ -104,7 +107,7 @@ CREATE TABLE `booking_shippings`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of booking_shippings
@@ -113,6 +116,7 @@ INSERT INTO `booking_shippings` VALUES (1, 1, 1, 300000, 27, 1, '2024-08-20 22:1
 INSERT INTO `booking_shippings` VALUES (2, 2, NULL, NULL, 5, 3, '2024-08-22 15:40:08', NULL, NULL);
 INSERT INTO `booking_shippings` VALUES (3, 3, NULL, NULL, 5, 3, '2024-08-22 15:47:35', NULL, NULL);
 INSERT INTO `booking_shippings` VALUES (4, 4, NULL, NULL, 5, 3, '2024-10-28 03:40:45', NULL, NULL);
+INSERT INTO `booking_shippings` VALUES (8, 8, NULL, NULL, 45, NULL, '2024-11-25 17:12:52', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for booking_status
@@ -123,7 +127,7 @@ CREATE TABLE `booking_status`  (
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `color_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of booking_status
@@ -147,7 +151,7 @@ CREATE TABLE `booking_status_histories`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of booking_status_histories
@@ -171,6 +175,7 @@ INSERT INTO `booking_status_histories` VALUES (16, 1, 4, '2024-10-11 11:04:59', 
 INSERT INTO `booking_status_histories` VALUES (17, 3, 6, '2024-10-11 16:23:40', '2024-10-11 16:23:40');
 INSERT INTO `booking_status_histories` VALUES (18, 3, 5, '2024-10-11 16:53:33', '2024-10-11 16:53:33');
 INSERT INTO `booking_status_histories` VALUES (19, 4, 2, '2024-10-28 03:40:45', NULL);
+INSERT INTO `booking_status_histories` VALUES (20, 8, 2, '2024-11-25 17:12:52', NULL);
 
 -- ----------------------------
 -- Table structure for bookings
@@ -193,7 +198,7 @@ CREATE TABLE `bookings`  (
   `additional_price_percentage` int NULL DEFAULT NULL,
   `commission_percentage` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of bookings
@@ -202,6 +207,7 @@ INSERT INTO `bookings` VALUES (1, 1, 'Hans', 82123456574, 'hans@mail.com', NULL,
 INSERT INTO `bookings` VALUES (2, 1, 'John Doe', 123456789, 'john@example.com', NULL, NULL, 5, '123 Main St', 12345, '2024-08-22 15:40:08', NULL, NULL, NULL, NULL);
 INSERT INTO `bookings` VALUES (3, 1, 'John Doe', 123456789, 'john@example.com', NULL, NULL, 5, '123 Main St', 12345, '2024-08-22 15:47:35', NULL, NULL, NULL, NULL);
 INSERT INTO `bookings` VALUES (4, 1, 'John Doe', 123456789, 'john@example.com', NULL, NULL, 5, '123 Main St', 12345, '2024-10-28 03:40:45', NULL, NULL, NULL, NULL);
+INSERT INTO `bookings` VALUES (8, 1, 'habibi', 8574821232, 'buds@gmail.com', NULL, NULL, 6, 'ssda', 322134, '2024-11-25 17:12:52', NULL, NULL, 24500000, NULL);
 
 -- ----------------------------
 -- Table structure for client_types
@@ -211,7 +217,7 @@ CREATE TABLE `client_types`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of client_types
@@ -231,7 +237,7 @@ CREATE TABLE `markup_and_commisions`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `client_type_id` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of markup_and_commisions
@@ -247,7 +253,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of migrations
@@ -295,12 +301,12 @@ CREATE TABLE `personal_access_tokens`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `personal_access_tokens_token_unique`(`token` ASC) USING BTREE,
   INDEX `personal_access_tokens_tokenable_type_tokenable_id_index`(`tokenable_type` ASC, `tokenable_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of personal_access_tokens
 -- ----------------------------
-INSERT INTO `personal_access_tokens` VALUES (1, 'App\\Models\\Admin', 1, 'admin-token', '880ed6cb7e53e4e96c5b3c53e60b5c3215c5b23e28ebe076e81978cd58e91a63', '*', NULL, NULL, '2024-10-08 23:32:59', '2024-10-10 20:46:22');
+INSERT INTO `personal_access_tokens` VALUES (1, 'App\\Models\\Admin', 1, 'admin-token', 'cd03db9e8613dc4364b4eaebbaac021011100d1dc06486d653f37a376e16ba92', '*', NULL, NULL, '2024-10-08 23:32:59', '2024-11-26 09:30:02');
 
 -- ----------------------------
 -- Table structure for product_types
@@ -313,7 +319,7 @@ CREATE TABLE `product_types`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product_types
@@ -338,7 +344,7 @@ CREATE TABLE `product_variant_items`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_variant_items_product_variant_id_foreign`(`product_variant_id` ASC) USING BTREE,
   CONSTRAINT `product_variant_items_product_variant_id_foreign` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product_variant_items
@@ -392,7 +398,7 @@ CREATE TABLE `product_variants`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_variants_product_id_foreign`(`product_id` ASC) USING BTREE,
   CONSTRAINT `product_variants_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of product_variants
@@ -414,8 +420,8 @@ INSERT INTO `product_variants` VALUES (20, 'tes product variant 3', 1000000, '5m
 INSERT INTO `product_variants` VALUES (21, 'tes product variant 4', 1500000, '2mm lebih mantep juga', 0, 7, '2024-09-05 22:28:55', NULL, NULL, 'http://127.0.0.1:8000/storage/images/24G6hCzOQI28f1sJ3fySXAqDH1kGNTcdWKfAEtgi.jpg', 100);
 INSERT INTO `product_variants` VALUES (23, 'atap marmer', 1000000, 'Pipa Besi 1” <br> Panjang: 6 Meter (Toleransi tebal +- 0.2mm) <br>untuk pipa asli toleransi +- 10% <br>light sni 2.6mm <br>med sni 3.2mm <br>welded sch40 3.4mm <br>seamless sch40 3.4mm', 1, 8, '2024-09-06 21:46:09', NULL, NULL, 'http://127.0.0.1:8000/storage/images/24G6hCzOQI28f1sJ3fySXAqDH1kGNTcdWKfAEtgi.jpg', 200);
 INSERT INTO `product_variants` VALUES (24, 'lantai besi', 1500000, 'Pipa Besi 1” <br> Panjang: 6 Meter (Toleransi tebal +- 0.2mm) <br>untuk pipa asli toleransi +- 10% <br>light sni 2.6mm <br>med sni 3.2mm <br>welded sch40 3.4mm <br>seamless sch40 3.4mm', 0, 8, '2024-09-06 21:46:07', NULL, NULL, 'http://127.0.0.1:8000/storage/images/24G6hCzOQI28f1sJ3fySXAqDH1kGNTcdWKfAEtgi.jpg', 100);
-INSERT INTO `product_variants` VALUES (25, 'varian 1', 20000, 'ini descipsi varian 1', 1, 9, '2024-10-13 23:41:56', NULL, NULL, 'http://127.0.0.1:8000/storage/images/qe6wZmSkyt2Q1sx01FIni9uf5EqapMHwnxC71oWN.png', 100);
-INSERT INTO `product_variants` VALUES (26, 'varian 2 besi', 30000, 'ini descipsinya varain 2', 0, 9, '2024-10-13 23:41:56', NULL, NULL, 'http://127.0.0.1:8000/storage/images/G28gffmD20PTM6x9lIF2L0PlKRWZHSCyDnimyw34.png', 100);
+INSERT INTO `product_variants` VALUES (25, 'varian 1', 20000, 'ini descipsi varian 1', 1, 9, '2024-11-24 21:30:01', NULL, NULL, 'http://127.0.0.1:8000/storage/images/qe6wZmSkyt2Q1sx01FIni9uf5EqapMHwnxC71oWN.jpg', 100);
+INSERT INTO `product_variants` VALUES (26, 'varian 2 besi', 30000, 'ini descipsinya varain 2', 0, 9, '2024-11-24 21:30:08', NULL, NULL, 'http://127.0.0.1:8000/storage/images/G28gffmD20PTM6x9lIF2L0PlKRWZHSCyDnimyw34.jpg', 100);
 
 -- ----------------------------
 -- Table structure for products
@@ -431,7 +437,7 @@ CREATE TABLE `products`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `product_type_id` bigint UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of products
@@ -457,14 +463,13 @@ CREATE TABLE `sessions`  (
   `last_activity` int NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('dTF5sRrj1ljb3g4fmhPoOSRw4SMLy7Ttkop5WUiV', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 OPR/114.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicGxXdEVUcFVOYXp0Q0pUMzlSbkJZUGd2bVFVNW9JOE1xemw4ZHRudiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1731668377, NULL);
-INSERT INTO `sessions` VALUES ('EuH4b3hJ7JAa2JOZG1IOj5r9qvwtAAcMhgLiAmN0', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 OPR/114.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibHQ3d0UybWdmTjdadGVSNmY4dkp0Q3ZVNDhydHFsN25saWlveGhnRiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1731730856, NULL);
-INSERT INTO `sessions` VALUES ('ZAH1nC0eq8BaTF4ZRz0e81CAVa3Q1F709JPHc25E', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 OPR/114.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiblRVUkQwQnB2R0NvUm1Wa0pBcVB2U29WSE9Sd0habkd4dE12M2hKRSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1731660191, NULL);
+INSERT INTO `sessions` VALUES ('vfGl3ePnkmlFUCwSA8S2IvA9BasXZT7PsTvytwSQ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOFdzRWd0VmJxVWc0Zzh5TGNycXk3NjhGckZ3SVZxcGYwYnVQM3JwOSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMS9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1732588203, NULL);
+INSERT INTO `sessions` VALUES ('wmoL1JQSHDy9sGjtdP7Z2kjJ13fm6XcPBR2Sy2BM', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiY3ZKOW1WcnBPeVdma3RkZFRVa1dUcmFETlg0ekRHd2ZnVVRsRDNzbCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732555054, NULL);
 
 -- ----------------------------
 -- Table structure for shipping_areas
@@ -477,7 +482,7 @@ CREATE TABLE `shipping_areas`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shipping_areas
@@ -510,7 +515,7 @@ CREATE TABLE `shipping_districts`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 207 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 207 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shipping_districts
@@ -735,7 +740,7 @@ CREATE TABLE `shipping_subdistricts`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shipping_subdistricts
@@ -790,7 +795,7 @@ CREATE TABLE `shippings`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shippings
@@ -812,7 +817,7 @@ CREATE TABLE `thickness_types`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `thickness_types_product_variant_id_foreign`(`product_variant_id` ASC) USING BTREE,
   CONSTRAINT `thickness_types_product_variant_id_foreign` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of thickness_types
@@ -836,7 +841,7 @@ CREATE TABLE `user_roles`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_roles
@@ -858,7 +863,7 @@ CREATE TABLE `users`  (
   UNIQUE INDEX `users_email_unique`(`email` ASC) USING BTREE,
   INDEX `users_role_id_foreign`(`role_id` ASC) USING BTREE,
   CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `user_roles` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
@@ -875,7 +880,7 @@ CREATE TABLE `variant_item_types`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of variant_item_types

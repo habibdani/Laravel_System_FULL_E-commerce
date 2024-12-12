@@ -2,6 +2,9 @@ import { fetchProduct3 } from './api/fetchProduct3';
 import { fetchExploreProduct } from './api/fetchExploreProduct';
 import { fetchSpecialProduct } from './api/fetchSpecialProduct';
 
+const loadingSpinner = document.getElementById('loading_spinner');
+    loadingSpinner.classList.remove('hidden');
+
 document.addEventListener('DOMContentLoaded', function() {
 
     function showSlide(slideNumber) {
@@ -35,9 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
         btnSlide2.classList.add('text-white', 'bg-[#E01535]');
         btnSlide2.classList.remove('text-[#9D9D9D]', 'bg-transparent');
 
-        const considebar = document.getElementById('container-sidebar')
-        considebar.classList.add('z-0');
-        considebar.classList.remove('z-20');
+        const considebar = document.getElementById('container-sidebar');
+        considebar.style.width = "20px"; // Menambahkan style="width: 20px !important;"
+        // considebar.classList.add('z-20');
+        // considebar.classList.remove('z-20');
 
         const button2 = document.getElementById('btn-slide-2');
         button2.removeAttribute('disabled');
@@ -45,11 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const jumlahitem = document.getElementById('jumlahitem');
         jumlahitem.classList.remove('hidden');
 
-        const toslide2andshop = document.getElementById('to-slide-2-and-shop');
-        toslide2andshop.classList.add('hidden');
+        // const toslide2andshop = document.getElementById('to-slide-2-and-shop');
+        // toslide2andshop.classList.add('hidden');
 
         const totalbayar = document.getElementById('totalbayar');
         totalbayar.classList.remove('hidden');
+
     });
 
     async function renderProducts() {
@@ -159,8 +164,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 productName.style.overflow = 'hidden';
                 productName.style.textOverflow = 'ellipsis';
 
+                let price_percentage = sessionStorage.getItem('price_percentage');
+                // Pastikan price_percentage adalah angka yang valid, jika tidak, set ke null
+                price_percentage = !isNaN(price_percentage) && price_percentage !== null ? parseFloat(price_percentage) : 0;
+                // Harga produk
+                let variant_price = product.variant_price;
+                // Cek jika price_percentage valid (bukan null)
+                let finalPrice = variant_price; // Jika price_percentage null, tidak ada penjumlahan
+                if (price_percentage !== null) {
+                    // Menghitung harga setelah penambahan price_percentage
+                    let priceIncrease = (price_percentage / 100) * variant_price;
+                    finalPrice = variant_price + priceIncrease;
+                }
+
                 const productPrice = document.createElement('p');
-                productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(product.variant_price)}`;
+                productPrice.textContent = `Rp. ${new Intl.NumberFormat('id-ID').format(finalPrice)}`;
                 productPrice.classList.add('text-[14px]', 'text-left', 'font-semibold', 'text-[#292929]', 'm-2');
                 productPrice.style.width = '100%';
                 productPrice.style.whiteSpace = 'nowrap';
@@ -170,13 +188,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 productCard.appendChild(productImageContainer);
                 productCard.appendChild(productName);
                 productCard.appendChild(productPrice);
-
+                
                 // Append productCard to the form
                 form.appendChild(productCard);
 
                 // Tambahkan form ke dalam DOM
                 document.body.appendChild(form);
-
+                
                 // Event listener for product card click
                 productCard.addEventListener('click', async () => {
                     try {
@@ -214,11 +232,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     productList.appendChild(productCard);
                 });
             };
-
+           
             // Add products to the lists
-            appendProductsToList(products, productList, true);
-            appendProductsToList(specialProducts, specialProductList, false);
             appendProductsToList(exploreProducts, exploreProductList, false);
+            appendProductsToList(specialProducts, specialProductList, false);
+            appendProductsToList(products, productList, true);
 
             console.log('Adding products:', products);
 
@@ -230,13 +248,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const hiddenProductCount = totalProducts - visibleProductCount;
 
-                if (hiddenProductCount > 0) {
-                    viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>`;
-                } else {
-                    viewAllLink.textContent = `View all`;
-                }
+                // if (hiddenProductCount > 0) {
+                //     viewAllLink.innerHTML = `View all (${hiddenProductCount}+) <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                //         <path d="M6 4L10 8L6 12" stroke="#292929" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                //     </svg>`;
+                // } else {
+                //     viewAllLink.textContent = `View all`;
+                // }
             }
 
             // Perbarui link View All
@@ -244,11 +262,40 @@ document.addEventListener('DOMContentLoaded', function() {
             updateViewAllLink(specialProducts.length, specialProductList.clientWidth, document.getElementById('special-view-all-link'));
             updateViewAllLink(exploreProducts.length, exploreProductList.clientWidth, document.getElementById('explore-view-all-link'));
 
+            setTimeout(function() {
+                loadingSpinner.classList.add('hidden');
+            }, 500);
         } catch (error) {
             console.error('Error rendering products:', error);
+            setTimeout(function() {
+                loadingSpinner.classList.add('hidden');
+            }, 500);
         }
     }
 
     renderProducts();
 
 });
+
+// resources/js/shop-script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1, // Elemen terlihat 10% di viewport
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('parallax-visible');
+            }
+        });
+    }, observerOptions);
+
+    // Pilih semua elemen dengan kelas 'parallax-appear'
+    const parallaxElements = document.querySelectorAll('.parallax-appear');
+    parallaxElements.forEach((el) => observer.observe(el));
+});
+

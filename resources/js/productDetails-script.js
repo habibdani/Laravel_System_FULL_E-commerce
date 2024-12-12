@@ -1,72 +1,70 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const loadingSpinner = document.getElementById('loading_spinner');
+    loadingSpinner.classList.remove('hidden');
+
     setTimeout(() => {
         const quantityInput = document.getElementById('quantity');
         const decreaseButton = document.getElementById('decrease');
         const increaseButton = document.getElementById('increase');
         const addButton = document.getElementById('add');
-        const stock = parseInt(document.getElementById('productStock').innerText);
+        let stock = parseInt(document.getElementById('productStock').innerText);
         const priceElement = document.getElementById('productPrice');
-        let basePrice = parseFloat(priceElement.getAttribute('price-value-product')) || 0;
-
         const mainImage = document.getElementById('mainImage');
+        const basePrice = parseFloat(priceElement.getAttribute('price-value-product')) || 0;
 
-        // Menyimpan harga tambahan yang dipilih
         let selectedPrices = {};
 
-        // Function to update the displayed price
         function updatePrice() {
             let totalPrice = basePrice;
+            console.log('base price : ', basePrice)
 
-            // Tambahkan semua harga varian yang dipilih
             Object.values(selectedPrices).forEach(price => {
                 totalPrice += price;
             });
 
-            // Perbarui atribut 'price-value-product' dengan nilai total baru
             priceElement.setAttribute('price-value-product', totalPrice);
             priceElement.textContent = `Rp. ${totalPrice.toLocaleString()}`;
         }
 
-        const variantTypes = document.querySelectorAll('[id^=type-]'); // Ambil semua elemen tipe berdasarkan ID yang di-generate (type-1, type-2, dst.)
-        const variantSideLabels = document.querySelectorAll('[id^=type-label-]');
-        const variantSideValues = document.querySelectorAll('[id^=type-value-]');
+        const variantContainer = document.getElementById('variantContainer');
 
-        variantTypes.forEach((variantType, index) => {
-            const variantSideLabel = variantSideLabels[index];
-            const variantSideValue = variantSideValues[index];
+        if (variantContainer) {
+            variantContainer.addEventListener('click', (event) => {
+                if (event.target.classList.contains('variant-option')) {
+                    const button = event.target;
 
-            // Masukkan nama tipe varian ke label samping
-            if (variantType && variantSideLabel) {
-                variantSideLabel.textContent = variantType.textContent; // Pastikan label diisi
-            }
+                    const parentId = button.closest('[id^="Option-type-"]').id;
+                    const index = parseInt(parentId.split('-')[2]);
 
-            // Cari tombol opsi varian untuk setiap tipe (misalnya, variant-option-1, variant-option-2, dll.)
-            const variantButtons = document.querySelectorAll(`#Option-type-${index + 1} .variant-option`);
-            // console.log(`Tombol varian untuk tipe ${index + 1}:`, variantButtons);
+                    const variantButtons = document.querySelectorAll(`#${parentId} .variant-option`);
+                    const variantSideValue = document.getElementById(`type-value-${index}`);
 
-            variantButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Hapus kelas aktif dari semua tombol
-                    variantButtons.forEach(btn => btn.classList.remove('active'));
+                    if (variantSideValue) {
+                        variantButtons.forEach(btn => btn.classList.remove('active'));
 
-                    // Tambahkan kelas aktif ke tombol yang diklik
-                    button.classList.add('active');
+                        button.classList.add('active');
 
-                    // Sinkronkan dengan tampilan samping (variantSide)
-                    variantSideValue.textContent = button.textContent;
-                    const vii = button.getAttribute('variant_item_id');
-                    variantSideValue.setAttribute('variant_item_id', vii);
-                    // Ambil harga tambahan dari tombol yang dipilih
-                    const additionalPrice = parseFloat(button.getAttribute('add_price')) || 0; // Ambil add_price
+                        variantSideValue.textContent = button.textContent;
+                        const variantItemId = button.getAttribute('variant_item_id');
+                        const variantItemName = button.getAttribute('variant_item_name');
 
-                    // Simpan harga tambahan dalam objek selectedPrices berdasarkan tipe varian (index)
-                    selectedPrices[index] = additionalPrice;
+                        variantSideValue.setAttribute('variant_item_id', variantItemId);
+                        variantSideValue.setAttribute('variant_item_name', variantItemName);
 
-                    // Update harga total
-                    updatePrice();
-                });
+                        const additionalPrice = parseFloat(button.getAttribute('add_price')) || 0;
+
+                        selectedPrices[index] = additionalPrice;
+
+                        updatePrice();
+                    } else {
+                        console.warn(`Elemen dengan ID type-value-${index} tidak ditemukan.`);
+                    }
+                }
             });
-        });
+        } else {
+            console.error('Elemen variantContainer tidak ditemukan.');
+        }
+        // // Menggunakan event delegation untuk opsi varian
 
         // Event listeners for Thumbnail images
         const thumbnails = document.querySelectorAll('.thumbnail');
@@ -85,198 +83,256 @@ document.addEventListener('DOMContentLoaded', () => {
 
         decreaseButton.addEventListener('click', () => {
             let currentValue = parseInt(quantityInput.value);
-            if (currentValue > 1) { // Minimum quantity is 1
+            if (currentValue > 1) {
                 quantityInput.value = currentValue - 1;
+                stock += 1;
+                // document.getElementById('productStock').innerText = stock;
             }
         });
 
         increaseButton.addEventListener('click', () => {
             let currentValue = parseInt(quantityInput.value);
-            if (currentValue < stock) { // Maximum quantity is the available stock
+            if (currentValue < stock) {
                 quantityInput.value = currentValue + 1;
+                stock -= 1;
+                // document.getElementById('productStock').innerText = stock; // Perbarui tampilan stok
             }
         });
 
-        addButton.addEventListener('click', () => {
+        const productStockElement = parseInt(document.getElementById('productStock').innerText);
+        if (quantityInput && productStockElement) {
+            let totalStock = productStockElement; // Total stok awal
 
+            // Pastikan totalStock adalah angka yang valid
+            if (isNaN(totalStock)) {
+                totalStock = 0;                
+                return;
+            }
+            quantityInput.addEventListener('keydown', (event) => {
+                setTimeout(() => {
+                    let currentValue = parseInt(quantityInput.value, 10);
+        
+                    // Validasi nilai input
+                    if (isNaN(currentValue) || currentValue < 1) {
+                        currentValue = 1; // Tetapkan nilai minimum jika invalid
+                    } else if (currentValue > totalStock) {
+                        currentValue = totalStock; // Batasi input ke stok maksimum
+                    }
+        
+                    quantityInput.value = currentValue; // Perbarui input ke nilai valid
+        
+                    // Hitung stok tersisa
+                    const stock = totalStock - currentValue;
+                    // console.log('oke5.6');
+                    // Perbarui tampilan stok tersisa
+                    // productStockElement.innerText = stock;
+                }, 0); // Timeout diperlukan untuk menangkap nilai terbaru setelah key press
+            });
+        
+            // Tambahkan event untuk menangani perubahan stok dinamis jika diperlukan
+            quantityInput.addEventListener('blur', () => {
+                totalStock = parseInt(productStockElement.innerText, 10); // Perbarui total stok jika stok awal berubah
+                if (isNaN(totalStock)) totalStock = 0;
+            });
+            
+        } else {
+            console.error("Element quantityInput atau productStock tidak ditemukan di DOM.");
+        }        
+        // fuction ketika menambahkan product ke keranjang
+        addButton.addEventListener('click', () => {
             const sidebar = document.getElementById('sidebar');
             const toggleBtn = document.getElementById('toggle');
             const considebar = document.getElementById('container-sidebar');
 
             sidebar.classList.remove('sidebar-hidden');
             sidebar.classList.add('sidebar-visible');
-            considebar.classList.add('z-20');
-            considebar.classList.remove('z-0');
+            considebar.style.width = ""; // menghapus style="width: 20px !important;"
+            // considebar.classList.add('z-20');
+            // considebar.classList.remove('z-20');
             toggleBtn.classList.remove('toggle-hidden');
             toggleBtn.classList.add('toggle-visible');
+
             const toggleIcon = toggleBtn.querySelector('img');
             const visibleIcon = toggleBtn.getAttribute('data-visible-icon');
-            toggleIcon.src = visibleIcon; // Mengganti src dengan gambar tersembunyi
+            toggleIcon.src = visibleIcon;
 
-            const priceElement = document.getElementById('productPrice');
-            if (!priceElement) {
-                console.error('Elemen priceElement tidak ditemukan.');
-                return;
-            }
-            const pricesatuan = priceElement.getAttribute('price-value-product');
+            const productVariantId = document.getElementById('productTitle').getAttribute('product-variant-id');
+            const productVariantName = document.getElementById('productTitle').innerText;
+            const productImage = document.getElementById('rightImage').getAttribute('src');
 
-            const productElement = document.getElementById('productTitle');
-            if (!productElement) {
-                console.error('Elemen productTitle tidak ditemukan.');
-                return;
-            }
-            const productVariantId = productElement.getAttribute('product-variant-id');
-            const productVariantName = productElement.innerText;
+            const variantContainer = document.getElementById('variantSideContainer');
+            let variantDetails = [];
 
-            const imageElement = document.getElementById('rightImage');
-            if (!imageElement) {
-                console.error('Elemen rightImage tidak ditemukan.');
-                return;
-            }
-            const productImage = imageElement.getAttribute('src');
+            if (variantContainer) {
+                const typeLabels = variantContainer.querySelectorAll('[id^="type-label-"]');
+                const typeValues = variantContainer.querySelectorAll('[id^="type-value-"]');
 
-            const variantSideLabels = document.querySelectorAll('[id^=type-label-]');
-            const variantSideValues = document.querySelectorAll('[id^=type-value-]');
-
-            if (variantSideLabels.length === 0 || variantSideValues.length === 0) {
-                console.error('Elemen label atau value varian tidak ditemukan.');
-                return;
-            }
-
-            let variants = [];
-
-            variantSideValues.forEach((variantSideValue, index) => {
-                const variantLabel = variantSideLabels[index];
-                const variantValueText = variantSideValue.innerText;
-                let variantItemId = null;
-
-                if (variantSideValue.hasAttribute('variant_item_id')) {
-                    variantItemId = variantSideValue.getAttribute('variant_item_id');
+                // Check if typeLabels and typeValues are not empty
+                if (typeLabels.length > 0 && typeValues.length > 0) {
+                    variantDetails = Array.from(typeValues).map((valueElem, index) => {
+                        const typeLabelElem = typeLabels[index];
+                        return {
+                            variant_item_type_id: typeLabelElem?.getAttribute('variant_item_type_id') || '',
+                            variant_item_type_name: typeLabelElem?.getAttribute('variant_item_type_name') || '',
+                            variant_item_name: valueElem.getAttribute('variant_item_name') || '',
+                            variant_item_id: valueElem.getAttribute('variant_item_id') || ''
+                        };
+                    });
                 }
-
-                variants.push({
-                    label: variantLabel.innerText,
-                    value: variantValueText,
-                    variantItemId: variantItemId
-                });
-            });
-
-            const qtyElement = document.getElementById('quantity');
-            if (!qtyElement) {
-                console.error('Elemen quantity tidak ditemukan.');
-                return;
-            }
-            const qty = qtyElement.value;
-
-            function formatRupiah(price) {
-                return `Rp. ${price.toLocaleString('id-ID')}`;
             }
 
-            const price = pricesatuan * qty;
-            const priceDisplay = formatRupiah(Math.round(price));
+            const qty = quantityInput.value;
+            const pricesatuan = parseFloat(priceElement.getAttribute('price-value-product'));
+            const price = parseFloat(priceElement.getAttribute('price-value-product')) * qty;
+            const priceDisplay = `Rp. ${price.toLocaleString('id-ID')}`;
 
-            const listOrderContainer = document.querySelector('.list-order-item');
-            if (!listOrderContainer) {
-                console.error('Error: Element with class "list-order-item" not found.');
-                return;
+            // Check sessionStorage for existing product_card_count
+            let productCardCount = parseInt(sessionStorage.getItem('product_card_count')) || 0;
+
+            let isExisting = false;
+            // Check if productVariantId already exists in sessionStorage
+            for (let i = 0; i < productCardCount; i++) {
+                const storedProductId = sessionStorage.getItem(`product_variant_id_${i}`);
+                if (storedProductId === productVariantId) {
+                    // Update quantity and price if the product already exists
+                    // console.log('prodictvid',storedProductId);
+                    const currentQty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
+                    const newQty = currentQty + parseInt(qty);
+                    const currentPrice = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
+                    const newPrice = currentPrice + parseInt(price);
+
+                    sessionStorage.setItem(`product_varaint_quantity_${i}`, newQty);
+                    sessionStorage.setItem(`product_variant_price_value_${i}`, newPrice);
+                    sessionStorage.setItem(`product_price_text_${i}`, `Rp. ${newPrice.toLocaleString('id-ID')}`);
+                    sessionStorage.setItem(`product_variant_item_count_${i}`,variantDetails.length);
+
+                    // Update the rendered HTML for the existing product
+                    const existingProductCard = document.querySelector(`.sidebar-product-card[value="${productVariantId}"]`);
+                    if (existingProductCard) {
+                        // Update quantity in the input field
+                        const quantityInput = existingProductCard.querySelector(`#sidebar-quantity-${productVariantId}`);
+                        quantityInput.value = newQty;
+            
+                        // Update total price text
+                        const priceText = existingProductCard.querySelector(`#sidebar-price-text-${productVariantId}`);
+                        priceText.innerText = `Rp. ${newPrice.toLocaleString('id-ID')}`;
+            
+                        // Update the sidebar_value_price attribute
+                        const priceContainer = existingProductCard.querySelector(`#sidebar_price_product_${productVariantId}`);
+                        if (priceContainer) {
+                            priceContainer.setAttribute('sidebar_value_price', newPrice);
+                        }
+                    }
+
+                    isExisting = true;
+                    break;
+                }
             }
+            
+            if (!isExisting) {
+                // Add new product to sessionStorage
+                sessionStorage.setItem(`product_variant_id_${productCardCount}`, productVariantId);
+                sessionStorage.setItem(`productImageSrc_${productCardCount}`, productImage);
+                sessionStorage.setItem(`product_price_text_${productCardCount}`, priceDisplay);
+                sessionStorage.setItem(`product_varaint_quantity_${productCardCount}`, qty);
+                sessionStorage.setItem(`product_variant_name_${productCardCount}`, productVariantName);
+                sessionStorage.setItem(`product_variant_price_value_${productCardCount}`, price);
+                sessionStorage.setItem(`product_variant_price_value_satuan_${productCardCount}`, pricesatuan);
+                sessionStorage.setItem(`product_variant_item_count_${productCardCount}`,variantDetails.length);
+                // Increment product_card_count
+                productCardCount++;
+                sessionStorage.setItem('product_card_count', productCardCount);
 
-            // Generate HTML baru untuk product order list
-            const newProductCard = document.createElement('div');
-            newProductCard.setAttribute('value', productVariantId); // Menambahkan data attribute
-            newProductCard.classList.add('sidebar-product-card', 'flex', 'items-start', 'justify-between', 'p-3', 'h-1/3', 'w-full', 'bg-[#F4F4F4]', 'rounded-md');
 
-            newProductCard.innerHTML = `
-                <img src="${productImage}" alt="Produk" class="w-[75px] h-[75px] object-cover rounded-md">
-                <div class="ml-3 space-y-1 flex-1">
-                    <p id="sidebar-product-id-${productVariantId}" value-sidebar-product-id-${productVariantId}="${productVariantId}" class="text-sm font-semibold truncate border-b-2 border-[#D9D9D9] pb-[1px]">
-                        ${productVariantName}
-                    </p>
-                    <p class="text-[#707070] font-normal text-[12px]">detail:</p>
-                    <div id="detail-product-sidebar-${productVariantId}" class="sidebar-list-varaint-label space-y-1">
-                        ${variants.map((variant, idx) => `
-                            <p id="sidebar-label-type-${idx + 1}" class="sidebar-variant-label text-[12px] font-normal text-[#292929]">${variant.label}:
-                                <span id="sidebar-option-type-${idx + 1}" value-sidebar-option-type-${idx + 1}="${variant.variantItemId}">${variant.value}</span>
-                            </p>
-                        `).join('')}
-                    </div>
-                    <div class="bg-white w-5/6 p-1 rounded-md">
-                        <p class="text-[12px] font-normal ">Total Harga:
-                            <span id="price-product-sidebar-${productVariantId}" value-price-product-sidebar-${productVariantId}="${price}" class="text-[12px] font-semibold">${priceDisplay}</span>
+                // Add product card to the sidebar
+                const listOrderContainer = document.querySelector('.list-order-item');
+                const newProductCard = document.createElement('div');
+                newProductCard.setAttribute('value', productVariantId);
+                newProductCard.classList.add('sidebar-product-card', 'flex', 'items-start', 'justify-between', 'p-3', 'h-1/3', 'w-full', 'bg-[#F4F4F4]', 'rounded-md');
+
+                newProductCard.innerHTML = `
+                    <img src="${productImage}" alt="Produk" class="w-[75px] h-[75px] object-cover rounded-md">
+                    <div class="ml-3 space-y-1 flex-1">
+                        <p id="sidebar-product-id-${productVariantId}" value-sidebar-product-id="${productVariantId}" class="text-sm font-semibold truncate border-b-2 border-[#D9D9D9] pb-[1px]">
+                            ${productVariantName}
                         </p>
-                    </div>
-                    <div class="flex pr-4 justify-between pt-2 w-full items-center mb-2">
-                        <div class=" flex items-center border bg-[#E01535] rounded-md py-1">
-                            <button id="sidebar-decrease-${productVariantId}" class="p-2 h-full text-gray-700 focus:outline-none">
-                                <svg width="13" height="4" viewBox="0 0 13 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.5" x="12.3574" y="0.718262" width="2.77002" height="11.8347" transform="rotate(90 12.3574 0.718262)" fill="white"/>
-                                </svg>
-                            </button>
-                            <input id="sidebar-quantity-${productVariantId}" type="text" value="${qty}" class="w-7 bg-[#E01535] text-center font-semibold border-none focus:outline-none text-white" />
-                            <button id="sidebar-increase-${productVariantId}" class="px-2 h-full text-gray-700 focus:outline-none">
-                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="12.1514" y="4.71851" width="2.77002" height="11.8347" transform="rotate(90 12.1514 4.71851)" fill="white"/>
-                                    <rect x="7.61914" y="12.0208" width="2.77002" height="11.8347" transform="rotate(-180 7.61914 12.0208)" fill="white"/>
-                                </svg>
+                        <p class="text-[#707070] font-normal text-[12px]">Detail:</p>
+                        <div id="detail-product-sidebar-${productVariantId}" class="sidebar-list-varaint-label space-y-1">
+                            ${variantDetails.length > 0 ? variantDetails.map(detail => `
+                            <p id="sidebar_label_variant_item_type_${productVariantId}_${detail.variant_item_type_id}" class="text-[12px] font-normal text-[#292929]" sidebar_variant_item_type_id="${detail.variant_item_type_id}">
+                                ${detail.variant_item_type_name}:
+                                <span id="sidebar_variant_item_${productVariantId}_${detail.variant_item_id}" sidebar_variant_item_id="${detail.variant_item_id}">
+                                    ${detail.variant_item_name}
+                                </span>
+                            </p>
+                            `).join('') : '<p class="text-[12px] font-normal text-[#707070]">Tidak ada varian</p>'}
+                        </div>
+                        <div id="sidebar_price_product_${productVariantId}" sidebar_value_price="${price}" sidebar_price_satuan="${pricesatuan}" class="bg-white w-5/6 p-1 rounded-md">
+                            <p class="text-[12px] font-normal">Total Harga:
+                                <span id="sidebar-price-text-${productVariantId}" class="text-[12px] font-semibold">${priceDisplay}</span>
+                            </p>
+                        </div>
+                        <div class="flex pr-4 justify-between pt-2 w-full items-center mb-2">
+                            <div class=" flex items-center border bg-[#E01535] rounded-md py-1">
+                                <button id="sidebar-decrease-${productVariantId}" class="p-2 h-full text-gray-700 focus:outline-none">
+                                    <svg width="13" height="4" viewBox="0 0 13 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect opacity="0.5" x="12.3574" y="0.718262" width="2.77002" height="11.8347" transform="rotate(90 12.3574 0.718262)" fill="white"/>
+                                    </svg>
+                                </button>
+                                <input id="sidebar-quantity-${productVariantId}" type="text" disabled value="${qty}" class="w-7 bg-[#E01535] text-center font-semibold border-none focus:outline-none text-white" min="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
+                                <button id="sidebar-increase-${productVariantId}" class="px-2 h-full text-gray-700 focus:outline-none">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="12.1514" y="4.71851" width="2.77002" height="11.8347" transform="rotate(90 12.1514 4.71851)" fill="white"/>
+                                        <rect x="7.61914" y="12.0208" width="2.77002" height="11.8347" transform="rotate(-180 7.61914 12.0208)" fill="white"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <button id="sidebar-product-deleted-${productVariantId}" class="px-2 inline-flex items-center bg-white text-white py-2 rounded focus:outline-none">
+                                <img src="/storage/icons/sampah.svg" alt="sampah" class="h-4 w-4">
+                                <span class="font-roboto text-[16px] font-semibold leading-4.5 tracking-wide text-left"></span>
                             </button>
                         </div>
-                        <button id="sidebar-product-deleted-${productVariantId}" class="px-2 inline-flex items-center bg-white text-white py-2 rounded focus:outline-none">
-                            <img src="/storage/icons/sampah.svg" alt="sampah" class="h-4 w-4">
-                            <span class="font-roboto text-[16px] font-semibold leading-4.5 tracking-wide text-left"></span>
-                        </button>
                     </div>
-                </div>
-            `;
+                `;
 
-            // Tambahkan produk baru ke dalam list order container
-            listOrderContainer.appendChild(newProductCard);
-
-            // Trigger custom event untuk produk baru
-            const event = new CustomEvent('productAdded', {
-                detail: {
-                    productVariantId: uniqueProductId // Mengirimkan ID unik produk
-                }
-            });
-            document.dispatchEvent(event);
-
-            // Fungsi untuk menghitung total harga dan jumlah item di sidebar
-            function updateTotalItemAndPrice() {
-                const priceElements = document.querySelectorAll('[id^="price-product-sidebar-"]');
-                let totalPrice = 0;
-                let totalItems = 0;
-
-                // Hitung total harga dan jumlah item
-                priceElements.forEach(priceElement => {
-                    const priceValue = parseInt(priceElement.getAttribute('value-price-product-sidebar'));
-                    if (!isNaN(priceValue)) {
-                        totalPrice += priceValue;
-                        totalItems += 1;
-                    }
-                });
-
-                const totalItemElement = document.getElementById('totalitem');
-                const totalPriceElement = document.getElementById('totalprice');
-                const jumlahItemElement = document.getElementById('jumlahitem');
-
-                // Pastikan elemen totalitem, totalprice, dan jumlahitem ditemukan
-                if (totalItemElement && totalPriceElement && jumlahItemElement) {
-
-                    // Update jumlah item dan total harga
-                    totalItemElement.innerText = totalItems; // Update jumlah item
-                    totalPriceElement.innerText = totalPrice.toLocaleString('id-ID'); // Update total harga
-
-                    // Hapus kelas hidden jika ada
-                    jumlahItemElement.classList.remove('hidden');
-                } else {
-                    console.error('Elemen totalitem, totalprice, atau jumlahitem tidak ditemukan');
-                }
+                listOrderContainer.appendChild(newProductCard);
             }
 
-            // Panggil fungsi untuk memperbarui total harga dan jumlah item
             updateTotalItemAndPrice();
-
-            saveDataToSessionStorage();
         });
 
-    }, 1000);
+        // Fungsi untuk menghitung total harga dan jumlah item di sidebar
+        function updateTotalItemAndPrice() {
+            const priceElements = document.querySelectorAll('[id^="price-product-sidebar-"]');
+            let totalPrice = 0;
+            let totalItems = 0;
+
+            priceElements.forEach(priceElement => {
+                const priceValue = parseInt(priceElement.getAttribute('value-price-product-sidebar'));
+                if (!isNaN(priceValue)) {
+                    totalPrice += priceValue;
+                    totalItems += 1;
+                }
+            });
+
+            const totalItemElement = document.getElementById('totalitem');
+            const totalPriceElement = document.getElementById('totalallprice');
+            const jumlahItemElement = document.getElementById('jumlahitem');
+
+            if (totalItemElement && totalPriceElement && jumlahItemElement) {
+                totalItemElement.innerText = totalItems;
+                totalPriceElement.innerText = ` ${totalPrice.toLocaleString('id-ID')}`;
+                jumlahItemElement.classList.remove('hidden');
+            } else {
+                console.error('Elemen totalitem, totalprice, atau jumlahitem tidak ditemukan');
+            }
+
+        }
+
+        setTimeout(() => {
+            loadingSpinner.classList.add('hidden');
+        }, 1500);
+        loadingSpinner.classList.add('hidden');
+    }, 2500);
 });
+

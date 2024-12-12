@@ -40,10 +40,12 @@ class ShippingController extends Controller
                     sd.price,
                     CONCAT(sd.`name`, ', ', REPLACE(sa.`name`, 'Kab ', 'Kabupaten ')) as city,
                     sa.id as shipping_area_id,
-                    CONCAT(sd.`name`, ' - ', sa.`name`) as alamat
+                    CONCAT(sd.`name`, ' - ', sa.`name`) as alamat,
+					COALESCE(ss.id, 0) as subdistrict_id
                 FROM
-                    shipping_districts sd
-                    JOIN shipping_areas sa ON sd.shipping_area_id = sa.id
+                    shipping_areas sa 
+                    JOIN shipping_districts sd ON sd.shipping_area_id = sa.id
+                    LEFT JOIN shipping_subdistricts ss ON sd.id = ss.shipping_district_id
                 WHERE
                     sd.deleted_at IS NULL
                     AND sa.deleted_at IS NULL

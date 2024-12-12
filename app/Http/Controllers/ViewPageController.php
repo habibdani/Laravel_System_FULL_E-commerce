@@ -47,4 +47,76 @@ class ViewPageController extends Controller
 
         return view('product-page', compact('productDetails', 'productVariantId','productTypeId'));
     }
+
+    public function dashboard(Request $request)
+    {
+        return view('dashboard-page');
+    }
+
+    public function dashboardProduct(Request $request)
+    {
+        return view('product-dashboard-page');
+    }
+    public function dashboardProductAdd(Request $request)
+    {
+        return view('add-product-page');
+    }
+    public function dashboardProductEdit($productVariantId)
+    {
+        return view('edit-product-page', compact('productVariantId'));
+    }
+    public function dashboardOrders(Request $request)
+    {
+        return view('orders-page');
+    }
+    public function dashboardOrdersDetail($booking_id)
+    {
+        // Debug to check if booking_id is received
+        // dd($booking_id);
+
+        return view('orders-detail-page');
+    }
+    public function dashboardSetting()
+    {
+        return view('setting-page');
+    }
+    public function dashboardSettingbannerbesar()
+    {
+        return view('setting-banner-besar');
+    }
+    public function dashboardSettingbannerkecil()
+    {
+        return view('setting-banner-kecil');
+    }
+    public function dashboardSettingbannerkecil2()
+    {
+        return view('setting-banner-kecil-2');
+    }
+    public function dashboardSettingrekening()
+    {
+        return view('setting-rekening');
+    }
+    public function dashboardSettingwa()
+    {
+
+        return view('setting-wa');
+    }
+    public function productbyid(Request $request)
+    {
+        $productId = $request->query('product_id');
+
+        return view('productbyid-page', compact('productId'));
+    }
+    public function dashboardSettingspecialproduct(Request $request)
+    {
+        return view('setting-specialproduct');
+    }
+    public function welcomepage()
+    {
+        return view('welcome-page');
+    }
+    public function dropshipsetting()
+    {
+        return view('setting-dropship');
+    }
 }

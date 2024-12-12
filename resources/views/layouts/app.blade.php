@@ -1,4 +1,3 @@
-<!-- layouts/app.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +9,13 @@
     <link rel="icon" href="{{ asset('storage/icons/andal.svg') }}" type="image/png">
     @vite('resources/css/app.css')
     @stack('head')
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.0.6"></script>
 </head>
 <body>
     <main>
         @yield('content')
+        @component('components.loading') @endcomponent
     </main>
     @vite('resources/js/app.js')
     @stack('scripts')
