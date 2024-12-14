@@ -593,7 +593,7 @@ confirmButton.addEventListener('click', async () => {
             alert('Produk berhasil ditambahkan!');
             // Lakukan redirect atau aksi lain jika perlu
             loadingSpinner.classList.add('hidden');
-
+            window.location.href = 'http://127.0.0.1:8001/dashboard/product';
         } else {
             alert('Gagal menambahkan produk. Coba lagi!');
         }

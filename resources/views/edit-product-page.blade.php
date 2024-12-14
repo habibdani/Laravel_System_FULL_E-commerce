@@ -278,6 +278,7 @@
 
                 if (result.success) {
                     alert("Produk berhasil diperbarui!");
+                    window.location.href = 'http://127.0.0.1:8001/dashboard/product';
                 } else {
                     alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
                 }
