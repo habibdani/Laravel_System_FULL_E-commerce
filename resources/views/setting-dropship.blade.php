@@ -18,17 +18,17 @@
                 <form id="infoClientForm">
                     <div class="mb-4">
                         <label for="clientName" class="block text-sm font-medium text-gray-700">Client Name</label>
-                        <input type="text" id="clientName" name="name" 
-                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
+                        <input type="text" id="clientName" name="name"
+                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                readonly>
                     </div>
                     <div class="mb-4">
                         <label for="pricePercentage" class="block text-sm font-medium text-gray-700">Price Percentage</label>
-                        <input type="number" id="pricePercentage" name="price_percentage" 
-                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
+                        <input type="number" id="pricePercentage" name="price_percentage"
+                               class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                required>
                     </div>
-                    <button type="button" id="saveButton" 
+                    <button type="button" id="saveButton"
                             class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
                         Save
                     </button>
@@ -40,7 +40,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const authToken = sessionStorage.getItem('authToken');
-            const apiUrl = 'http://127.0.0.1:8001/api/info-client/2';
+            const apiUrl = 'https://andalprima.hansmade.online/api/info-client/2';
 
             // Fetch client info and populate the form
             try {
@@ -75,7 +75,7 @@
                 }
 
                 try {
-                    const saveResponse = await fetch('http://127.0.0.1:8001/api/update-presentage', {
+                    const saveResponse = await fetch('https://andalprima.hansmade.online/api/update-presentage', {
                         method: 'PUT',
                         headers: {
                             'Authorization': `Bearer ${authToken}`,

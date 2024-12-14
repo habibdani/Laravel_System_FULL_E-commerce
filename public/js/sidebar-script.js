@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('order_data',JSON.stringify({payload}));
 
             // Send the API request
-            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
+            const response = await fetch('https://andalprima.hansmade.online/api/create-orders', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -187,9 +187,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Email atau data pesanan tidak ditemukan di sessionStorage.");
             return;
         }
-    
+
         try {
-            const response = await fetch('http://127.0.0.1:8001/api/send-email', {
+            const response = await fetch('https://andalprima.hansmade.online/api/send-email', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     nomorRekening: nomorRekening
                 }),
             });
-    
+
             if (response.ok) {
                 console.log("Email berhasil dikirim.");
             } else {
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Terjadi kesalahan saat mengirim email:", error);
         }
     }
-    
+
 // payment
     function handleSlideAndPaymentActions() {
         showSlide(3); // Menampilkan slide 3
@@ -1337,11 +1337,11 @@ const updatePaymentButtonState = () => {
     }
 
     // Periksa posisi route halaman
-    if (currentUrl === "http://127.0.0.1:8001/view-shop") {
+    if (currentUrl === "https://andalprima.hansmade.online/view-shop") {
         // Sembunyikan bingkaibuttonpayment
         bingkaibuttonalamt.classList.remove('hidden');
         bingkaibuttonpayment.classList.add('hidden');
-    } else if (currentUrl.startsWith("http://127.0.0.1:8001/view-maps?client_type_id=1")) {
+    } else if (currentUrl.startsWith("https://andalprima.hansmade.online/view-maps?client_type_id=1")) {
         // Sembunyikan bingkaibuttonalamt
         bingkaibuttonalamt.classList.add('hidden');
     }

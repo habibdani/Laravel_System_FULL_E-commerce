@@ -17,23 +17,44 @@
             white-space: nowrap;
         }
         .sidebar-hidden {
-            transform: translateX(-100%);
+            transform: translateY(100%);
         }
         .sidebar-visible {
-            transform: translateX(0);
+            transform: translateY(0);
         }
         .sidebar-transition {
             transition: all 0.3s ease;
         }
         .toggle-hidden {
-            left: -30px; /* Posisi tombol ketika sidebar tersembunyi */
-            transform: translateX(100%);
-            transition: left 0.3s ease, transform 0.3s ease; /* Samakan durasi dan properti transisi dengan sidebar */
+            top: 1/3; /* Posisi tombol ketika sidebar tersembunyi di layar kecil */
+            transform: translateY(100%);
+            transition: top 0.3s ease, transform 0.3s ease;
         }
+
         .toggle-visible {
-            right: -30px; /* Tepat di sebelah kanan sidebar */
-            transform: translateX(0);
-            transition: left 0.3s ease, transform 0.3s ease; /* Samakan durasi dan properti transisi dengan sidebar */
+            top: 1/3; /* Tombol berada di bagian atas saat sidebar terlihat */
+            transform: translateY(0);
+            transition: top 0.3s ease, transform 0.3s ease;
+        }
+
+        @media (min-width: 1000px) {
+            .toggle-hidden {
+                top: 1/3;
+                left: -30px; /* Posisi tombol tersembunyi di desktop */
+                transform: translateX(100%);
+            }
+
+            .toggle-visible {
+                top: 1/3;
+                right: -30px; /* Posisi tombol di desktop */
+                transform: translateX(0);
+            }
+            .sidebar-hidden {
+                transform: translateX(-100%);
+            }
+            .sidebar-visible {
+                transform: translateX(0);
+            }
         }
         #tipe-pembelian, #alamat {
             -webkit-appearance: none;
@@ -372,7 +393,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const norekeningElement = document.getElementById('norekening');
         const namarekeneingElement = document.getElementById('namarekeneing');
         const norekeningElement2 = document.getElementById('norekening2');
@@ -409,7 +430,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const nomorwaElement = document.getElementById('nomorwa');
         const nomorwa2Element = document.getElementById('nomorwa2');
 

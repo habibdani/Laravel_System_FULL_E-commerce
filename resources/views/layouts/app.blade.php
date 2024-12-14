@@ -10,7 +10,7 @@
     @vite('resources/css/app.css')
     @stack('head')
 
-    <script src="http://cdn.jsdelivr.net/npm/alpinejs@3.0.6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.0.6"></script>
 </head>
 <body>
     <main>
