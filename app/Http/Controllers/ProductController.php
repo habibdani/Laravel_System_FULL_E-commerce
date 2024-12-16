@@ -204,6 +204,160 @@ class ProductController extends Controller
         }
     }
 
+    public function trueproductdetails(Request $request)
+    {
+        // Get the 'id' parameter from the query string
+        $id = $request->query('id');
+
+        // Validate input
+        if (!$id || !is_numeric($id)) {
+            return ApiResponseHelper::error('ID is required and must be a valid integer.', 400);
+        }
+
+        try {
+            $productUtama = DB::select("
+                SELECT
+                    p.id,
+                    p.title AS product_name,
+                    p.product_type_id
+                FROM
+                    products p
+                    JOIN product_variants pv ON p.id = pv.product_id
+                WHERE
+                    p.id = ?
+                    AND p.deleted_at IS NULL
+                    AND pv.deleted_at IS NULL
+                GROUP BY p.id
+            ", [$id]);
+
+            // Check if ProductUtama exists
+            if (empty($productUtama)) {
+                return ApiResponseHelper::error('Product not found.', 404);
+            }
+
+            // Query to get product variants
+            $productVariants = DB::select("
+                SELECT
+                    pv.id AS product_variant_id,
+                    CONCAT(pt.name, ' - ', pv.name) AS full_name_product,
+                    SUBSTRING_INDEX(pv.image, '/storage/', -1) AS variant_image,
+                    pvi.id AS variant_item_id,
+                    pvi.name AS variant_item_name,
+                    pvi.variant_item_type_id,
+                    pv.descriptions,
+                    pv.stock,
+                    CASE
+                        WHEN pv.price = (pv.price + COALESCE(MAX(pvi.add_price), 0)) THEN
+                            CONCAT('Rp ', FORMAT(pv.price, 0))
+                        ELSE
+                            CONCAT('Rp ', FORMAT(pv.price, 0), ' - Rp ', FORMAT((pv.price + COALESCE(MAX(pvi.add_price), 0)), 0))
+                    END AS price_display,
+                    pv.price
+                FROM
+                    products p
+                    JOIN product_types pt ON p.product_type_id = pt.id
+                    JOIN product_variants pv ON p.id = pv.product_id
+                    LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                    LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                WHERE
+                    p.id = ?
+                    AND p.deleted_at IS NULL
+                    AND pt.deleted_at IS NULL
+                    AND pv.deleted_at IS NULL
+                GROUP BY
+                    pv.id
+            ", [$id]);
+
+            // Organize the response structure
+            $productDetails = [
+                'id' => $productUtama[0]->id,
+                'product_name' => $productUtama[0]->product_name,
+                'product_type' => $productUtama[0]->product_type_id,
+                'product_variant' => []
+            ];
+
+            // Group variants under the main product
+            foreach ($productVariants as $variant) {
+                // Query variant types for this product variant
+                $varianttypes = DB::select("
+                    SELECT
+                        pv.id AS product_variant_id,
+                        vit.id AS variant_item_type_id,
+                        vit.name AS variant_item_type_name
+                    FROM
+                        product_variants pv
+                        LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                        LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                    WHERE
+                        pv.id = ?
+                        AND pvi.deleted_at IS NULL
+                        AND vit.deleted_at IS NULL
+                    GROUP BY vit.id
+                ", [$variant->product_variant_id]);
+            
+                $variantItemDetails = []; // To store items for each variant type
+            
+                // Loop through each variant type
+                foreach ($varianttypes as $varianttype) {
+                    // Query for variant items within this type
+                    $variantItems = DB::select("
+                        SELECT
+                            -- pv.id AS product_variant_id,
+                            -- vit.id AS variant_item_type_id,
+                            pvi.id AS variant_item_id,
+                            pvi.name AS variant_item_name,
+                            COALESCE(pvi.add_price, 0) AS add_price
+                        FROM
+                            product_variants pv
+                            LEFT JOIN product_variant_items pvi ON pv.id = pvi.product_variant_id
+                            LEFT JOIN variant_item_types vit ON vit.id = pvi.variant_item_type_id
+                        WHERE
+                            pv.id = ?
+                            AND vit.id = ?
+                            AND pvi.deleted_at IS NULL
+                            AND vit.deleted_at IS NULL
+                    ", [$variant->product_variant_id, $varianttype->variant_item_type_id]);
+            
+                    // Add details of this variant type with its items
+                    $variantItemDetails[] = [
+                        // 'product_variant_id' => $varianttype->product_variant_id,
+                        'variant_item_type_id' => $varianttype->variant_item_type_id,
+                        'variant_item_type_name' => $varianttype->variant_item_type_name,
+                        'items' => $variantItems
+                    ];
+                }
+            
+                // Add product variant details with the nested variant item details
+                $productDetails['product_variant'][] = [
+                    'product_variant_id' => $variant->product_variant_id,
+                    'full_name_product' => $variant->full_name_product,
+                    'variant_image' => $variant->variant_image,
+                    'variant_item_id' => $variant->variant_item_id,
+                    'variant_item_name' => $variant->variant_item_name,
+                    'variant_item_type_id' => $variant->variant_item_type_id,
+                    'descriptions' => $variant->descriptions,
+                    'stock' => $variant->stock,
+                    'price_display' => $variant->price_display,
+                    'price' => $variant->price,
+                    'variant_item_details' => $variantItemDetails // Nested details
+                ];
+            }
+            
+            // Check if the product exists
+            if (empty($productDetails)) {
+                return ApiResponseHelper::error('Product variant not found.', 404);
+            }
+
+
+            $data = response()->json($productDetails);
+            return ApiResponseHelper::success($data, 'Data retrieved successfully');
+        } catch (\Exception $e) {
+            Log::error('Error in productdetails: ' . $e->getMessage());
+
+            return ApiResponseHelper::error($e, 500);
+        }
+    }
+
     public function listproductData(Request $request)
     {
         try {

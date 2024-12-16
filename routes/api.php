@@ -16,6 +16,7 @@ Route::post('/send-email', [EmailController::class, 'sendEmail']);
 
 Route::get('/list-products', [ProductController::class, 'listproduct']);
 Route::get('/product/details', [ProductController::class, 'productdetails']);
+Route::get('/product/true/details', [ProductController::class, 'trueproductdetails']);
 
 // Banner Besar Routes
 Route::get('/banner-besar', [ProductController::class, 'getBannerBesar']); // Read All
