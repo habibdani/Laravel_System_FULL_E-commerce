@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 <!-- Tombol Edit -->
                                 <button id="edit_product_variant_id_${product.product_variant_id}"
                                         class="bg-blue-500 text-white flex items-center justify-center w-32 h-8 px-4 py-2 rounded-md hover:bg-blue-600 transition duration-150 ease-in-out"
-                                        onclick="window.location.href='/dashboard/product/edit/${product.product_variant_id}'">
+                                        onclick="window.location.href='/dashboard/product/edit/${product.product_id}'">
                                         <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" stroke="currentColor">
                                         <path d="M13.1106 4.91081L9.5284 1.32861L1.49133 9.3695L1.45703 12.9822L5.06971 12.9517L13.1106 4.91081Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M7.2832 3.57324L10.8654 7.15544" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
