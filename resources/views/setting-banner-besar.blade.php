@@ -79,7 +79,7 @@
             const token = sessionStorage.getItem('authToken');
             if (!token) {
                 alert('Token is missing, please log in again.');
-                window.location.href = 'http://127.0.0.1:8001/login';
+                window.location.href = 'https://andalprima.hansmade.online/login';
                 return;
             }
 
@@ -145,7 +145,7 @@
             const token = sessionStorage.getItem('authToken');
             if (!token) {
                 alert('Token is missing, please log in again.');
-                window.location.href = 'http://127.0.0.1:8001/login';
+                window.location.href = 'https://andalprima.hansmade.online/login';
                 return;
             }
 
@@ -181,7 +181,7 @@
             const token = sessionStorage.getItem('authToken');
             if (!token) {
                 alert('Token is missing, please log in again.');
-                window.location.href = 'http://127.0.0.1:8001/login';
+                window.location.href = 'https://andalprima.hansmade.online/login';
                 return;
             }
 
@@ -189,7 +189,7 @@
             formData.append('image', file);
 
             try {
-                const response = await fetch('http://127.0.0.1:8001/api/upload-image', {
+                const response = await fetch('https://andalprima.hansmade.online/api/upload-image', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -200,7 +200,7 @@
                 const data = await response.json();
                 if (data.success) {
                     const preview = document.getElementById(previewId);
-                    preview.src = data.data.image_url.replace('http://127.0.0.1:8001', '').trim();
+                    preview.src = data.data.image_url.replace('https://andalprima.hansmade.online', '').trim();
                     preview.classList.remove('hidden');
                 } else {
                     alert(data.message || 'Failed to upload image');
@@ -247,7 +247,7 @@
             const token = sessionStorage.getItem('authToken');
             if (!token) {
                 alert('Token is missing, please log in again.');
-                window.location.href = 'http://127.0.0.1:8001/login';
+                window.location.href = 'https://andalprima.hansmade.online/login';
                 return;
             }
 

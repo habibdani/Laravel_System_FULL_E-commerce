@@ -5,7 +5,7 @@
         <div class="flex justify-between h-10 mx-auto">
             <!-- Left Section: Logo -->
             <div class="flex items-center logo-section">
-                <a href="http://127.0.0.1:8001/view-shop">
+                <a href="https://andalprima.hansmade.online/view-shop">
                     <img class="max-h-full w-auto h-8" src="{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}" alt="Logo">
                 </a>
             </div>
@@ -26,8 +26,8 @@
         <div class="flex space-x-2.5 justify-center h-10 mx-auto" id="subfrstrowheader">
             <!-- Left Side (Logo and Company Name) -->
             <div class="flex items-center" id="firstrowlogo" >
-                <a href="http://127.0.0.1:8001/view-shop" class="ml-auto">
-                    <img class="max-h-full w-auto h-10" src="http://127.0.0.1:8001/storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png" alt="Logo">
+                <a href="https://andalprima.hansmade.online/view-shop" class="ml-auto">
+                    <img class="max-h-full w-auto h-10" src="https://andalprima.hansmade.online/storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png" alt="Logo">
                 </a>
             </div>
 
@@ -50,8 +50,9 @@
 
               <!-- Cart Icon -->
             <div class="flex items-center" id="headerkeranjang" style="width: 5%">
-                <a href="http://127.0.0.1:8001/view-shop" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
+                <a href="https://andalprima.hansmade.online" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
                     <img id="keranjangicon" src="{{ asset('storage/icons/keranjang.svg') }}" alt="keranjang" class="h-4 w-4">
+
                     <span id="keranjang" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center">0</span>
                 </a>
             </div>
@@ -75,42 +76,42 @@
             <div class="flex justify-center h-10 mx-auto overflow-x-auto nanonano whitespace-nowrap scrollbar-hide">
                 <!-- Navbar links -->
                 <div class="space-x-1 sm:-my-px sm:ml-3 sm:flex mx-auto" id="nanonanolist">
-                    <a href="http://127.0.0.1:8001/view-shop" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-shop" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/untuk-anda-gray.svg') }}" alt="Untuk Anda" class="h-5 w-5 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/untuk-anda-red.svg') }}" alt="Untuk Anda" class="h-5 w-5 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" id="untukanda" >Untuk Anda</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=2" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=2" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/besi-hollow-gray.svg') }}" alt="Besi Hollow" class="h-4 w-4 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/besi-hollow-red.svg') }}" alt="Besi Hollow" class="h-4 w-4 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="2">Besi Hollow dan Pipa Bulat</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=3" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=3" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/besi-kawat-gray.svg') }}" alt="Besi Kawat" class="h-4 w-4 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/besi-kawat-red.svg') }}" alt="Besi Kawat" class="h-4 w-4 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="3">Besi Kawat</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=5" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=5" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/plat-besi-gray.svg') }}" alt="Plat Besi" class="h-4 w-4 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/plat-besi-red.svg') }}" alt="Plat Besi" class="h-4 w-4 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="5" >Plat Besi</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=7" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=7" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/besi-batang-gray.svg') }}" alt="Besi Batangan" class="h-4 w-4 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/besi-batang-red.svg') }}" alt="Besi Batangan" class="h-4 w-4 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="7" >Besi Batangan</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=11" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=11" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/baja-ringan-gray.svg') }}" alt="Baja Ringan" class="h-5 w-5 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/baja-ringan-red.svg') }}" alt="Baja Ringan" class="h-5 w-5 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="11" >Baja Ringan</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=9" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=9" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/plat-gelombang-gray.svg') }}" alt="Plat Gelombang" class="h-4 w-4 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/plat-gelombang-red.svg') }}" alt="Plat Gelombang" class="h-4 w-4 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="9" >Plat Gelombang</span>
                     </a>
-                    <a href="http://127.0.0.1:8001/view-productid?product_id=10" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
+                    <a href="https://andalprima.hansmade.online/view-productid?product_id=10" class="group flex items-center text-gray-900 hover:text-[#E01535] px-2 py-0 rounded-md text-sm font-medium underline-hover">
                         <img src="{{ asset('storage/icons/besi-structural-gray.svg') }}" alt="Besi Profil Struktural" class="h-4 w-4 mr-1 group-hover:hidden">
                         <img src="{{ asset('storage/icons/besi-structural-red.svg') }}" alt="Besi Profil Struktural" class="h-4 w-4 mr-1 hidden group-hover:block">
                         <span class="font-roboto text-xs font-normal leading-4.5 tracking-wide text-left group-hover:text-[#E01535] text-[#747474]" value-product-id="10" >Besi Profil Struktural</span>

@@ -65,7 +65,7 @@
 
                 // Fetch data dari API
                 console.log("Fetching product details...");
-                const response = await fetch(`http://127.0.0.1:8001/api/product/details?id=${productVariantId}`, {
+                const response = await fetch(`https://andalprima.hansmade.online/api/product/details?id=${productVariantId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -125,7 +125,7 @@
                                                 onchange="uploadImage(event, 'editImagePreview')"
                                             />
                                             <img
-                                                src="http://127.0.0.1:8001/storage/${data.product.variant_image}"
+                                                src="https://andalprima.hansmade.online/storage/${data.product.variant_image}"
                                                 id="editImagePreview"
                                                 class="h-32 w-32 object-cover rounded-lg mt-2"
                                                 alt="Preview Image"
@@ -183,7 +183,7 @@
             formData.append('image', file);
 
             try {
-                const response = await fetch('http://127.0.0.1:8001/api/upload-image', {
+                const response = await fetch('https://andalprima.hansmade.online/api/upload-image', {
                     method: 'POST',
                     headers: { Authorization: `Bearer ${token}` }, // Tambahkan Bearer Token
                     body: formData,
@@ -255,7 +255,7 @@
                     return;
                 }
 
-                const response = await fetch(`http://127.0.0.1:8001/api/update-product/${productVariantId}`, {
+                const response = await fetch(`https://andalprima.hansmade.online/api/update-product/${productVariantId}`, {
                     method: 'PUT',
                     headers: {
                         'Accept': 'application/json',
@@ -278,6 +278,7 @@
 
                 if (result.success) {
                     alert("Produk berhasil diperbarui!");
+                    window.location.href = 'http://127.0.0.1:8001/dashboard/product';
                 } else {
                     alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
                 }

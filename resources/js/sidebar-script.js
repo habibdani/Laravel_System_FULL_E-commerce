@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < productCardCount; i++) {
                 const productVariantId = sessionStorage.getItem(`product_variant_id_${i}`);
                 const productVariantName = sessionStorage.getItem(`product_variant_name_${i}`);
-                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_${i}`)) || 0;
+                const price = parseFloat(sessionStorage.getItem(`product_variant_price_value_satuan_${i}`)) || 0;
                 const qty = parseInt(sessionStorage.getItem(`product_varaint_quantity_${i}`)) || 0;
 
                 if (!productVariantId || qty <= 0 || price <= 0) {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('order_data',JSON.stringify({payload}));
 
             // Send the API request
-            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
+            const response = await fetch('https://andalprima.hansmade.online/api/create-orders', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:8001/api/send-email', {
+            const response = await fetch('https://andalprima.hansmade.online/api/send-email', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.style.display = 'flex'; // Gunakan flexbox
         overlay.style.alignItems = 'center'; // Vertikal di tengah
         overlay.style.justifyContent = 'center'; // Horizontal di tengah
-    
+
         // Buat elemen popup
         const popup = document.createElement('div');
         popup.id = 'popupSuccess';
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
         popup.style.width = '90%';
         popup.style.maxWidth = '400px';
         popup.style.textAlign = 'center'; // Konten terpusat
-    
+
         // Tambahkan konten ke dalam popup
         popup.innerHTML = `
             <h2 style="margin: 0 0 10px; font-size: 18px; color: #333;">Pesanan berhasil dibuat!</h2>
@@ -266,22 +266,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 cursor: pointer;
             ">Oke</button>
         `;
-    
+
         // Tambahkan event listener untuk tombol popup
         popup.querySelector('#popupButton').addEventListener('click', () => {
             redirectToPage();
         });
-    
+
         // Tambahkan overlay dan popup ke body
         overlay.appendChild(popup); // Tambahkan popup ke dalam overlay
         document.body.appendChild(overlay); // Tambahkan overlay ke body
     }
-    
+
     // Fungsi untuk mengarahkan ke halaman tertentu
     function redirectToPage() {
-        window.location.href = 'http://127.0.0.1:8001/';
+        window.location.href = 'https://andalprima.hansmade.online/';
     }
-    
+
     let preventSave = false;
 
     function resetdatasessionstorage() {
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.clear(); // Hapus semua data dari sessionStorage
         const loadingSpinner = document.getElementById('loading_spinner');
         loadingSpinner.classList.add('hidden');
-        createPopup();    
+        createPopup();
     }
 
 // payment
@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // });
 
 
-   
+
     // Fungsi untuk mengupdate total harga (sesuaikan dengan perhitungan harga Anda)
     function updateTotalPricPerProduct(productVariantId) {
         const qtyInput = document.getElementById(`sidebar-quantity-${productVariantId}`);
@@ -1329,7 +1329,7 @@ const updatePaymentButtonState = () => {
     // Dapatkan URL halaman saat ini
 
     // Periksa kondisi utama (productCardCount dan districtId)
-    
+
 
     // Periksa posisi route halaman
     if (window.location.pathname === "/view-shop" || window.location.pathname === "/view-product") {
@@ -1343,7 +1343,7 @@ const updatePaymentButtonState = () => {
             totalBayarElement.classList.add('hidden');
             // buttonpilihalamat.classList.add('hidden');
         }        // Sembunyikan bingkaibuttonpayment
-       
+
     } else if (window.location.pathname === "/view-maps") {
         // Sembunyikan bingkaibuttonalamt
         if (productCardCount > 0 && districtId > 0 && checkclientemail) {
@@ -1362,11 +1362,11 @@ const updatePaymentButtonState = () => {
                 totalBayarElement.classList.add('hidden');
                 bingkaibuttonpayment.classList.remove('hidden');
             }
-            // 
+            //
             // Sembunyikan tombol alamat
-    
+
             // Tampilkan tombol Payment
-            
+
         } else {
             // Sembunyikan semua tombol jika kondisi tidak terpenuhi
             bingkaibuttonalamt.classList.add('hidden');
@@ -1576,38 +1576,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const ongkirElement = document.getElementById('ongkir-display');
             const totalBayarElement = document.getElementById('totalbayar');
             const pyment = document.getElementById('payment');
-    
+
             let totalItem = 0;
             let totalPrice = 0;
-    
+
             // Loop untuk menghitung total item dan harga
             itemList.forEach(item => {
                 const qtyInput = item.querySelector('input[type="number"]');
                 const qty = qtyInput ? parseInt(qtyInput.value) : 1;
-    
+
                 // Cari span harga berdasarkan ID dan ambil attribute value-price-product-sidebar-XX
                 const priceElement = item.querySelector('span[id^="price-product-sidebar-"]');
                 const price = priceElement ? parseInt(priceElement.getAttribute('value-price-product-sidebar-' + priceElement.id.split('-').pop())) : 0;
-               
+
                 totalItem += qty;
                 totalPrice += qty * price;
             });
-    
+
             // Update jumlah item dan total harga
             totalItemElement.innerText = totalItem;
             totalPrice = totalPrice || 0;
             totalPriceElement.innerText = `${totalPrice}`;
-    
+
             // Update juga attribute 'value' untuk totalitem dan totalprice
             totalItemElement.setAttribute('value', totalItem);
             totalPriceElement.setAttribute('value', totalPrice);
-    
+
             // Ambil ongkir dari elemen #ongkir-display
             const ongkir = ongkirElement ? parseInt(ongkirElement.getAttribute('ongkir-value')) || 0 : 0;
-    
+
             // Hitung total bayar (totalPrice + ongkir)
             const totalBayar = totalPrice + ongkir;
-    
+
             // Update teks dan atribut value dari totalBayarElement
             totalBayarElement.innerText = `Total Bayar : Rp. ${totalBayar.toLocaleString()}`;
             totalBayarElement.innerHTML = `
@@ -1630,16 +1630,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 pyment.classList.add('bg-[#F4F4F4]', 'text-[#ADADAD]');
             }
         }
-    
+
         // Setiap kali ada perubahan di dalam list-order-item, jalankan updateCartSummary
         const listOrderItem = document.querySelector('.list-order-item');
         const observer = new MutationObserver(updateCartSummary);
-    
+
         // Mengamati perubahan pada child elements di dalam list-order-item
         observer.observe(listOrderItem, { childList: true });
-    
+
         // Jalankan fungsi sekali saat pertama kali halaman dimuat
         updateCartSummary();
     }, 1000);
-  
+
 });
