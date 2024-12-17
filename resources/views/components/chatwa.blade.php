@@ -40,7 +40,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
-        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
 
         const nomorwa3Element = document.getElementById('nomorwa3');
 

@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                         if (!token) {
                             alert("Session expired. Please log in again.");
-                            window.location.href = "https://andalprima.hansmade.online/login"; // Redirect to login
+                            window.location.href = "http://127.0.0.1:8001/login"; // Redirect to login
                             return;
                         }
 
                         console.log('delete product id', productVariantId);
                         // Call the delete API
-                        const response = await fetch(`https://andalprima.hansmade.online/api/deleted-product/${productVariantId}`, {
+                        const response = await fetch(`http://127.0.0.1:8001/api/deleted-product/${productVariantId}`, {
                             method: 'DELETE',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (!token) {
                 alert("Session expired. Please log in again.");
-                window.location.href = "https://andalprima.hansmade.online/login"; // Redirect to login
+                window.location.href = "http://127.0.0.1:8001/login"; // Redirect to login
                 return;
             }
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
 
             // Fetch the product list with the token and search/sorting params
-            const response = await fetch(`https://andalprima.hansmade.online/api/list-products-data?${params.toString()}`, {
+            const response = await fetch(`http://127.0.0.1:8001/api/list-products-data?${params.toString()}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (!response.ok || !data.success) {
                 if (data.message === "Unauthenticated" || response.status === 401) {
                     alert("Session expired. Please log in again.");
-                    window.location.href = "https://andalprima.hansmade.online/login"; // Redirect to login
+                    window.location.href = "http://127.0.0.1:8001/login"; // Redirect to login
                 } else {
                     throw new Error('Failed to fetch products');
                 }

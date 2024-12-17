@@ -40,7 +40,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const authToken = sessionStorage.getItem('authToken');
-            const apiUrl = 'https://andalprima.hansmade.online/api/info-client/2';
+            const apiUrl = 'http://127.0.0.1:8001/api/info-client/2';
 
             // Fetch client info and populate the form
             try {
@@ -75,7 +75,7 @@
                 }
 
                 try {
-                    const saveResponse = await fetch('https://andalprima.hansmade.online/api/update-presentage', {
+                    const saveResponse = await fetch('http://127.0.0.1:8001/api/update-presentage', {
                         method: 'PUT',
                         headers: {
                             'Authorization': `Bearer ${authToken}`,

@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('order_data',JSON.stringify({payload}));
 
             // Send the API request
-            const response = await fetch('https://andalprima.hansmade.online/api/create-orders', {
+            const response = await fetch('http://127.0.0.1:8001/api/create-orders', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         try {
-            const response = await fetch('https://andalprima.hansmade.online/api/send-email', {
+            const response = await fetch('http://127.0.0.1:8001/api/send-email', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fungsi untuk mengarahkan ke halaman tertentu
     function redirectToPage() {
-        window.location.href = 'https://andalprima.hansmade.online/';
+        window.location.href = 'http://127.0.0.1:8001/';
     }
 
     let preventSave = false;

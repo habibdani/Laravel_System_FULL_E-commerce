@@ -63,7 +63,8 @@ class ViewPageController extends Controller
     }
     public function dashboardProductEdit($productVariantId)
     {
-        return view('edit-product-page', compact('productVariantId'));
+        return view('edit-product-page-new', compact('productVariantId'));
+        // return view('edit-product-page', compact('productVariantId'));
     }
     public function dashboardOrders(Request $request)
     {

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Fetch the data from the API
     const token = 'your_token_here'; // Replace with your actual token
     const productVariantId = 25; // Replace with the actual variant ID if necessary
-    const response = await fetch(`https://andalprima.hansmade.online/api/product/details?id=${productVariantId}`, {
+    const response = await fetch(`http://127.0.0.1:8001/api/product/details?id=${productVariantId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,

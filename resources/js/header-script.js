@@ -45,7 +45,7 @@ const renderAllProducts = (productTypes) => {
                 const a = document.createElement('a');
 
                 // Bangun URL dengan parameter
-                const url = new URL('https://andalprima.hansmade.online/view-product');
+                const url = new URL('http://127.0.0.1:8001/view-product');
                 url.searchParams.append('_token', csrfToken);
                 url.searchParams.append('product_variant_id', variant.id);
                 url.searchParams.append('product_type_id', productType.id);

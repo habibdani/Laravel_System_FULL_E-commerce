@@ -52,7 +52,7 @@
                 const clientTypeId = this.closest('form').querySelector('input[name="client_type_id"]').value;
 
                 // Hit the API with dynamic client type id
-                fetch(`https://andalprima.hansmade.online/api/info-client/${clientTypeId}`)
+                fetch(`http://127.0.0.1:8001/api/info-client/${clientTypeId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
