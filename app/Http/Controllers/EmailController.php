@@ -483,6 +483,9 @@ class BookingController extends Controller
                 </head>
                 <body>
                     <div class='container'>
+                        <div class='flex items-center'>
+                            <img src='{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}' alt='Logo' class='h-8'>
+                        </div>
                         <div class='header'>
                             <h1>{$getStatus[0]->name}</h1>
                         </div>

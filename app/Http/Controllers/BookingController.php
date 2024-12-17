@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\ProductVariant;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
+use App\Models\BookingItem;
 
 class BookingController extends Controller
 {
@@ -333,6 +334,38 @@ class BookingController extends Controller
         }
     }
 
+    public function update(Request $request)
+    {
+        $validatedData = $request->validate([
+            'booking_id' => 'required|integer',
+            'products'   => 'required|array',
+            'products.*.product_id' => 'required|integer',
+            'products.*.quantity'   => 'required|integer|min:1',
+        ]);
+
+        $bookingId = $validatedData['booking_id'];
+        $productData = collect($validatedData['products']);
+
+        // Ambil semua booking items dari database
+        $existingItems = BookingItem::where('booking_id', $bookingId)->get();
+
+        // Loop untuk update kuantitas
+        foreach ($productData as $product) {
+            BookingItem::updateOrCreate(
+                ['id' => $product['product_id'], 'booking_id' => $bookingId], // Kunci unik
+                ['qty' => $product['quantity']]
+            );
+        }
+
+        // Soft delete items yang tidak ada di request
+        $productIds = $productData->pluck('product_id')->toArray();
+        BookingItem::where('booking_id', $bookingId)
+            ->whereNotIn('id', $productIds)
+            ->update(['deleted_at' => now()]);
+
+        return response()->json(['success' => true, 'message' => 'Booking items updated successfully.']);
+    }
+
     public function updateStatusOrder(Request $request)
     {
         try {
@@ -498,6 +531,9 @@ class BookingController extends Controller
                 </head>
                 <body>
                     <div class='container'>
+                        <div class='flex items-center'>
+                            <img src='{{ asset('storage/images/42fae1c1b268b3fa7e2244d96f1b27d0.png') }}' alt='Logo' class='h-8'>
+                        </div>
                         <div class='header'>
                             <h1>{$getStatus[0]->name}</h1>
                         </div>
