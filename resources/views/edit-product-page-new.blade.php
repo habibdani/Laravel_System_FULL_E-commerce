@@ -65,12 +65,24 @@
                         <h2 class="font-bold text-gray-700 text-lg mb-4">Update new Product Category</h2>
                         
                         <!-- Form untuk menambahkan kategori produk -->
-                        <form id="addCategoryForm">
+                        <form id="updateCategoryForm">
                             <div class="mb-4">
-                                <label for="type_name" class="block text-sm font-medium text-gray-700">Category Name</label>
-                                <input type="text" id="type_name" name="type_name" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter category name" required>
+                                <label for="dropdownproduct-category-update" class="block text-sm font-medium text-gray-700">Select Category</label>
+                                <select id="dropdownproduct-category-update"
+                                        class="block w-full rounded-lg border-[1px] border-[#DADCE0] border-gray-300 bg-white px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" 
+                                        required>
+                                    <!-- Categories will be dynamically populated -->
+                                </select>
                             </div>
-                            
+
+                            <div class="mb-4">
+                                <label for="type_name" class="block text-sm font-medium text-gray-700">New Category Name</label>
+                                <input type="text" id="type_name" name="type_name" 
+                                    class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                                    placeholder="Enter new category name" 
+                                    required>
+                            </div>
+
                             <div class="mb-4">
                                 <button type="submit" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Update Category</button>
                             </div>
@@ -93,14 +105,27 @@
                             <!-- Form untuk menambahkan tipe varian item -->
                             <form id="addVariantTypeForm">
                                 <div class="mb-4">
+                                    <label for="dropdown_variant_item_type_update" class="block text-sm font-medium text-gray-700">Select Variant Type</label>
+                                    <select id="dropdown_variant_item_type_update"
+                                            class="block w-full rounded-lg border-[1px] border-[#DADCE0] border-gray-300 bg-white px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" 
+                                            required>
+                                        <!-- Variant types will be dynamically populated -->
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
                                     <label for="variant_type_name" class="block text-sm font-medium text-gray-700">Variant Type Name</label>
-                                    <input type="text" id="variant_type_name" name="variant_type_name" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter variant type name" required>
+                                    <input type="text" id="variant_type_name" name="variant_type_name" 
+                                        class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                                        placeholder="Enter variant type name" 
+                                        required>
                                 </div>
                                 
                                 <div class="mb-4">
                                     <button type="submit" class="bg-[#E01535] text-white px-4 py-2 rounded-md">Update Variant Type</button>
                                 </div>
                             </form>
+
                             
                             <!-- Loading Spinner (optional) -->
                             <div id="loadingSpinner3" class="hidden text-center">
@@ -222,16 +247,34 @@
                         const variantTitle = `<h2 class="font-bold text-gray-700 text-lg mb-4">Product Variant ${increment}</h2>`;
                         variantDiv.innerHTML += variantTitle;
 
-                        const variantDetails = `
+                        let variantDetails = `
                             <div class="space-y-4">
-                                <div id="item_variant_list_container_${increment}" class="mb-4"></div>
-                                <div class="product_variant_item_${increment} flex items-center space-x-2">
-                                    <select id="variant_item_type_${increment}" class="block w-1/4 rounded-lg border-gray-300 bg-white border-[1px] border-[#DADCE0] px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
-                                        <!-- Options menyusul dari script dropdown -->
-                                    </select>
-                                    <input type="text" id="variant_item_name_${increment}" value="${variant.variant_item_details?.[0]?.items?.[0]?.variant_item_name || ''}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Detail varian">
-                                    <input type="number" id="variant_item_add_price_${increment}" value="${variant.variant_item_details?.[0]?.items?.[0]?.add_price || 0}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Add Price" min="0">
-                                    <button id="add_variant_item_${increment}" value="${variant.variant_item_details?.[0]?.items?.[0]?.variant_item_id || ''}" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">+ Tambah Item</button>
+                                <div id="item_variant_list_container_${increment}" class="mb-4">
+                        `;
+
+                        // Loop melalui `variant_item_details`
+                        variant.variant_item_details.forEach((detail, detailIndex) => {
+                            // Tambahkan setiap `detail` ke dalam kontainer
+                            detail.items.forEach((item, itemIndex) => {
+                                const uniqueIndex = `${increment}_${detailIndex}_${itemIndex}`;
+
+                                variantDetails += `
+                                    <div id="variant_item_row_${uniqueIndex}" class="product_variant_item_${increment} flex items-center space-x-2 mb-2">
+                                        <select id="variant_item_type_${uniqueIndex}" class="block w-1/4 rounded-lg border-gray-300 bg-white border-[1px] border-[#DADCE0] px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                                            <option value="${detail.variant_item_type_id}">${detail.variant_item_type_name}</option>
+                                        </select>
+                                        <input type="text" id="variant_item_name_${uniqueIndex}" value="${item.variant_item_name || ''}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Detail varian">
+                                        <input type="number" id="variant_item_add_price_${uniqueIndex}" value="${item.add_price || 0}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Add Price" min="0">
+                                        <button id="delete_variant_item_${uniqueIndex}" onclick="deleteVariantItem('${uniqueIndex}')" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Item</button>
+                                    </div>
+                                `;
+                            });
+                        });
+
+                        variantDetails += `
+                                    <button onclick="addVariantItemRow('item_variant_list_container_${increment}', ${increment})" class="bg-green-500 text-white px-3 text-[12px] py-2 rounded">
+                                        + Tambah Item
+                                    </button>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Variant Name</label>
@@ -246,11 +289,8 @@
                                     <input type="number" id="stock_${increment}" value="${variant.stock || 0}" min="0" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="1000">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Gambar</label>
-                                    <div id="image_preview_${increment}" class="border-2 image_url border-dashed border-gray-300 rounded-lg p-4 text-center">
-                                        <span class="text-gray-500">Unggah file atau geser file ke sini</span>
-                                        <input type="file" id="image_input_${increment}" class="hidden" accept="image/*">
-                                    </div>
+                                    <input type="file" class="form-control" onchange="uploadImage(event, 'image_preview_${increment}')">
+                                    <img src="/storage/${variant.variant_image}" id="image_preview_${increment}" class="h-32 w-32 object-cover rounded-lg mt-2">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Descripsi</label>
@@ -263,6 +303,8 @@
                         productVariantListContainer.appendChild(variantDiv);
                     });
                 }
+
+               
 
                 // Eksekusi utama
                 (async function () {
@@ -279,7 +321,7 @@
                     }
                 })();
 
-                
+               
                     
             } catch (error) {
                 console.error('An error occurred:', error.message);
@@ -287,6 +329,48 @@
 
         });
 
+        // Fungsi untuk menghapus baris item varian
+        function deleteVariantItem(uniqueIndex) {
+            const rowElement = document.getElementById(`variant_item_row_${uniqueIndex}`);
+            if (rowElement) {
+                rowElement.parentNode.removeChild(rowElement);
+            }
+        }
+
+        function addVariantItemRow(containerId, variantIndex) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                console.warn(`Container with ID ${containerId} not found.`);
+                return;
+            }
+
+            const currentCount = container.childElementCount;
+            const uniqueIndex = `${variantIndex}_${currentCount}`;
+
+            const row = document.createElement('div');
+            row.id = `variant_item_row_${uniqueIndex}`;
+            row.className = `product_variant_item_${variantIndex} flex items-center space-x-2 mb-2`;
+
+            row.innerHTML = `
+                <select id="variant_item_type_${uniqueIndex}" class="block w-1/4 rounded-lg border-gray-300 bg-white border-[1px] border-[#DADCE0] px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                    <option value="">Loading...</option>
+                </select>
+                <input type="text" id="variant_item_name_${uniqueIndex}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Detail varian">
+                <input type="number" id="variant_item_add_price_${uniqueIndex}" value="0" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Add Price" min="0">
+                <button id="delete_variant_item_${uniqueIndex}" onclick="deleteVariantItem('${uniqueIndex}')" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Item</button>
+            `;
+
+            container.appendChild(row);
+
+            // Isi dropdown setelah row ditambahkan
+            const dropdown = document.getElementById(`variant_item_type_${uniqueIndex}`);
+            if (dropdown && variantTypes.length) {
+                populateDropdown(variantTypes, dropdown);
+            }
+        }
+
+        const API_BASE_URL = 'http://127.0.0.1:8001';
+        // Fungsi untuk mengupload gambar
         async function uploadImage(event, previewId) {
             const file = event.target.files[0];
             if (!file) return;
@@ -294,7 +378,7 @@
             const token = sessionStorage.getItem('authToken');
             if (!token) {
                 alert('Token is missing, please log in again.');
-                window.location.href = '/login';
+                window.location.href = `${API_BASE_URL}/login`;
                 return;
             }
 
@@ -302,19 +386,17 @@
             formData.append('image', file);
 
             try {
-                const response = await fetch('http://127.0.0.1:8001/api/upload-image', {
+                const response = await fetch(`${API_BASE_URL}/api/upload-image`, {
                     method: 'POST',
-                    headers: { Authorization: `Bearer ${token}` }, // Tambahkan Bearer Token
+                    headers: { Authorization: `Bearer ${token}` },
                     body: formData,
                 });
 
                 const data = await response.json();
                 if (data.success) {
-                    // Update src atribut untuk pratinjau gambar
                     const preview = document.getElementById(previewId);
-                    preview.src = data.data.image_url; // Pastikan field ini sesuai dengan respons API
-                    preview.classList.remove('hidden'); // Tampilkan jika sebelumnya tersembunyi
-                    alert('Gambar berhasil diunggah!');
+                    preview.src = data.data.image_url.replace('http://127.0.0.1:8001', '').trim();
+                    preview.classList.remove('hidden');
                 } else {
                     alert(data.message || 'Failed to upload image');
                 }
@@ -324,6 +406,52 @@
             }
         }
 
+        let variantTypes = [];
+
+        async function fetchVariantTypes() {
+            try {
+                const response = await fetch('/api/list-variant-type', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    variantTypes = data.data.original; // Pastikan sesuai dengan struktur response API
+                } else {
+                    console.error("Gagal mendapatkan data varian tipe:", data.message);
+                }
+            } catch (error) {
+                console.error("Error saat memanggil API:", error);
+            }
+        }
+
+        // Panggil saat halaman dimuat
+        fetchVariantTypes();
+
+        function populateDropdown(variantTypes, dropdownElement) {
+            if (!variantTypes || !variantTypes.length) {
+                console.error("Data varian tipe kosong atau belum tersedia.");
+                return;
+            }
+
+            dropdownElement.innerHTML = '<option value="">Pilih Tipe Varian</option>';
+            variantTypes.forEach(variantType => {
+                const option = document.createElement('option');
+                option.value = variantType.id;
+                option.textContent = variantType.name;
+                dropdownElement.appendChild(option);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdown = document.getElementById('dropdown_variant_item_type_update');
+            fetchVariantTypes().then(() => populateDropdown(variantTypes, dropdown));
+        });
         // Event listener untuk save_button
         document.getElementById('save_button').addEventListener('click', async function () {
             try {
@@ -406,7 +534,91 @@
                 alert("Terjadi kesalahan saat menyimpan produk.");
             }
         });
+
+
+        document.getElementById('updateCategoryForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const dropdown = document.getElementById('dropdownproduct-category-update');
+            const typeNameInput = document.getElementById('type_name');
+
+            const selectedCategoryId = dropdown.value;
+            const newCategoryName = typeNameInput.value;
+
+            if (!selectedCategoryId) {
+                alert('Please select a category to update.');
+                return;
+            }
+
+            if (!newCategoryName.trim()) {
+                alert('Please enter a new category name.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/lproduct-type-update/${selectedCategoryId}`, {
+                    method: 'POST', // Use appropriate method (PUT or POST) as per your API design
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: newCategoryName,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('Category updated successfully.');
+                    populateCategoryDropdown(); // Refresh dropdown
+                } else {
+                    console.error('Failed to update category:', result.message);
+                    alert('Failed to update category.');
+                }
+            } catch (error) {
+                console.error('Error updating category:', error);
+                alert('An error occurred while updating category.');
+            }
+        });
+
+        async function populateCategoryDropdown() {
+            const dropdownCategoryUpdate = document.getElementById('dropdownproduct-category-update');
+
+            try {
+                const response = await fetch('/api/list-product-type', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    const categories = data.data.original;
+
+                    dropdownCategoryUpdate.innerHTML = '<option value="">Select a category</option>';
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        dropdownCategoryUpdate.appendChild(option);
+                    });
+                } else {
+                    console.error('Failed to fetch categories:', data.message);
+                    alert('Failed to fetch categories.');
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                alert('An error occurred while fetching categories.');
+            }
+        }
+
+        // Panggil saat halaman dimuat
+        populateCategoryDropdown();
+
     </script>
 
-    <!-- @vite('resources/js/addproduct-script.js') -->
 @endsection

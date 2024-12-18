@@ -246,6 +246,7 @@ class ProductController extends Controller
                     pvi.variant_item_type_id,
                     pv.descriptions,
                     pv.stock,
+                    pv.po_status,
                     CASE
                         WHEN pv.price = (pv.price + COALESCE(MAX(pvi.add_price), 0)) THEN
                             CONCAT('Rp ', FORMAT(pv.price, 0))
@@ -1136,67 +1137,76 @@ class ProductController extends Controller
         try {
             // Validasi input
             $validator = Validator::make($request->all(), [
-                'product_variant.id' => 'required|integer|exists:product_variants,id',
-                'product_variant.product_variant_name' => 'sometimes|required|string|max:255',
-                'product_variant.price' => 'sometimes|required|numeric|min:0',
-                'product_variant.stock' => 'required|numeric|min:0',
-                'product_variant.image_url' => 'sometimes|required|string|max:255',
-                'product_variant.po_status' => 'sometimes|required|boolean',
-                'product_variant.descriptions' => 'sometimes|required|string|max:255',
-                'product_variant.product_variant_item' => 'sometimes|array',
-                'product_variant.product_variant_item.*.id' => 'required|integer|exists:product_variant_items,id',
-                'product_variant.product_variant_item.*.product_variant_item_name' => 'sometimes|required|string|max:255',
-                'product_variant.product_variant_item.*.price_variant' => 'sometimes|required|numeric|min:0',
+                'product_name' => 'sometimes|string|max:255',
+                'product_type_id' => 'sometimes|integer|exists:product_types,id',
+                'product_variant' => 'sometimes|array',
+                'product_variant.*.id' => 'required|integer|exists:product_variants,id',
+                'product_variant.*.product_variant_name' => 'sometimes|string|max:255',
+                'product_variant.*.price' => 'sometimes|numeric',
+                'product_variant.*.stock' => 'sometimes|integer',
+                'product_variant.*.image_url' => 'sometimes|string|max:255',
+                'product_variant.*.po_status' => 'sometimes|boolean',
+                'product_variant.*.descriptions' => 'sometimes|string|max:1000',
+                'product_variant.*.product_variant_item' => 'sometimes|array',
+                'product_variant.*.product_variant_item.*.id' => 'required|integer|exists:product_variant_items,id',
+                'product_varaint.*.product_varaint_item.*.variant_item_type_id' => 'required|integer|exists:product_varaint_item,variant_item_type_id',
+                'product_variant.*.product_variant_item.*.product_variant_item_name' => 'sometimes|string|max:255',
+                'product_variant.*.product_variant_item.*.price_variant' => 'sometimes|numeric',
             ]);
 
             if ($validator->fails()) {
                 return ApiResponseHelper::validationError($validator->errors());
             }
 
-            // Ambil data product_variant dari request
-            $variant = $request->input('product_variant');
+            // Ambil data dari request
+            $productData = $request->only(['product_name', 'product_type_id']);
+            $productVariants = $request->input('product_variant', []);
 
             // Memulai transaksi database
             DB::beginTransaction();
 
-            // Update product variant
-            DB::table('product_variants')
-                ->where('id', $variant['id'])
+            // Update tabel product
+            DB::table('products')
+                ->where('id', $id)
                 ->update([
-                    'name' => $variant['product_variant_name'] ?? DB::raw('name'),
-                    'price' => $variant['price'] ?? DB::raw('price'),
-                    'stock' => $variant['stock'] ?? DB::raw('stock'),
-                    'image' => $variant['image_url'] ?? DB::raw('image'),
-                    'po_status' => $variant['po_status'] ?? DB::raw('po_status'),
-                    'descriptions' => $variant['descriptions'] ?? DB::raw('descriptions'),
+                    'title' => $productData['product_name'] ?? DB::raw('title'),
+                    'product_type_id' => $productData['product_type_id'] ?? DB::raw('product_type_id'),
                     'updated_at' => now(),
                 ]);
 
-            // Update product variant items jika ada
-            if (!empty($variant['product_variant_item'])) {
-                foreach ($variant['product_variant_item'] as $item) {
-                    DB::table('product_variant_items')
-                        ->where('id', $item['id'])
-                        ->update([
-                            'name' => $item['product_variant_item_name'] ?? DB::raw('name'),
-                            'add_price' => $item['price_variant'] ?? DB::raw('add_price'),
-                            'updated_at' => now(),
-                        ]);
+            // Update product_variant dan product_variant_item
+            foreach ($productVariants as $variant) {
+                DB::table('product_variants')
+                    ->where('id', $variant['id'])
+                    ->update([
+                        'name' => $variant['product_variant_name'] ?? DB::raw('name'),
+                        'price' => $variant['price'] ?? DB::raw('price'),
+                        'stock' => $variant['stock'] ?? DB::raw('stock'),
+                        'image' => $variant['image_url'] ?? DB::raw('image'),
+                        'po_status' => $variant['po_status'] ?? DB::raw('po_status'),
+                        'descriptions' => $variant['descriptions'] ?? DB::raw('descriptions'),
+                        'updated_at' => now(),
+                    ]);
+
+                if (!empty($variant['product_variant_item'])) {
+                    foreach ($variant['product_variant_item'] as $item) {
+                        DB::table('product_variant_items')
+                            ->where('id', $item['id'])
+                            ->update([
+                                'name' => $item['product_variant_item_name'] ?? DB::raw('name'),
+                                'variant_item_type_id' => $item['variant_item_type_id'] ?? DB::raw('variant_item_type_id'),
+                                'add_price' => $item['price_variant'] ?? DB::raw('add_price'),
+                                'updated_at' => now(),
+                            ]);
+                    }
                 }
             }
 
             // Commit transaksi database
             DB::commit();
 
-            // Respons sukses dengan informasi yang diperbarui
-            $updatedVariant = [
-                'variant_id' => $variant['id'],
-                'updated_items' => isset($variant['product_variant_item']) ? count($variant['product_variant_item']) : 0,
-            ];
-
-            return ApiResponseHelper::success($updatedVariant, 'Product updated successfully');
+            return ApiResponseHelper::success('Product updated successfully');
         } catch (\Exception $e) {
-            // Rollback transaksi jika terjadi error
             DB::rollBack();
             Log::error('Error in updateProduct: ' . $e->getMessage());
 
