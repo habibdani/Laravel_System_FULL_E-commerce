@@ -20,7 +20,7 @@
 
                 <div class="flex space-x-2">
                     <button id="unsave_button" class="bg-white text-red-600 border border-red-600 px-4 py-2 rounded">Batal</button>
-                    <button id="save_button" class="bg-red-600 text-white px-4 py-2 rounded">Simpan Perubahan Produk</button>
+                    <button id="update_button" class="bg-red-600 text-white px-4 py-2 rounded">Simpan Perubahan Produk</button>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Nama Produk</label>
-                                <input id="product_name" type="text" class="px-3 py-2 border-[1px] border-[#DADCE0] mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Nama produk ini">
+                                <input id="product_name" type="text" value="" class="px-3 py-2 border-[1px] border-[#DADCE0] mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Nama produk ini">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Ubah Product Category</label>
@@ -352,7 +352,7 @@
                         const increment = index + 1; // Penomoran varian
 
                         const variantDiv = document.createElement('div');
-                        variantDiv.className = `product_variant_${increment} bg-white shadow rounded-lg p-4`;
+                        variantDiv.className = `iniproduct_variant_${increment} bg-white shadow rounded-lg p-4`;
 
                         const variantTitle = `<h2 class="font-bold text-gray-700 text-lg mb-4">Product Variant ${increment}</h2>`;
                         variantDiv.innerHTML += variantTitle;
@@ -575,10 +575,6 @@
             const dropdown = document.getElementById('dropdown_variant_item_type_update');
             fetchVariantTypes().then(() => populateDropdown(variantTypes, dropdown));
         });
-        // Event listener untuk save_button
-        
-
-
         
 
         function deleteProductVariant(increment) {
@@ -631,7 +627,6 @@
             }
         }
 
-
         async function populateCategoryDropdown() {
             const dropdownCategoryUpdate = document.getElementById('dropdownproduct-category-update');
 
@@ -669,21 +664,21 @@
         // Panggil saat halaman dimuat
         populateCategoryDropdown();
 
-        document.getElementById('save_button').addEventListener('click', async function () {
+        document.getElementById('update_button').addEventListener('click', async function () {
             try {
                 console.log("Saving product details...");
 
-                // Ambil ID produk dari URL
                 const urlParams = new URL(window.location.href);
                 const pathSegments = urlParams.pathname.split('/');
                 const productId = pathSegments[pathSegments.length - 1];
 
                 // Ambil nilai dari input dan elemen HTML
-                const productName = document.getElementById('product_name').value;
+                const productName = document.getElementById('product_name').value; 
+
                 const productTypeId = document.getElementById('dropdownproduct-category').value;
 
                 // Loop melalui elemen dengan kelas 'product_variant'
-                const productVariants = Array.from(document.querySelectorAll('[class^="product_variant_"]')).map((variantElement, index) => {
+                const productVariants = Array.from(document.querySelectorAll('[class^="iniproduct_variant_"]')).map((variantElement, index) => {
                     const increment = index + 1;
 
                     // Ambil nilai untuk setiap variant
@@ -719,6 +714,9 @@
                         product_variant_item: variantItems
                     };
                 });
+
+                // Debug log moved after the initialization of productVariants
+                console.log('habibi', productVariants);
 
                 // Bentuk payload
                 const payload = {
