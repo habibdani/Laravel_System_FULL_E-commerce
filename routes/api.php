@@ -16,6 +16,7 @@ Route::post('/send-email', [EmailController::class, 'sendEmail']);
 
 Route::get('/list-products', [ProductController::class, 'listproduct']);
 Route::get('/product/details', [ProductController::class, 'productdetails']);
+Route::get('/product/true/details', [ProductController::class, 'trueproductdetails']);
 
 // Banner Besar Routes
 Route::get('/banner-besar', [ProductController::class, 'getBannerBesar']); // Read All
@@ -55,6 +56,7 @@ Route::post('/admin/login', [AuthController::class, 'login']);
 
 Route::post('/create-orders', [BookingController::class, 'createOrder']);
 
+
 Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(function () {
     Route::post('/upload-image', [ProductController::class, 'uploadImage']);
     Route::delete('/delete-image', [ProductController::class, 'deleteImage']);
@@ -74,6 +76,10 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::delete('/banner-besar/{id}', [ProductController::class, 'deleteBannerBesar']); // Delete
     Route::put('/banner-best-product/{id}', [ProductController::class, 'updateBannerBestProduct']); // Update
     Route::put('/update-presentage',[ProductController::class, 'updatePricePercentage']);
+    Route::post('/update-order', [BookingController::class, 'update']);
+
+    Route::put('/update-product-type/{id}', [ProductController::class, 'updateProductType']);
+    Route::put('/update-item-type/{id}', [ProductController::class, 'updateItemType']);
 });
 
 Route::get('/test-middleware', function() {

@@ -593,7 +593,7 @@ confirmButton.addEventListener('click', async () => {
             alert('Produk berhasil ditambahkan!');
             // Lakukan redirect atau aksi lain jika perlu
             loadingSpinner.classList.add('hidden');
-
+            window.location.href = 'https://andalprima.hansmade.online/dashboard/product';
         } else {
             alert('Gagal menambahkan produk. Coba lagi!');
         }
@@ -632,7 +632,7 @@ form.addEventListener('submit', async (event) => {
         responseMessage.textContent = '';
 
         // Mengirim request ke API
-        const response = await fetch('http://127.0.0.1:8001/api/insert-product-type', {
+        const response = await fetch('https://andalprima.hansmade.online/api/insert-product-type', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -699,7 +699,7 @@ const form3 = document.getElementById('addVariantTypeForm');
             responseMessage3.textContent = '';
 
             // Mengirim request ke API
-            const response = await fetch('http://127.0.0.1:8001/api/insert-variant-type', {
+            const response = await fetch('https://andalprima.hansmade.online/api/insert-variant-type', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
