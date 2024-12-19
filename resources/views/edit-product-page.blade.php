@@ -278,6 +278,7 @@
 
                 if (result.success) {
                     alert("Produk berhasil diperbarui!");
+                    window.location.href = 'https://andalprima.hansmade.online/dashboard/product';
                 } else {
                     alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
                 }

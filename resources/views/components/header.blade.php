@@ -60,9 +60,17 @@
             <!-- Contact Info -->
             <div class="flex items-center" id="firstrownomor">
                 <a href="#" class="inline-flex items-center w-full">
-                    <img src="{{ asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4 mr-1.5">
+                    <img src="{{ asset('storage/icons/telfon.svg') }}" alt="telfon" class="h-4 w-4">
                     <span class="font-roboto text-md font-medium leading-4.5 tracking-wide text-left">(042) 883219</span>
                 </a>
+            </div>
+
+            <div class="flex items-center" id="headerdropship" style="width: 10%">
+                <form action="{{ url('/view-shop') }}" method="GET" class="inline-flex items-center justify-center bg-[#E01535] text-white px-3 py-1.5 rounded space-x-1 w-full">
+                    @csrf
+                    <input type="hidden" name="client_type_id" value="2">
+                    <button type="submit" id="submit-header-type-client" class="font-roboto text-sm font-normal leading-4.5 tracking-wide text-center overflow-hidden text-ellipsis whitespace-nowrap">dropship</button>
+                </form>
             </div>
         </div>
     </div>
@@ -269,5 +277,60 @@
     /* } */
 </style>
 <!-- Call the header script with Vite -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ambil elemen berdasarkan ID
+        const submitHeaderTypeClient = document.getElementById('submit-header-type-client');
+
+        // Tambahkan event listener ke tombol
+        submitHeaderTypeClient.addEventListener('click', function(event) {
+            event.preventDefault(); // Cegah form dari pengiriman secara default
+
+            // Ambil nilai client type id dari input tersembunyi
+            const clientTypeId = this.closest('form').querySelector('input[name="client_type_id"]').value;
+
+            // Hit API dengan client type id dinamis
+            fetch(`https://andalprima.hansmade.online/api/info-client/${clientTypeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Set data di sessionStorage
+                        sessionStorage.setItem('price_percentage', data.data.price_persentage);
+                        sessionStorage.setItem('type_client', data.data.id);
+
+                        // Opsional: Lakukan pengalihan ke halaman shop
+                        window.location.href = this.closest('form').action; // Redirect ke halaman shop
+                    } else {
+                        alert(data.message); // Tampilkan pesan error jika response API tidak berhasil
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Something went wrong, please try again later.');
+                });
+        });
+
+            const button = document.getElementById('submit-header-type-client');
+            const hiddenInput = document.querySelector('input[name="client_type_id"]');
+
+            // Fungsi untuk mengatur teks tombol dan nilai hidden input
+            function updateButtonAndInput() {
+                const typeClient = sessionStorage.getItem('type_client');
+
+                if (typeClient === '2') {
+                    button.textContent = 'end-user';
+                    hiddenInput.value = '1';
+                } else {
+                    button.textContent = 'dropship';
+                    hiddenInput.value = '2';
+                }
+            }
+
+            // Panggil fungsi untuk update saat halaman dimuat
+            updateButtonAndInput();
+    
+    });
+</script>
+
 @vite('resources/js/header-script.js')
 
