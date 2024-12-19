@@ -124,7 +124,7 @@
 <script>
     async function fetchBestProductBanner() {
     try {
-        const response = await fetch('http://127.0.0.1:8001/api/banner-best-product');
+        const response = await fetch('https://andalprima.hansmade.online/api/banner-best-product');
         const data = await response.json();
 
         if (data.success) {
@@ -136,7 +136,7 @@
                 document.getElementById('best-product-title').textContent = bestProduct.tittle;
                 document.getElementById('best-product-text').textContent = bestProduct.text;
 
-                const backgroundImage = bestProduct.image.replace('http://127.0.0.1:8001/', '');
+                const backgroundImage = bestProduct.image.replace('https://andalprima.hansmade.online/', '');
                 document.getElementById('best-product-background').style.backgroundImage = `url('${backgroundImage}')`;
 
                 console.log('Best product banner updated successfully');

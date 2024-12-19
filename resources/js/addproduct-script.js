@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         imagePreview.classList.add('hidden');
 
         try {
-            const response = await fetch('http://127.0.0.1:8001/api/upload-image', {
+            const response = await fetch('https://andalprima.hansmade.online/api/upload-image', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Hit API delete-image
             loadingSpinner.classList.remove('hidden');
 
-            const response = await fetch('http://127.0.0.1:8001/api/delete-image', {
+            const response = await fetch('https://andalprima.hansmade.online/api/delete-image', {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -306,7 +306,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             imagePreview.classList.add('hidden');
 
             try {
-                const response = await fetch('http://127.0.0.1:8001/api/upload-image', {
+                const response = await fetch('https://andalprima.hansmade.online/api/upload-image', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -348,7 +348,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // Hit API delete-image
                 if (loadingSpinner) loadingSpinner.classList.remove('hidden');
 
-                const response = await fetch('http://127.0.0.1:8001/api/delete-image', {
+                const response = await fetch('https://andalprima.hansmade.online/api/delete-image', {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -535,7 +535,7 @@ confirmButton.addEventListener('click', async () => {
         const variantName = document.getElementById(`product_variant_name_${variantNumber}`).value;
         const price = document.getElementById(`price_${variantNumber}`).value;
         const stock = document.getElementById(`stock_${variantNumber}`).value;
-        const imageUrl = `http://127.0.0.1:8001/storage/images/${document.getElementById(`uploaded_image_name_${variantNumber}`).innerText}`;
+        const imageUrl = `https://andalprima.hansmade.online/storage/images/${document.getElementById(`uploaded_image_name_${variantNumber}`).innerText}`;
         const poStatus = document.getElementById(`preorder_toggle_${variantNumber}`).checked ? 1 : 0;
         const description = document.getElementById(`product_variant_description_${variantNumber}`).value;
 
@@ -578,7 +578,7 @@ confirmButton.addEventListener('click', async () => {
 
     // Jika sudah yakin dengan payload, lanjutkan ke hit API
     try {
-        const response = await fetch('http://127.0.0.1:8001/api/insert-product', {
+        const response = await fetch('https://andalprima.hansmade.online/api/insert-product', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -593,7 +593,7 @@ confirmButton.addEventListener('click', async () => {
             alert('Produk berhasil ditambahkan!');
             // Lakukan redirect atau aksi lain jika perlu
             loadingSpinner.classList.add('hidden');
-            window.location.href = 'http://127.0.0.1:8001/dashboard/product';
+            window.location.href = 'https://andalprima.hansmade.online/dashboard/product';
         } else {
             alert('Gagal menambahkan produk. Coba lagi!');
         }
@@ -632,7 +632,7 @@ form.addEventListener('submit', async (event) => {
         responseMessage.textContent = '';
 
         // Mengirim request ke API
-        const response = await fetch('http://127.0.0.1:8001/api/insert-product-type', {
+        const response = await fetch('https://andalprima.hansmade.online/api/insert-product-type', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -699,7 +699,7 @@ const form3 = document.getElementById('addVariantTypeForm');
             responseMessage3.textContent = '';
 
             // Mengirim request ke API
-            const response = await fetch('http://127.0.0.1:8001/api/insert-variant-type', {
+            const response = await fetch('https://andalprima.hansmade.online/api/insert-variant-type', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

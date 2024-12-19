@@ -96,7 +96,7 @@
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const API_BASE_URL = 'http://127.0.0.1:8001'; // Ganti sesuai URL API Anda
+        const API_BASE_URL = 'https://andalprima.hansmade.online'; // Ganti sesuai URL API Anda
         const banner = document.getElementById('subbanner');
         const title = document.querySelector('.banner-title');
         const description = document.querySelector('.banner-description');
@@ -114,7 +114,7 @@
 
                 if (data.success) {
                     banners = data.data.map(banner => ({
-                        image: banner.image.replace('http://127.0.0.1:8001', '').trim(),
+                        image: banner.image.replace('https://andalprima.hansmade.online', '').trim(),
                         tittle: banner.tittle,
                         description: banner.description
                     }));
