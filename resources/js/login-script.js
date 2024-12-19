@@ -18,7 +18,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
     try {
         // Send the login request using Fetch API
-        const response = await fetch('http://127.0.0.1:8001/login', {
+        const response = await fetch('https://andalprima.hansmade.online/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             sessionStorage.setItem('adminId', data.data.admin_id);
 
             // Redirect to the dashboard
-            window.location.href = 'http://127.0.0.1:8001/dashboard';
+            window.location.href = 'https://andalprima.hansmade.online/dashboard';
         } else {
             // If login failed, show an error message
             errorAlert.classList.remove('hidden');

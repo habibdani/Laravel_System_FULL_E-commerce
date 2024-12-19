@@ -170,7 +170,7 @@
                 async function fetchProductDetails(productId) {
                     try {
                         console.log("Fetching product details...");
-                        const response = await fetch(`http://127.0.0.1:8001/api/product/true/details?id=${productId}`, {
+                        const response = await fetch(`https://andalprima.hansmade.online/api/product/true/details?id=${productId}`, {
                             method: 'GET',
                             headers: {
                                 'Accept': 'application/json',
@@ -248,7 +248,7 @@
                     const token = sessionStorage.getItem('authToken');
                     if (!token) {
                         alert('Token is missing, please log in again.');
-                        window.location.href = 'http://127.0.0.1:8001/login';
+                        window.location.href = 'https://andalprima.hansmade.online/login';
                         return;
                     }
 
@@ -263,7 +263,7 @@
                     }
 
                     try {
-                        const response = await fetch(`http://127.0.0.1:8001/api/update-item-type/${selectedVariantTypeId}`, {
+                        const response = await fetch(`https://andalprima.hansmade.online/api/update-item-type/${selectedVariantTypeId}`, {
                             method: 'POST', // Use appropriate method (PUT or POST) as per your API design
                             headers: {
                                 'Content-Type': 'application/json',
@@ -304,7 +304,7 @@
                     const token = sessionStorage.getItem('authToken');
                     if (!token) {
                         alert('Token is missing, please log in again.');
-                        window.location.href = 'http://127.0.0.1:8001/login';
+                        window.location.href = 'https://andalprima.hansmade.online/login';
                         return;
                     }
 
@@ -319,7 +319,7 @@
                     }
 
                     try {
-                        const response = await fetch(`http://127.0.0.1:8001/api/update-product-type/${selectedCategoryId}`, {
+                        const response = await fetch(`https://andalprima.hansmade.online/api/update-product-type/${selectedCategoryId}`, {
                             method: 'POST', // Use appropriate method (PUT or POST) as per your API design
                             headers: {
                                 'Content-Type': 'application/json',
@@ -492,7 +492,7 @@
         }
 
 
-        const API_BASE_URL = 'http://127.0.0.1:8001';
+        const API_BASE_URL = 'https://andalprima.hansmade.online';
         // Fungsi untuk mengupload gambar
         async function uploadImage(event, previewId) {
             const file = event.target.files[0];
@@ -518,7 +518,7 @@
                 const data = await response.json();
                 if (data.success) {
                     const preview = document.getElementById(previewId);
-                    preview.src = data.data.image_url.replace('http://127.0.0.1:8001', '').trim();
+                    preview.src = data.data.image_url.replace('https://andalprima.hansmade.online', '').trim();
                     preview.classList.remove('hidden');
                 } else {
                     alert(data.message || 'Failed to upload image');
@@ -588,14 +588,14 @@
 
                         if (!token) {
                             alert("Session expired. Please log in again.");
-                            window.location.href = "http://127.0.0.1:8001/login"; // Redirect ke login
+                            window.location.href = "https://andalprima.hansmade.online/login"; // Redirect ke login
                             return;
                         }
 
                         console.log('Deleting product variant with ID:', increment);
 
                         // Panggil API untuk menghapus product variant
-                        const response = await fetch(`http://127.0.0.1:8001/api/deleted-product/${increment}`, {
+                        const response = await fetch(`https://andalprima.hansmade.online/api/deleted-product/${increment}`, {
                             method: 'DELETE',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
@@ -735,7 +735,7 @@
                     return;
                 }
 
-                const response = await fetch(`http://127.0.0.1:8001/api/update-product/${productId}`, {
+                const response = await fetch(`https://andalprima.hansmade.online/api/update-product/${productId}`, {
                     method: 'PUT',
                     headers: {
                         'Accept': 'application/json',
@@ -758,7 +758,7 @@
 
                 if (result.success) {
                     alert("Produk berhasil diperbarui!");
-                    window.location.href = 'http://127.0.0.1:8001/dashboard/product';
+                    window.location.href = 'https://andalprima.hansmade.online/dashboard/product';
                 } else {
                     alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
                 }
