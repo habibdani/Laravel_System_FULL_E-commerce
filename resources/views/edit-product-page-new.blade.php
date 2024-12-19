@@ -114,7 +114,7 @@
 
                                 <div class="mb-4">
                                     <label for="variant_type_name" class="block text-sm font-medium text-gray-700">Variant Type Name</label>
-                                    <input type="text" id="variant_type_name" name="variant_type_name" 
+                                    <input type="text" id="variant_type_name" value="" name="variant_type_name" 
                                         class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
                                         placeholder="Enter variant type name" 
                                         required>
@@ -264,7 +264,7 @@
 
                     try {
                         const response = await fetch(`https://andalprima.hansmade.online/api/update-item-type/${selectedVariantTypeId}`, {
-                            method: 'POST', // Use appropriate method (PUT or POST) as per your API design
+                            method: 'PUT', // Use appropriate method (PUT or POST) as per your API design
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
@@ -307,7 +307,6 @@
                         window.location.href = 'https://andalprima.hansmade.online/login';
                         return;
                     }
-
                     if (!selectedCategoryId) {
                         alert('Please select a category to update.');
                         return;
@@ -320,7 +319,7 @@
 
                     try {
                         const response = await fetch(`https://andalprima.hansmade.online/api/update-product-type/${selectedCategoryId}`, {
-                            method: 'POST', // Use appropriate method (PUT or POST) as per your API design
+                            method: 'PUT', // Use appropriate method (PUT or POST) as per your API design
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
@@ -335,7 +334,7 @@
 
                         if (response.ok && result.success) {
                             alert('Category updated successfully.');
-                            populateCategoryDropdown(); // Refresh dropdown
+                            populateDropdown(); // Refresh dropdown
                         } else {
                             console.error('Failed to update category:', result.message);
                             alert('Failed to update category.');
@@ -416,7 +415,7 @@
                                         <div class="absolute left-[2px] top-[2px] bg-white w-5 h-5 rounded-full transition-transform peer-checked:translate-x-full"></div>
                                     </label>
                                 </div>
-                                <button id="delete_product_variant_${increment}" onclick="deleteProductVariant('${increment}')" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Product Varaint</button>
+                                <button id="delete_product_variant_${increment}" onclick="deleteProductVariant(${variant.product_variant_id},${increment})" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Product Varaint</button>
                             </div>
                         `;
 
@@ -577,7 +576,7 @@
         });
         
 
-        function deleteProductVariant(increment) {
+        function deleteProductVariant(product_variant_id, increment) {
             // Popup konfirmasi sebelum melanjutkan
             if (confirm("Are you sure you want to delete this product variant?")) {
                 try {
@@ -592,10 +591,10 @@
                             return;
                         }
 
-                        console.log('Deleting product variant with ID:', increment);
+                        console.log('Deleting product variant with ID:', product_variant_id);
 
                         // Panggil API untuk menghapus product variant
-                        const response = await fetch(`https://andalprima.hansmade.online/api/deleted-product/${increment}`, {
+                        const response = await fetch(`https://andalprima.hansmade.online/api/deleted-product/${product_variant_id}`, {
                             method: 'DELETE',
                             headers: {
                                 'Authorization': `Bearer ${token}`,
@@ -610,15 +609,14 @@
                         }
 
                         alert("Product variant deleted successfully!");
-
                         // Hapus elemen HTML dengan class `product_variant_${increment}`
                         const element = document.querySelector(`.product_variant_${increment}`);
                         if (element) {
                             element.remove();
                         }
+                        window.location.reload();
 
                         // Refresh daftar produk (opsional, jika diperlukan)
-                        fetchProducts();
                     })();
                 } catch (error) {
                     console.error("Error deleting product variant:", error);
@@ -768,6 +766,74 @@
             }
         });
 
+        const tambahVariantButton = document.getElementById('add_variant_button');
+            let variantCount = Array.from(document.querySelectorAll('div'))
+                .filter(el => el.className.split(' ').some(cls => cls.startsWith('iniproduct_variant_')))
+                .length;
+
+            console.log('habib',variantCount);      
+            tambahVariantButton.addEventListener('click', function (event) {
+                event.preventDefault();
+                variantCount++; // Tambah counter varian
+
+                // Fungsi untuk menambahkan elemen varian baru ke DOM
+                const variantListContainer = document.getElementById('product-variant-list-container');
+
+                const variantDiv = document.createElement('div');
+                variantDiv.classList.add(`iniproduct_variant_${variantCount}`, 'bg-white', 'shadow', 'rounded-lg', 'p-4', 'mb-4');
+                variantDiv.innerHTML = `
+                    <h2 class="font-bold text-gray-700 text-lg mb-4">Tambahkan Variant ${variantCount}</h2>
+                    <div class="space-y-4">
+                        <div id="item_variant_list_container_${variantCount}" class="mb-4"></div>
+                        <div class="product_variant_item_${variantCount} flex items-center space-x-2">
+                            <button onclick="addVariantItemRow('item_variant_list_container_${variantCount}', ${variantCount})" class="bg-green-500 text-white px-3 text-[12px] py-2 rounded">
+                                + Tambah Item
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Variant Name</label>
+                            <input type="text" id="product_variant_name_${variantCount}" value="" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Ketik nama varian">
+                            <input hidden id="product_variant_id_${variantCount}" value="9999999">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Base Price <span class="text-gray-500">(contoh: 10000)</span></label>
+                            <input type="number" id="price_${variantCount}" value="" min="0" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="10000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Stok <span class="text-gray-500">(contoh: 1000)</span></label>
+                            <input type="number" id="stock_${variantCount}" value="" min="0" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="1000">
+                        </div>
+                       <div>
+                            <input type="file" class="form-control" onchange="uploadImage(event, 'image_preview_${variantCount}')">
+                            <img src="" id="image_preview_${variantCount}" class="h-32 w-32 object-cover rounded-lg mt-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Descripsi</label>
+                            <input type="text" id="product_variant_description_${variantCount}" value="" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Descripsi varian">
+                        </div>
+                            <div class="flex items-center">
+                            <label class="po_status block text-sm font-medium text-gray-700 mr-4">Pre Order</label>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="preorder_toggle_${variantCount}" class="sr-only peer" value="0">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-red-600"></div>
+                                <div class="absolute left-[2px] top-[2px] bg-white w-5 h-5 rounded-full transition-transform peer-checked:translate-x-full"></div>
+                            </label>
+                        </div>
+                    </div>
+                `;
+
+                // Menambahkan varian baru ke container
+                variantListContainer.appendChild(variantDiv);
+
+                // Isi dropdown varian dengan data dari API
+                const dropdownElement = document.getElementById(`variant_item_type_${variantCount}`);
+                if (dropdownElement) {
+                    populateDropdown(variantTypes, dropdownElement);
+                }
+
+                // Setup image upload handlers untuk varian baru
+                setupImageUploadHandlers(variantCount);
+            });
 
     </script>
 
