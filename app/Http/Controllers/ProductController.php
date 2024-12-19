@@ -1175,32 +1175,73 @@ class ProductController extends Controller
                 ]);
 
             // Update product_variant dan product_variant_item
-            foreach ($productVariants as $variant) {
-                DB::table('product_variants')
-                    ->where('id', $variant['id'])
-                    ->update([
-                        'name' => $variant['product_variant_name'] ?? DB::raw('name'),
-                        'price' => $variant['price'] ?? DB::raw('price'),
-                        'stock' => $variant['stock'] ?? DB::raw('stock'),
-                        'image' => $variant['image_url'] ?? DB::raw('image'),
-                        'po_status' => $variant['po_status'] ?? DB::raw('po_status'),
-                        'descriptions' => $variant['descriptions'] ?? DB::raw('descriptions'),
-                        'updated_at' => now(),
-                    ]);
-
-                if (!empty($variant['product_variant_item'])) {
-                    foreach ($variant['product_variant_item'] as $item) {
-                        DB::table('product_variant_items')
-                            ->where('id', $item['id'])
+                foreach ($productVariants as $variant) {
+                    $existingVariant = DB::table('product_variants')
+                        ->where('deleted_at', null)
+                        ->where('id', $variant['id'])
+                        ->where('product_id', $id)
+                        ->first();
+            
+                    if ($existingVariant) {
+                        // Jika ditemukan, lakukan update
+                        DB::table('product_variants')
+                            ->where('id', $variant['id'])
                             ->update([
-                                'name' => $item['product_variant_item_name'] ?? DB::raw('name'),
-                                'variant_item_type_id' => $item['variant_item_type_id'] ?? DB::raw('variant_item_type_id'),
-                                'add_price' => $item['price_variant'] ?? DB::raw('add_price'),
+                                'name' => $variant['product_variant_name'] ?? DB::raw('name'),
+                                'price' => $variant['price'] ?? DB::raw('price'),
+                                'stock' => $variant['stock'] ?? DB::raw('stock'),
+                                'image' => $variant['image_url'] ?? DB::raw('image'),
+                                'po_status' => $variant['po_status'] ?? DB::raw('po_status'),
+                                'descriptions' => $variant['descriptions'] ?? DB::raw('descriptions'),
                                 'updated_at' => now(),
                             ]);
+                    } else {
+                        // Jika tidak ditemukan, lakukan insert
+                        DB::table('product_variants')->insert([
+                            'product_id' => $id,
+                            'name' => $variant['product_variant_name'] ?? '',
+                            'price' => $variant['price'] ?? 0,
+                            'stock' => $variant['stock'] ?? 0,
+                            'image' => $variant['image_url'] ?? null,
+                            'po_status' => $variant['po_status'] ?? null,
+                            'descriptions' => $variant['descriptions'] ?? null,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+
+                    if (!empty($variant['product_variant_item'])) {
+                        foreach ($variant['product_variant_item'] as $item) {
+                            $existingItem = DB::table('product_variant_items')
+                                ->where('deleted_at', null)
+                                ->where('id', $item['id'])
+                                ->where('product_variant_id', $variant['id'])
+                                ->first();
+            
+                            if ($existingItem) {
+                                // Jika ditemukan, lakukan update
+                                DB::table('product_variant_items')
+                                    ->where('id', $item['id'])
+                                    ->update([
+                                        'name' => $item['product_variant_item_name'] ?? DB::raw('name'),
+                                        'variant_item_type_id' => $item['variant_item_type_id'] ?? DB::raw('variant_item_type_id'),
+                                        'add_price' => $item['price_variant'] ?? DB::raw('add_price'),
+                                        'updated_at' => now(),
+                                    ]);
+                            } elseif (!empty($item['product_variant_item_name'])) {
+                                // Jika tidak ditemukan, lakukan insert
+                                DB::table('product_variant_items')->insert([
+                                    'name' => $item['product_variant_item_name'],
+                                    'product_variant_id' => $variant['id'],
+                                    'variant_item_type_id' => $item['variant_item_type_id'] ?? null,
+                                    'add_price' => $item['price_variant'] ?? 0,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]);
+                            }
+                        }
                     }
                 }
-            }
 
             // Commit transaksi database
             DB::commit();

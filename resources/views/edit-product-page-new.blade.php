@@ -53,8 +53,7 @@
 
                     <!-- Bottom Buttons -->
                     <div class="flex justify-end space-x-2">
-                        <button id="delete_variant_button" class="delete_varaint bg-white text-red-600 border border-red-600 px-4 py-2 rounded">Batal</button>
-                        <button id="add_variant_button" class="tambah_variant bg-red-600 text-white px-4 py-2 rounded">+ Tambah Variant</button>
+                        <button id="add_variant_button" class="tambah_variant bg-red-600 text-white px-4 py-2 rounded">+ Tambah Product Variant</button>
                     </div>
                 </div>
 
@@ -242,7 +241,7 @@
                         const increment = index + 1; // Penomoran varian
 
                         const variantDiv = document.createElement('div');
-                        variantDiv.className = 'product_variant bg-white shadow rounded-lg p-4';
+                        variantDiv.className = `product_variant_${increment} bg-white shadow rounded-lg p-4`;
 
                         const variantTitle = `<h2 class="font-bold text-gray-700 text-lg mb-4">Product Variant ${increment}</h2>`;
                         variantDiv.innerHTML += variantTitle;
@@ -263,6 +262,7 @@
                                         <select id="variant_item_type_${uniqueIndex}" class="block w-1/4 rounded-lg border-gray-300 bg-white border-[1px] border-[#DADCE0] px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
                                             <option value="${detail.variant_item_type_id}">${detail.variant_item_type_name}</option>
                                         </select>
+                                        <input hidden id="variant_item_id_${uniqueIndex}" value="${item.variant_item_id}">
                                         <input type="text" id="variant_item_name_${uniqueIndex}" value="${item.variant_item_name || ''}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Detail varian">
                                         <input type="number" id="variant_item_add_price_${uniqueIndex}" value="${item.add_price || 0}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Add Price" min="0">
                                         <button id="delete_variant_item_${uniqueIndex}" onclick="deleteVariantItem('${uniqueIndex}')" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Item</button>
@@ -279,6 +279,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Variant Name</label>
                                     <input type="text" id="product_variant_name_${increment}" value="${variant.full_name_product}" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Ketik nama varian">
+                                    <input hidden id="product_variant_id_${increment}" value="${variant.product_variant_id}">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Base Price <span class="text-gray-500">(contoh: 10000)</span></label>
@@ -296,6 +297,15 @@
                                     <label class="block text-sm font-medium text-gray-700">Descripsi</label>
                                     <input type="text" id="product_variant_description_${increment}" value="${variant.descriptions || ''}" class="border-[1px] border-[#DADCE0] px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Descripsi varian">
                                 </div>
+                                 <div class="flex items-center">
+                                    <label class="po_status block text-sm font-medium text-gray-700 mr-4">Pre Order</label>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="preorder_toggle_${increment}" class="sr-only peer" value="0">
+                                        <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-red-600"></div>
+                                        <div class="absolute left-[2px] top-[2px] bg-white w-5 h-5 rounded-full transition-transform peer-checked:translate-x-full"></div>
+                                    </label>
+                                </div>
+                                <button id="delete_product_variant_${increment}" onclick="deleteProductVariant('${increment}')" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Product Varaint</button>
                             </div>
                         `;
 
@@ -355,6 +365,7 @@
                 <select id="variant_item_type_${uniqueIndex}" class="block w-1/4 rounded-lg border-gray-300 bg-white border-[1px] border-[#DADCE0] px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
                     <option value="">Loading...</option>
                 </select>
+                <input hidden id="variant_item_id_${uniqueIndex}" value="9999999">
                 <input type="text" id="variant_item_name_${uniqueIndex}" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Detail varian">
                 <input type="number" id="variant_item_add_price_${uniqueIndex}" value="0" class="border-[1px] border-[#DADCE0] block w-1/4 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Add Price" min="0">
                 <button id="delete_variant_item_${uniqueIndex}" onclick="deleteVariantItem('${uniqueIndex}')" class="bg-red-600 text-white px-3 text-[12px] py-2 rounded">Hapus Item</button>
@@ -368,6 +379,7 @@
                 populateDropdown(variantTypes, dropdown);
             }
         }
+
 
         const API_BASE_URL = 'http://127.0.0.1:8001';
         // Fungsi untuk mengupload gambar
@@ -453,87 +465,7 @@
             fetchVariantTypes().then(() => populateDropdown(variantTypes, dropdown));
         });
         // Event listener untuk save_button
-        document.getElementById('save_button').addEventListener('click', async function () {
-            try {
-                console.log("Saving product details...");
-
-                // Ambil ID produk dari URL
-                const urlParams = new URL(window.location.href);
-                const pathSegments = urlParams.pathname.split('/');
-                const productVariantId = pathSegments[pathSegments.length - 1];
-                console.log("Product Variant ID for update:", productVariantId);
-
-                // Ambil data dari form
-                const productVariantName = document.getElementById('product_variant_name').value;
-                const price = parseFloat(document.getElementById('price').value);
-                const stock = parseInt(document.getElementById('stock').value);
-                const image = document.getElementById('editImagePreview').src;
-                const descriptions = document.getElementById('product_variant_description').value;
-
-                // Ambil variant items dari container
-                const variantItemsContainer = document.getElementById('variant_items_container');
-                const variantItems = Array.from(variantItemsContainer.querySelectorAll('.variant-item')).map((item) => ({
-                    id: parseInt(item.querySelector('.variant-item-id').value),
-                    product_variant_item_name: item.querySelector('.variant-item-name').value,
-                    price_variant: parseFloat(item.querySelector('.variant-item-price').value),
-                }));
-
-                // Buat payload
-                const payload = {
-                    product_variant: {
-                        id: parseInt(productVariantId),
-                        product_variant_name: productVariantName,
-                        price: price,
-                        stock: stock,
-                        image_url: image,
-                        po_status: false,
-                        descriptions: descriptions,
-                        product_variant_item: variantItems,
-                    },
-                };
-
-                console.log("Payload to send:", payload);
-
-                // Kirim data ke API
-                const authToken = sessionStorage.getItem('authToken'); // Ambil token dari sessionStorage
-                if (!authToken) {
-                    console.error("Auth token is missing in sessionStorage");
-                    alert("Autentikasi tidak valid. Silakan login kembali.");
-                    return;
-                }
-
-                const response = await fetch(`http://127.0.0.1:8001/api/update-product/${productVariantId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`, // Tambahkan Bearer Token di header
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                console.log("API Response Status:", response.status);
-
-                if (!response.ok) {
-                    console.error("Failed to update product. Response:", await response.json());
-                    alert("Gagal memperbarui produk. Silakan cek konsol untuk detail.");
-                    return;
-                }
-
-                const result = await response.json();
-                console.log("API Response Data:", result);
-
-                if (result.success) {
-                    alert("Produk berhasil diperbarui!");
-                    window.location.href = 'http://127.0.0.1:8001/dashboard/product';
-                } else {
-                    alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
-                }
-            } catch (error) {
-                console.error("Error while saving product details:", error.message);
-                alert("Terjadi kesalahan saat menyimpan produk.");
-            }
-        });
+        
 
 
         document.getElementById('updateCategoryForm').addEventListener('submit', async (event) => {
@@ -582,6 +514,57 @@
             }
         });
 
+        function deleteProductVariant(increment) {
+            // Popup konfirmasi sebelum melanjutkan
+            if (confirm("Are you sure you want to delete this product variant?")) {
+                try {
+                    // Asynchronous function untuk menjalankan API dan logika
+                    (async () => {
+                        // Ambil token dari sessionStorage
+                        const token = sessionStorage.getItem('authToken');
+
+                        if (!token) {
+                            alert("Session expired. Please log in again.");
+                            window.location.href = "http://127.0.0.1:8001/login"; // Redirect ke login
+                            return;
+                        }
+
+                        console.log('Deleting product variant with ID:', increment);
+
+                        // Panggil API untuk menghapus product variant
+                        const response = await fetch(`http://127.0.0.1:8001/api/deleted-product/${increment}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok || !data.success) {
+                            throw new Error(data.message || 'Failed to delete product variant.');
+                        }
+
+                        alert("Product variant deleted successfully!");
+
+                        // Hapus elemen HTML dengan class `product_variant_${increment}`
+                        const element = document.querySelector(`.product_variant_${increment}`);
+                        if (element) {
+                            element.remove();
+                        }
+
+                        // Refresh daftar produk (opsional, jika diperlukan)
+                        fetchProducts();
+                    })();
+                } catch (error) {
+                    console.error("Error deleting product variant:", error);
+                    alert("Failed to delete product variant. Please try again.");
+                }
+            }
+        }
+
+
         async function populateCategoryDropdown() {
             const dropdownCategoryUpdate = document.getElementById('dropdownproduct-category-update');
 
@@ -618,6 +601,108 @@
 
         // Panggil saat halaman dimuat
         populateCategoryDropdown();
+
+        document.getElementById('save_button').addEventListener('click', async function () {
+            try {
+                console.log("Saving product details...");
+
+                // Ambil ID produk dari URL
+                const urlParams = new URL(window.location.href);
+                const pathSegments = urlParams.pathname.split('/');
+                const productId = pathSegments[pathSegments.length - 1];
+
+                // Ambil nilai dari input dan elemen HTML
+                const productName = document.getElementById('product_name').value;
+                const productTypeId = document.getElementById('dropdownproduct-category').value;
+
+                // Loop melalui elemen dengan kelas 'product_variant'
+                const productVariants = Array.from(document.querySelectorAll('[class^="product_variant_"]')).map((variantElement, index) => {
+                    const increment = index + 1;
+
+                    // Ambil nilai untuk setiap variant
+                    const variantId = document.getElementById(`product_variant_id_${increment}`).value;
+                    const variantName = document.getElementById(`product_variant_name_${increment}`).value;
+                    const price = parseFloat(document.getElementById(`price_${increment}`).value);
+                    const stock = parseInt(document.getElementById(`stock_${increment}`).value, 10);
+                    const imageUrl = document.getElementById(`image_preview_${increment}`).src;
+                    const poStatus = document.getElementById(`preorder_toggle_${increment}`).value === "1";
+                    const descriptions = document.getElementById(`product_variant_description_${increment}`).value;
+
+                    // Loop melalui elemen dalam container item variant
+                    const variantItems = Array.from(document.querySelectorAll(`#item_variant_list_container_${increment} .product_variant_item`)).map(itemElement => {
+                        const uniqueIndex = itemElement.dataset.index;
+
+                        // Ambil nilai untuk setiap variant item
+                        return {
+                            id: document.getElementById(`variant_item_id_${uniqueIndex}`).value,
+                            variant_item_type_id: document.getElementById(`variant_item_type_${uniqueIndex}`).value,
+                            product_variant_item_name: document.getElementById(`variant_item_name_${uniqueIndex}`).value,
+                            price_variant: parseFloat(document.getElementById(`variant_item_add_price_${uniqueIndex}`).value)
+                        };
+                    });
+
+                    return {
+                        id: variantId,
+                        product_variant_name: variantName,
+                        price: price,
+                        stock: stock,
+                        image_url: imageUrl,
+                        po_status: poStatus,
+                        descriptions: descriptions,
+                        product_variant_item: variantItems
+                    };
+                });
+
+                // Bentuk payload
+                const payload = {
+                    product_name: productName,
+                    product_type_id: parseInt(productTypeId, 10),
+                    product_variant: productVariants
+                };
+
+                console.log("Payload to send:", payload);
+
+                // Kirim data ke API
+                const authToken = sessionStorage.getItem('authToken'); // Ambil token dari sessionStorage
+                if (!authToken) {
+                    console.error("Auth token is missing in sessionStorage");
+                    alert("Autentikasi tidak valid. Silakan login kembali.");
+                    return;
+                }
+
+                const response = await fetch(`http://127.0.0.1:8001/api/update-product/${productId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`, // Tambahkan Bearer Token di header
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                console.log("API Response Status:", response.status);
+
+                if (!response.ok) {
+                    console.error("Failed to update product. Response:", await response.json());
+                    alert("Gagal memperbarui produk. Silakan cek konsol untuk detail.");
+                    return;
+                }
+
+                const result = await response.json();
+                console.log("API Response Data:", result);
+
+                if (result.success) {
+                    alert("Produk berhasil diperbarui!");
+                    window.location.href = 'http://127.0.0.1:8001/dashboard/product';
+                } else {
+                    alert("Gagal memperbarui produk: " + (result.message || "Unknown error"));
+                }
+            } catch (error) {
+                console.error("Error while saving product details:", error.message);
+                alert("Terjadi kesalahan saat menyimpan produk.");
+            }
+        });
+
 
     </script>
 
