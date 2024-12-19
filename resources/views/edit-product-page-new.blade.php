@@ -235,6 +235,117 @@
                     }
                 }
 
+                
+                document.getElementById('addVariantTypeForm').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const dropdown = document.getElementById('dropdown_variant_item_type_update');
+                    const variantTypeNameInput = document.getElementById('variant_type_name');
+
+                    const selectedVariantTypeId = dropdown.value;
+                    const newVariantTypeName = variantTypeNameInput.value;
+
+                    const token = sessionStorage.getItem('authToken');
+                    if (!token) {
+                        alert('Token is missing, please log in again.');
+                        window.location.href = 'http://127.0.0.1:8001/login';
+                        return;
+                    }
+
+                    if (!selectedVariantTypeId) {
+                        alert('Please select a variant type to update.');
+                        return;
+                    }
+
+                    if (!newVariantTypeName.trim()) {
+                        alert('Please enter a variant type name.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`http://127.0.0.1:8001/api/update-item-type/${selectedVariantTypeId}`, {
+                            method: 'POST', // Use appropriate method (PUT or POST) as per your API design
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                name: newVariantTypeName,
+                            }),
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.success) {
+                            alert('Variant type updated successfully.');
+                            // Optionally, clear the form or refresh the dropdown
+                            dropdown.value = '';
+                            variantTypeNameInput.value = '';
+                        } else {
+                            console.error('Failed to update variant type:', result.message);
+                            alert('Failed to update variant type.');
+                        }
+                    } catch (error) {
+                        console.error('Error updating variant type:', error);
+                        alert('An error occurred while updating variant type.');
+                    }
+                });
+
+                document.getElementById('updateCategoryForm').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const dropdown = document.getElementById('dropdownproduct-category-update');
+                    const typeNameInput = document.getElementById('type_name');
+
+                    const selectedCategoryId = dropdown.value;
+                    const newCategoryName = typeNameInput.value;
+
+                    const token = sessionStorage.getItem('authToken');
+                    if (!token) {
+                        alert('Token is missing, please log in again.');
+                        window.location.href = 'http://127.0.0.1:8001/login';
+                        return;
+                    }
+
+                    if (!selectedCategoryId) {
+                        alert('Please select a category to update.');
+                        return;
+                    }
+
+                    if (!newCategoryName.trim()) {
+                        alert('Please enter a new category name.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`http://127.0.0.1:8001/api/update-product-type/${selectedCategoryId}`, {
+                            method: 'POST', // Use appropriate method (PUT or POST) as per your API design
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                name: newCategoryName,
+                            }),
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.success) {
+                            alert('Category updated successfully.');
+                            populateCategoryDropdown(); // Refresh dropdown
+                        } else {
+                            console.error('Failed to update category:', result.message);
+                            alert('Failed to update category.');
+                        }
+                    } catch (error) {
+                        console.error('Error updating category:', error);
+                        alert('An error occurred while updating category.');
+                    }
+                });
+
                 // Fungsi untuk merender elemen produk
                 function renderProductVariants(productVariantListContainer, productVariants) {
                     productVariants.forEach((variant, index) => {
@@ -468,51 +579,7 @@
         
 
 
-        document.getElementById('updateCategoryForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const dropdown = document.getElementById('dropdownproduct-category-update');
-            const typeNameInput = document.getElementById('type_name');
-
-            const selectedCategoryId = dropdown.value;
-            const newCategoryName = typeNameInput.value;
-
-            if (!selectedCategoryId) {
-                alert('Please select a category to update.');
-                return;
-            }
-
-            if (!newCategoryName.trim()) {
-                alert('Please enter a new category name.');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/lproduct-type-update/${selectedCategoryId}`, {
-                    method: 'POST', // Use appropriate method (PUT or POST) as per your API design
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: newCategoryName,
-                    }),
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    alert('Category updated successfully.');
-                    populateCategoryDropdown(); // Refresh dropdown
-                } else {
-                    console.error('Failed to update category:', result.message);
-                    alert('Failed to update category.');
-                }
-            } catch (error) {
-                console.error('Error updating category:', error);
-                alert('An error occurred while updating category.');
-            }
-        });
+        
 
         function deleteProductVariant(increment) {
             // Popup konfirmasi sebelum melanjutkan

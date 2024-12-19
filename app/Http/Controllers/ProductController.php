@@ -1570,4 +1570,49 @@ class ProductController extends Controller
         }
     }
 
+    public function updateProductType(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        try {
+            $updated = DB::update("UPDATE product_types SET name = ? WHERE id = ?", [
+                $request->name,
+                $id,
+            ]);
+
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Product type updated successfully');
+            } else {
+                return ApiResponseHelper::error('Product type not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+    public function updateItemType(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        try {
+            $updated = DB::update("UPDATE varaint_item_types SET name = ? WHERE id = ?", [
+                $request->name,
+                $id,
+            ]);
+
+            if ($updated) {
+                return ApiResponseHelper::success(null, 'Product type updated successfully');
+            } else {
+                return ApiResponseHelper::error('Product type not found', 404);
+            }
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error('Something went wrong', 500);
+        }
+    }
+
+
 }
