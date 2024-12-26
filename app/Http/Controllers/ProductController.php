@@ -1599,7 +1599,7 @@ class ProductController extends Controller
         ]);
 
         try {
-            $updated = DB::update("UPDATE varaint_item_types SET name = ? WHERE id = ?", [
+            $updated = DB::update("UPDATE variant_item_types SET name = ? WHERE id = ?", [
                 $request->name,
                 $id,
             ]);
